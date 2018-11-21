@@ -14,5 +14,17 @@ public class Validator {
 			throw new IllegalArgumentException(err);
 		}
 	}
+	/**
+	 * Verifica se o valor passado é negativo.
+	 * 
+	 * @param valor Informacao que necessita de validacao.
+	 * @param err O erro que sera mostrado caso nao seja valido.
+	 * 
+	 */
+	public void validaValorPositivo(double valor, String err) {
+		if (valor < 0) {
+			throw new IllegalArgumentException(err);
+		}		
+	}
 
 }
