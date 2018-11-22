@@ -16,9 +16,8 @@ public class ItemNecessario extends Item {
 	 * @param id
 	 * @param nomePessoa
 	 */
-	public ItemNecessario(String idPessoa, String descricao, int quantidade, String[] tags, int id, String nomePessoa) {
-		super(idPessoa, descricao, quantidade, tags, id, nomePessoa);
-		// TODO Auto-generated constructor stub
+	public ItemNecessario(String descricao, int quantidade, String[] tags, int id) {
+		super(descricao, quantidade, tags, id);
 	}
 
 	/**
@@ -26,7 +25,6 @@ public class ItemNecessario extends Item {
 	 */
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return this.id + " - " + this.descricao + ", " + this.converteTagsEmString() + ", " + this.quantidade; 
 	}
 

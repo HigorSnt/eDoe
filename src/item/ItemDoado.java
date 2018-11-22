@@ -16,9 +16,8 @@ public class ItemDoado extends Item{
 	 * @param id
 	 * @param nomePessoa
 	 */
-	public ItemDoado(String idPessoa, String descricao, int quantidade, String[] tags, int id, String nomePessoa) {
-		super(idPessoa, descricao, quantidade, tags, id, nomePessoa);
-		// TODO Auto-generated constructor stub
+	public ItemDoado(String descricao, int quantidade, String[] tags, int id) {
+		super(descricao, quantidade, tags, id);
 	}
 
 	

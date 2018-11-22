@@ -17,10 +17,8 @@ public abstract class Item {
 	protected String descricao;
 	protected List<String> tags;
 	protected int quantidade;
-	protected String idPessoa;
 	protected int id;
 	private String data;
-	protected String nomePessoa;
 
 	/**
 	 * Construtor de item, inicializa a lista e adciona todas as tags, bem como
@@ -33,16 +31,12 @@ public abstract class Item {
 	 * @param id
 	 * @param nomePessoa
 	 */
-	public Item(String idPessoa, String descricao, int quantidade, String[] tags, int id, String nomePessoa) {
+	public Item(String descricao, int quantidade, String[] tags, int id) {
 		Validator validador = new Validator();
 		String err = "Entrada invalida: ";
-		validador.validaDado(idPessoa, err + "id do usuario nao pode ser vazio ou nulo.");
-		validador.validaDado(nomePessoa, err + "nome do usuario nao pode ser vazio ou nulo.");
 		validador.validaValorPositivo(id, err + "id do item nao pode ser negativo.");
-		this.idPessoa = idPessoa;
 		this.descricao = descricao;
 		this.quantidade = quantidade;
-		this.nomePessoa = nomePessoa;
 		this.id = id;
 		this.data = data;
 		this.tags = new ArrayList<String>();
@@ -79,14 +73,7 @@ public abstract class Item {
 		}
 	}
 
-	/**
-	 * retorna o nome da pessoa que doou o item.
-	 * 
-	 * @return
-	 */
-	public String getPessoa() {
-		return this.nomePessoa;
-	}
+
 
 	protected String converteTagsEmString() {
 		String saida = "[";
