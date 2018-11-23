@@ -24,9 +24,9 @@ public class Validador {
 	 */
 	public void validaClasse (String dado, String err) {
 		dado = dado.trim().toUpperCase();
-		if (!"PESSOA_FISICA".equals(dado) || !"IGREJA".equals(dado) || !"ORGAO_PUBLICO_MUNICIPAL".equals(dado)
-				|| !"ORGAO_PUBLICO_ESTADUAL".equals(dado) || !"ORGAO_PUBLICO_FEDERAL".equals(dado) || 
-				!"ONG".equals(dado) || !"ASSOCIACAO".equals(dado) || !"SOCIEDADE".equals(dado)) {
+		if (!"PESSOA_FISICA".equals(dado) && !"IGREJA".equals(dado) && !"ORGAO_PUBLICO_MUNICIPAL".equals(dado)
+				&& !"ORGAO_PUBLICO_ESTADUAL".equals(dado) && !"ORGAO_PUBLICO_FEDERAL".equals(dado) && 
+				!"ONG".equals(dado) && !"ASSOCIACAO".equals(dado) && !"SOCIEDADE".equals(dado)) {
 			throw new IllegalArgumentException(err);
 		}
 	}
