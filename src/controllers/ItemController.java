@@ -1,4 +1,4 @@
-package item;
+package controllers;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import aux.Validador;
+import models.Item;
+import models.ItemDoado;
+import models.ItemNecessario;
 
 public class ItemController {
 	

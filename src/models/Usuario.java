@@ -1,4 +1,4 @@
-package user;
+package models;
 
 import aux.Validador;
 
@@ -21,6 +21,7 @@ public class Usuario {
 	
 	/**
 	 * Constroi um novo usuario.
+	 * 
 	 * @param id CPF/CNPJ do usuario a ser cadastrado.
 	 * @param nome nome do usuario a ser cadastrado.
 	 * @param email email do usuario a ser cadastrado.
@@ -46,6 +47,7 @@ public class Usuario {
 
 	/**
 	 * retorna o nome do usuario.
+	 * 
 	 * @return nome do usuario.
 	 */
 	public String getNome() {
@@ -54,6 +56,7 @@ public class Usuario {
 
 	/**
 	 * Seta um novo nome para o usuario.
+	 * 
 	 * @param nome nome do usuario.
 	 */
 	public void setNome(String nome) {
@@ -63,6 +66,7 @@ public class Usuario {
 	
 	/**
 	 * Seta um novo celular para o usuario.
+	 * 
 	 * @param celular celular do usuario.
 	 */
 	public void setCelular(String celular) {
@@ -72,6 +76,7 @@ public class Usuario {
 	
 	/**
 	 * Seta um novo email para o usuario.
+	 * 
 	 * @param email email do usuario.
 	 */
 	public void setEmail(String email) {
@@ -81,6 +86,7 @@ public class Usuario {
 	
 	/**
 	 * Retorna um String que corresponde ao usuario.
+	 * 
 	 * @return retorna uma string no formato: NOME/ID, EMAIL, CELULAR, CLASSE, STATUS: xxxxxx
 	 */
 	public String toString() {

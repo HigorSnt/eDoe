@@ -1,14 +1,14 @@
-package item;
+package models;
 
 /**
- * Classe responsavel para representar a entidade de Item necessario.
+ * Entidade que representa um Item doado.
  * @author kyouma
  *
  */
-public class ItemNecessario extends Item {
+public class ItemDoado extends Item{
 
 	/**
-	 * Construtor de item necessario, apenas usa o construtor de Item
+	 * Construtor de Item doado
 	 * @param idPessoa
 	 * @param descricao
 	 * @param quantidade
@@ -16,16 +16,19 @@ public class ItemNecessario extends Item {
 	 * @param id
 	 * @param nomePessoa
 	 */
-	public ItemNecessario(String descricao, int quantidade, String[] tags, int id) {
+	public ItemDoado(String descricao, int quantidade, String[] tags, int id) {
 		super(descricao, quantidade, tags, id);
 	}
 
+	
 	/**
-	 * retorna uma representação em String do item que ele representa
+	 * retorna uma representação em String do item doado.
 	 */
 	@Override
 	public String toString() {
 		return this.id + " - " + this.descricao + ", " + this.converteTagsEmString() + ", " + this.quantidade; 
 	}
 
+
+	
 }

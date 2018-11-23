@@ -1,17 +1,16 @@
-package user;
+package controllers;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import aux.Validador;
+import models.Usuario;
 
 public class UsuarioController {
 	
@@ -133,6 +132,7 @@ public class UsuarioController {
 	 * @param nome nome do usuario.
 	 * @param email email do usuario.
 	 * @param celular celular do usuario.
+	 * 
 	 * @return retorna o toString do usuario com os novos dados.
 	 */
 	public String alteraDados(String id, String nome, String email, String celular) {
@@ -156,8 +156,8 @@ public class UsuarioController {
 	
 	/**
 	 * Remove um usuario apatir do seu ID
+	 * 
 	 * @param id identificacao do usuario.
-	 * @return retorna um booleano True caso a remocao seja um sucesso.
 	 */
 	public void removeUsuario(String id) {
 		this.validador.validaDado(id, this.ERROID);
@@ -170,6 +170,7 @@ public class UsuarioController {
 	
 	/**
 	 * Ler os receptores apatir do caminho do arquivos onde estao armazenados.
+	 * 
 	 * @param caminho caminho do arquivo.
 	 */
 	public void lerReceptores(String caminho) {

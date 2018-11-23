@@ -1,6 +1,6 @@
 package main;
 
-import item.ItemController;
+import controllers.ItemController;
 
 public class Main {
 	

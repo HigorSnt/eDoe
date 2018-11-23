@@ -1,8 +1,5 @@
 package controllers;
 
-import item.ItemController;
-import user.UsuarioController;
-
 public class ControllerGeral {
 	
 	private UsuarioController uc;
