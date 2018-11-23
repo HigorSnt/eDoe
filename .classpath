@@ -4,6 +4,6 @@
 	<classpathentry kind="src" path="unit_tests"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
-	<classpathentry kind="lib" path="/home/higorsbd/git/eDoe/lib/easyaccept.jar"/>
+	<classpathentry kind="lib" path="lib/easyaccept.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

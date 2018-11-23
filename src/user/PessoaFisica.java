@@ -1,4 +1,4 @@
-package User;
+package user;
 
 public class PessoaFisica extends Usuario{
 	
@@ -15,6 +15,6 @@ public class PessoaFisica extends Usuario{
 	}
 	
 	public String toString() {
-		return super.nome +"/"+formataCPF()+", "+super.celular+", "+super.email+", status: "+ (super.ehReceptor ? "receptor" : "doador");
+		return super.nome + "/" + formataCPF() + ", " + super.celular + ", " + super.email + ", status: " + (super.ehReceptor ? "receptor" : "doador");
 	}
 }
