@@ -14,7 +14,6 @@ public class ItemDoado extends Item{
 	 * @param quantidade
 	 * @param tags
 	 * @param id
-	 * @param nomePessoa
 	 */
 	public ItemDoado(String descricao, int quantidade, String[] tags, int id) {
 		super(descricao, quantidade, tags, id);

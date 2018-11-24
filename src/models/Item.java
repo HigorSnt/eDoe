@@ -33,7 +33,6 @@ public abstract class Item {
 	 * @param quantidade
 	 * @param tags
 	 * @param id
-	 * @param nomePessoa
 	 */
 	public Item(String descricao, int quantidade, String[] tags, int id) {
 		this.validador.validaDado(descricao, ERRODESCRITOR);
@@ -54,7 +53,11 @@ public abstract class Item {
 	 * so definindo a presença do toString()
 	 */
 	public abstract String toString();
-
+	
+	public int getId() {
+		return id;
+	}
+	
 	/**
 	 * altera a quantidade de itens disponiveis.
 	 * 

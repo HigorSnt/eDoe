@@ -31,17 +31,19 @@ public class ItemController {
 		this.cont = 0;
 	}
 
-	public void cadastraDescritor(String descricao) {
+	public void adicionaDescritor(String descricao) {
 		this.validador.validaDado(descricao, this.ERRODESCRITOR);
+		
+		descricao = descricao.toLowerCase();
 		
 		if (!(this.itensDoados.containsKey(descricao) || this.itensNecessarios.containsKey(descricao))) {
 			this.itensDoados.put(descricao, new ArrayList<>());
 		}else {
-			throw new IllegalArgumentException("Descritor ja existente: " + descricao);
+			throw new IllegalArgumentException("Descritor de Item ja existente: " + descricao + ".");
 		}
 	}
 
-	public int cadastraItemDoado(String idDoador, String descricao, int quantidade, String tags, String nomeDoador) {
+	public int adicionaItemParaDoacao(String idDoador, String descricao, int quantidade, String tags) {
 		this.validador.validaDado(descricao, this.ERRODESCRITOR);
 		this.validador.validaValorPositivo(quantidade, this.ERROVALOR);
 		this.validador.validaDado(tags, this.ERROTAGS);
@@ -52,7 +54,7 @@ public class ItemController {
 			this.cont++;
 			this.itensDoados.get(descricao).add(aSerAdcionado);
 		} else {
-			throw new IllegalArgumentException("Descricao de item nao existente: " + descricao);
+			throw new IllegalArgumentException("Descricao de item nao existente: " + descricao + ".");
 		}
 		
 		if (this.itensDoadosPorUsuario.containsKey(idDoador)) {
@@ -81,6 +83,18 @@ public class ItemController {
 		}
 
 		return this.cont;
+	}
+	
+	public String exibeItem (int id, String idDoador) {
+		this.validador.validaDado(idDoador, "Usuario nao encontrado: " + idDoador + ".");
+		List<Item> lista = new ArrayList<>(this.itensDoadosPorUsuario.get(idDoador));
+		
+		for (Item item : this.itensDoadosPorUsuario.get(idDoador)) {
+			if (item.getId() == id) {
+				return item.toString();
+			}
+		}
+		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 	}
 
 }

@@ -196,4 +196,18 @@ public class UsuarioController {
 			System.err.println("Erro na leitura: caminho (" + caminho + ") não encontrado.");
 		}
 	}
+	
+	/**
+	 * Verifica se determinado usuario foi cadastrado.
+	 * 
+	 * @param id identifica um usuario
+	 * 
+	 * @return Um boolean informando se contem ou nao.
+	 */
+	public boolean contemUsuarioDoador (String id) {
+		if (this.usuarios.containsKey(id)) {
+			return !this.usuarios.get(id).isEhReceptor();
+		}
+		return false;
+	}
 }

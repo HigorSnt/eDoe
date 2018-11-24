@@ -53,6 +53,10 @@ public class Usuario {
 	public String getNome() {
 		return nome;
 	}
+	
+	public boolean isEhReceptor() {
+		return ehReceptor;
+	}
 
 	/**
 	 * Seta um novo nome para o usuario.

@@ -33,4 +33,26 @@ public class ControllerGeral {
 	public void removeUsuario(String id) {
 		this.uc.removeUsuario(id);
 	}
+
+	public void adicionaDescritor(String descricao) {
+		this.ic.adicionaDescritor(descricao);
+	}
+	
+	public int adicionaItemParaDoacao(String idDoador, String descricaoItem, 
+			int quantidade, String tags) {
+		if (idDoador != null && this.uc.contemUsuarioDoador(idDoador)) {
+			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
+		}
+		
+		return this.ic.adicionaItemParaDoacao(idDoador, descricaoItem, quantidade, tags);
+	}
+	
+	public String exibeItem (int id, String idDoador) {
+		if (idDoador != null && !this.uc.contemUsuarioDoador(idDoador)) {
+			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
+		}
+		
+		return this.ic.exibeItem(id, idDoador);
+	}
+	
 }
