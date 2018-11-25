@@ -12,6 +12,7 @@ import models.ItemNecessario;
 
 public class ItemController {
 	
+	private final String ERROIDDOADOR = "Entrada invalida: id do usuario nao pode ser vazio ou nulo.";
 	private final String ERRODESCRITOR = "Entrada invalida: descricao nao pode ser vazia ou nula.";
 	private final String ERROVALOR = "Entrada invalida: quantidade deve ser maior que zero.";
 	private final String ERROTAGS = "Entrada invalida: tags nao pode ser vazia ou nula.";
@@ -44,9 +45,9 @@ public class ItemController {
 	}
 
 	public int adicionaItemParaDoacao(String idDoador, String descricao, int quantidade, String tags) {
+		this.validador.validaDado(idDoador, this.ERROIDDOADOR);
 		this.validador.validaDado(descricao, this.ERRODESCRITOR);
 		this.validador.validaValorPositivo(quantidade, this.ERROVALOR);
-		this.validador.validaDado(tags, this.ERROTAGS);
 		
 		Item aSerAdcionado = new ItemDoado(descricao, quantidade, tags.split(","), this.cont);
 		
@@ -54,7 +55,8 @@ public class ItemController {
 			this.cont++;
 			this.itensDoados.get(descricao).add(aSerAdcionado);
 		} else {
-			throw new IllegalArgumentException("Descricao de item nao existente: " + descricao + ".");
+			this.adicionaDescritor(descricao);
+			this.adicionaItemParaDoacao(idDoador, descricao, quantidade, tags);
 		}
 		
 		if (this.itensDoadosPorUsuario.containsKey(idDoador)) {

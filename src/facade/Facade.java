@@ -24,6 +24,10 @@ public class Facade {
 	public String pesquisaUsuarioPorId (String id) {
 		return this.cg.pesquisaUsuarioPorId(id);
 	}
+	/* remover isso dps */
+	public String getId(String id) {
+		return id;
+	}
 	
 	public String pesquisaUsuarioPorNome (String nome) {
 		return this.cg.pesquisaUsuarioPorNome(nome);
@@ -41,8 +45,7 @@ public class Facade {
 		this.cg.adicionaDescritor(descricao);
 	}
 	
-	public int adicionaItemParaDoacao(String idDoador, String descricaoItem, 
-			int quantidade, String tags) {
+	public int adicionaItemParaDoacao(String idDoador, String descricaoItem, int quantidade, String tags) {
 		return this.cg.adicionaItemParaDoacao(idDoador, descricaoItem, quantidade, tags);
 	}
 	

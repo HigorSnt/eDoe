@@ -40,7 +40,7 @@ public class UsuarioController {
 	 * 
 	 * @return o ID do usuario.
 	 */
-	public String cadastraDoador(String id, String nome, String email, String celular, String classe) {
+	public String adicionaDoador(String id, String nome, String email, String celular, String classe) {
 		this.validador.validaDado(nome, this.ERRONOME);
 		this.validador.validaDado(id, this.ERROID);
 		this.validador.validaDado(celular, this.ERROCELULAR);
@@ -49,11 +49,12 @@ public class UsuarioController {
 		this.validador.validaClasse(classe, this.ERROOPCAOCLASSE);
 		
 		Usuario user = new Usuario(id, nome, email, celular, classe, false);
-		if (!this.usuarios.containsKey(id)) {
-			this.usuarios.put(id, user);
-			return id;
+		if (this.usuarios.containsKey(id)) {
+			throw new IllegalAccessError("Usuario ja existente: " + id + ".");
 		}
-		throw new IllegalAccessError("Usuario ja existente: " + id + ".");
+		
+		this.usuarios.put(id, user);
+		return id;
 	}
 	
 	/**

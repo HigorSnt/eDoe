@@ -39,7 +39,7 @@ public class Validador {
 	 * 
 	 */
 	public void validaValorPositivo(double valor, String err) {
-		if (valor < 0) {
+		if (valor <= 0) {
 			throw new IllegalArgumentException(err);
 		}		
 	}

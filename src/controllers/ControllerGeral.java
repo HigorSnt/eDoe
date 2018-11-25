@@ -11,7 +11,7 @@ public class ControllerGeral {
 	}
 	
 	public String adicionaDoador(String id, String nome, String email, String celular, String classe) {
-		return this.uc.cadastraDoador(id, nome, email, celular, classe);
+		return this.uc.adicionaDoador(id, nome, email, celular, classe);
 	}
 	
 	public void lerReceptores(String caminho) {
@@ -40,7 +40,7 @@ public class ControllerGeral {
 	
 	public int adicionaItemParaDoacao(String idDoador, String descricaoItem, 
 			int quantidade, String tags) {
-		if (idDoador != null && this.uc.contemUsuarioDoador(idDoador)) {
+		if (idDoador != null && !this.uc.contemUsuarioDoador(idDoador)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
 		}
 		
