@@ -9,7 +9,8 @@ public class Facade {
 
 	public static void main(String[] args) {
 		args = new String[] {"eDoe.Facade", "acceptance_tests/use_case_1.txt", 
-				"acceptance_tests/use_case_2.txt"};
+				"acceptance_tests/use_case_2.txt",
+				"acceptance_tests/use_case_3.txt"};
 		EasyAccept.main(args);
 	}
 	
@@ -60,6 +61,14 @@ public class Facade {
 	
 	public void removeItemParaDoacao (int id, String idDoador) {
 		this.cg.removeItemParaDoacao(id, idDoador);
+	}
+	
+	public String listaDescritorDeItensParaDoacao() {
+		return this.cg.listaDescritorDeItensParaDoacao();
+	}
+	
+	public String listaItensParaDoacao() {
+		return this.cg.listaItensParaDoacao();
 	}
 
 }

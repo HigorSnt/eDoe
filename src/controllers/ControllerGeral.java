@@ -74,5 +74,13 @@ public class ControllerGeral {
 		}
 		this.ic.removeItemParaDoacao(id, idDoador);
 	}
+
+	public String listaDescritorDeItensParaDoacao() {
+		return this.ic.listaDescritorDeItensParaDoacao();
+	}
+
+	public String listaItensParaDoacao() {
+		return this.ic.listaItensParaDoacao();
+	}
 	
 }

@@ -26,7 +26,5 @@ public class ItemDoado extends Item{
 	public String toString() {
 		return this.id + " - " + this.descricao + ", tags: " + this.converteTagsEmString() + ", quantidade: " + this.quantidade; 
 	}
-
-
 	
 }

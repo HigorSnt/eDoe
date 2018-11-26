@@ -91,5 +91,9 @@ public abstract class Item {
 	public String converteTagsEmString() {
 		return "[" + this.tags.stream().map(t -> t.toString()).collect(Collectors.joining(", ")) + "]";
 	}
+	
+	public int getQuantidade() {
+		return this.quantidade;
+	}
 
 }

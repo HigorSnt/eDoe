@@ -2,7 +2,7 @@
 
 expect "5 - cadeira de alimentacao | 15 - cadeira de praia | 2 - cadeira de rodas\
  | 4 - cadeira reclinavel | 3 - calca jeans | 25 - camiseta | 15 - cobertor | 5 - colchao\
- | 0 - computador | 0 - curso de programacao | 0 - escova de dente | 5 - jaqueta de couro\
+ | 2 - computador | 0 - curso de programacao | 0 - escova de dente | 5 - jaqueta de couro\
  | 0 - playstation 4 | 0 - televisao | 10 - travesseiro" listaDescritorDeItensParaDoacao
  
 ## Listando itens ##

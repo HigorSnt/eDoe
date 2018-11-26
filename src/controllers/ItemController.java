@@ -1,11 +1,14 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
+import aux.QuantidadeComparator;
 import aux.Validador;
 import models.Item;
 import models.ItemDoado;
@@ -27,7 +30,7 @@ public class ItemController {
 	private Validador validador = new Validador();
 
 	public ItemController() {
-		this.itensDoados = new LinkedHashMap<>();
+		this.itensDoados = new TreeMap<>();
 		this.itensNecessarios = new LinkedHashMap<>();
 		this.itensDoadosPorUsuario = new LinkedHashMap<>();
 
@@ -175,6 +178,44 @@ public class ItemController {
 				iterator.remove();
 			}
 		} 
+	}
+
+	public String listaDescritorDeItensParaDoacao() {
+		String msg = "";
+		int qnt = 0;
+		for (String descritor : this.itensDoados.keySet()) {
+			qnt = 0;
+			for(Item item : this.itensDoados.get(descritor)) {
+				qnt += item.getQuantidade();
+			}
+			msg += qnt + " - " + descritor + " | ";
+		}
+		return msg.substring(0, msg.length()-3);
+	}
+	
+	private ArrayList<Item> ordenaItens(){
+		ArrayList<Item> itens = new ArrayList<>();
+		for(String descritor : this.itensDoados.keySet()) {
+			if (this.itensDoados.get(descritor).size() > 0) {
+				for(Item item : this.itensDoados.get(descritor)) {
+					itens.add(item);
+				}
+			}
+		}
+		Collections.sort(itens, new QuantidadeComparator());
+		return itens;
+	}
+	
+	public String listaItensParaDoacao() {
+		String msg = "";
+		for (Item item : this.ordenaItens()) {
+			msg += item.toString() + " | ";
+		}
+		if (msg.length() > 0) {
+			return msg.substring(0, msg.length() - 3);
+		}else {
+			return msg;
+		}
 	}
 
 }
