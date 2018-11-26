@@ -1,13 +1,17 @@
 package controllers;
 
+import aux.Validador;
+
 public class ControllerGeral {
 	
 	private UsuarioController uc;
 	private ItemController ic;
+	private Validador validador;
 	
 	public ControllerGeral() {
 		this.uc = new UsuarioController();
 		this.ic = new ItemController();
+		this.validador = new Validador();
 	}
 	
 	public String adicionaDoador(String id, String nome, String email, String celular, String classe) {
@@ -53,6 +57,22 @@ public class ControllerGeral {
 		}
 		
 		return this.ic.exibeItem(id, idDoador);
+	}
+
+	public String atualizaItemParaDoacao(int id, String idDoador, int quantidade, String tags) {
+		this.validador.validaDado(idDoador, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
+		if (idDoador != null && !this.uc.contemUsuarioDoador(idDoador)) {
+			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
+		}
+		return this.ic.atualizaItemParaDoacao(id, idDoador, quantidade, tags);
+	}
+	
+	public void removeItemParaDoacao (int id, String idDoador) {
+		this.validador.validaDado(idDoador, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
+		if (idDoador != null && !this.uc.contemUsuarioDoador(idDoador)) {
+			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
+		}
+		this.ic.removeItemParaDoacao(id, idDoador);
 	}
 	
 }

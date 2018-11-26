@@ -38,7 +38,7 @@ public class Validador {
 	 * @param err O erro que sera mostrado caso nao seja valido.
 	 * 
 	 */
-	public void validaValorPositivo(double valor, String err) {
+	public void validaValorPositivo(int valor, String err) {
 		if (valor <= 0) {
 			throw new IllegalArgumentException(err);
 		}		

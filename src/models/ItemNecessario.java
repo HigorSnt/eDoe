@@ -25,7 +25,7 @@ public class ItemNecessario extends Item {
 	 */
 	@Override
 	public String toString() {
-		return this.id + " - " + this.descricao + ", " + this.converteTagsEmString() + ", " + this.quantidade; 
+		return this.id + " - " + this.descricao + ", tags: " + this.converteTagsEmString() + ", quantidade: " + this.quantidade; 
 	}
 
 }

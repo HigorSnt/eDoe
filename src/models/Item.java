@@ -2,6 +2,7 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import aux.Validador;
 
@@ -41,7 +42,7 @@ public abstract class Item {
 		this.descricao = descricao;
 		this.quantidade = quantidade;
 		this.id = id;
-		this.data = data;
+		//this.data = data;
 		this.tags = new ArrayList<String>();
 		
 		for (String tag : tags) {
@@ -56,6 +57,10 @@ public abstract class Item {
 	
 	public int getId() {
 		return id;
+	}
+	
+	public String getDescricao() {
+		return descricao;
 	}
 	
 	/**
@@ -76,21 +81,15 @@ public abstract class Item {
 	 * @param tags
 	 */
 	public void setTags(String[] tags) {
+		this.tags = new ArrayList<>();
+		
 		for (String tag : tags) {
-			if (!this.tags.contains(tag)) {
-				this.tags.add(tag);
-			}
+			this.tags.add(tag);
 		}
 	}
 
-	protected String converteTagsEmString() {
-		String saida = "[";
-		
-		for (String tag: this.tags) {
-			saida += tag + ",";
-		}
-		saida += "]";
-		return saida;
+	public String converteTagsEmString() {
+		return "[" + this.tags.stream().map(t -> t.toString()).collect(Collectors.joining(", ")) + "]";
 	}
 
 }

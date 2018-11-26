@@ -1,4 +1,4 @@
-package facade;
+package eDoe;
 
 import controllers.ControllerGeral;
 import easyaccept.EasyAccept;
@@ -8,7 +8,7 @@ public class Facade {
 	private ControllerGeral cg = new ControllerGeral();
 
 	public static void main(String[] args) {
-		args = new String[] {"facade.Facade", "acceptance_tests/use_case_1.txt", 
+		args = new String[] {"eDoe.Facade", "acceptance_tests/use_case_1.txt", 
 				"acceptance_tests/use_case_2.txt"};
 		EasyAccept.main(args);
 	}
@@ -24,6 +24,7 @@ public class Facade {
 	public String pesquisaUsuarioPorId (String id) {
 		return this.cg.pesquisaUsuarioPorId(id);
 	}
+	
 	/* remover isso dps */
 	public String getId(String id) {
 		return id;
@@ -51,6 +52,14 @@ public class Facade {
 	
 	public String exibeItem (int id, String idDoador) {
 		return this.cg.exibeItem(id, idDoador);
+	}
+	
+	public String atualizaItemParaDoacao (int id, String idDoador, int quantidade, String tags) {
+		return this.cg.atualizaItemParaDoacao(id, idDoador, quantidade, tags);
+	}
+	
+	public void removeItemParaDoacao (int id, String idDoador) {
+		this.cg.removeItemParaDoacao(id, idDoador);
 	}
 
 }

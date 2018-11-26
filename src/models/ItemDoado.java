@@ -18,14 +18,13 @@ public class ItemDoado extends Item{
 	public ItemDoado(String descricao, int quantidade, String[] tags, int id) {
 		super(descricao, quantidade, tags, id);
 	}
-
 	
 	/**
 	 * retorna uma representação em String do item doado.
 	 */
 	@Override
 	public String toString() {
-		return this.id + " - " + this.descricao + ", " + this.converteTagsEmString() + ", " + this.quantidade; 
+		return this.id + " - " + this.descricao + ", tags: " + this.converteTagsEmString() + ", quantidade: " + this.quantidade; 
 	}
 
 

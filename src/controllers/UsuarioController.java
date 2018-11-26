@@ -50,7 +50,7 @@ public class UsuarioController {
 		
 		Usuario user = new Usuario(id, nome, email, celular, classe, false);
 		if (this.usuarios.containsKey(id)) {
-			throw new IllegalAccessError("Usuario ja existente: " + id + ".");
+			throw new IllegalArgumentException("Usuario ja existente: " + id + ".");
 		}
 		
 		this.usuarios.put(id, user);
@@ -68,7 +68,7 @@ public class UsuarioController {
 	 * 
 	 * @return o ID do usuario.
 	 */
-	public String cadastroReceptor(String id, String nome, String email, String celular, String classe) {
+	public String adicionaReceptor(String id, String nome, String email, String celular, String classe) {
 		this.validador.validaDado(nome, this.ERRONOME);
 		this.validador.validaDado(id, this.ERROID);
 		this.validador.validaDado(celular, this.ERROCELULAR);
@@ -81,7 +81,7 @@ public class UsuarioController {
 			this.usuarios.put(id, user);
 			return id;
 		}
-		throw new IllegalAccessError("Usuario ja existente: " + id + ".");
+		throw new IllegalArgumentException("Usuario ja existente: " + id + ".");
 	}
 	
 	/**
@@ -97,7 +97,7 @@ public class UsuarioController {
 		if(this.usuarios.containsKey(id)) {
 			return this.usuarios.get(id).toString();
 		}
-		throw new IllegalAccessError("Usuario nao encontrado: " + id + ".");
+		throw new IllegalArgumentException("Usuario nao encontrado: " + id + ".");
 	}
 	
 	/**
@@ -124,7 +124,7 @@ public class UsuarioController {
 			return lista.stream().map(u -> u.toString()).collect(Collectors.joining(" | "));
 		}
 		
-		throw new IllegalAccessError("Usuario nao encontrado: " + nome + ".");
+		throw new IllegalArgumentException("Usuario nao encontrado: " + nome + ".");
 	}
 	
 	/**
@@ -140,7 +140,7 @@ public class UsuarioController {
 		this.validador.validaDado(id, this.ERROID);
 		
 		if(!this.usuarios.containsKey(id)) {
-			throw new IllegalAccessError("Usuario nao encontrado: "+ id + ".");
+			throw new IllegalArgumentException("Usuario nao encontrado: "+ id + ".");
 		}
 		if (!(nome == null) && !nome.trim().equals("")) {
 			this.usuarios.get(id).setNome(nome);
@@ -164,7 +164,7 @@ public class UsuarioController {
 		this.validador.validaDado(id, this.ERROID);
 		
 		if(!this.usuarios.containsKey(id)) {
-			throw new IllegalAccessError("Usuario nao encontrado: "+ id + ".");
+			throw new IllegalArgumentException("Usuario nao encontrado: "+ id + ".");
 		}
 		this.usuarios.remove(id);
 	}
@@ -190,7 +190,7 @@ public class UsuarioController {
 				if (this.usuarios.containsKey(id)) {
 					this.alteraDados(id, nome, email, celular);
 				}else {
-					this.cadastroReceptor(id, nome, email, celular, classe);
+					this.adicionaReceptor(id, nome, email, celular, classe);
 				}
 			}
 		} catch (FileNotFoundException e) {
