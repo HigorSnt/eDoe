@@ -82,5 +82,10 @@ public class ControllerGeral {
 	public String listaItensParaDoacao() {
 		return this.ic.listaItensParaDoacao();
 	}
+
+	public String pesquisaItemParaDoacaoPorDescricao(String descricao) {
+		
+		return this.ic.pesquisaItemParaDoacaoPorDescricao(descricao);
+	}
 	
 }

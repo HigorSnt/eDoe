@@ -21,7 +21,7 @@ public class ItemController {
 	private final String ERROVALORQTD = "Entrada invalida: quantidade deve ser maior que zero.";
 	private final String ERROVALORIDITEM = "Entrada invalida: id do item nao pode ser negativo.";
 	private final String ERROTAGS = "Entrada invalida: tags nao pode ser vazia ou nula.";
-	
+	private final String ERROTEXTODEPESQUISA = "Entrada invalida: texto da pesquisa nao pode ser vazio ou nulo.";
 	private Map<String, List<Item>> itensDoados;
 	private Map<String, List<Item>> itensNecessarios;
 	private Map<String, List<Item>> itensDoadosPorUsuario;
@@ -216,6 +216,37 @@ public class ItemController {
 		}else {
 			return msg;
 		}
+	}
+
+	private List<Item> procuraItensComNome(String descricao){
+		List<Item> itens = new ArrayList<>();
+		
+		for (String desc: this.itensDoados.keySet()) {
+			boolean descricaoPresente = false;
+			String[] palavrasChaves = desc.split(" ");
+			for (String palavra: palavrasChaves) {
+				if (palavra.equals(descricao)) {
+					descricaoPresente = true;
+				}
+			}
+			if (descricaoPresente) {
+				itens.addAll(this.itensDoados.get(desc));
+			}
+			
+		}
+		
+		return itens;
+	}
+	
+	public String pesquisaItemParaDoacaoPorDescricao(String descricao) {
+		this.validador.validaDado(descricao, this.ERROTEXTODEPESQUISA);
+		List<Item> itensComDescricao = this.procuraItensComNome(descricao);
+		String saida = "";
+		for(Item item: itensComDescricao) {
+			saida += item + " | ";
+		}
+		
+		return saida.substring(0, saida.length() - 3);
 	}
 
 }

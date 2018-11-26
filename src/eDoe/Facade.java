@@ -31,6 +31,10 @@ public class Facade {
 		return id;
 	}
 	
+	public String pesquisaItemParaDoacaoPorDescricao(String descricao) {
+		return this.cg.pesquisaItemParaDoacaoPorDescricao(descricao);
+	}
+	
 	public String pesquisaUsuarioPorNome (String nome) {
 		return this.cg.pesquisaUsuarioPorNome(nome);
 	}
