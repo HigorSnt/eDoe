@@ -1,7 +1,11 @@
 # eDoe
+<p align="center">
+  <img src="edoe.png"/></p>
+
+  
 ## Projeto da Disciplina de Laboratório de Programação II
 
-** Descrição **
+* Descrição
 
 O _eDoe_ é um software para gerenciar doações em uma cidade ou região de uma cidade maior.
 
@@ -9,7 +13,6 @@ Muitas pessoas tem interesse em fazer doações, mas as vezes não tem o tempo n
 
 No _eDoe.com_ usuários de toda a região envolvida podem cadastrar itens a serem doados. Usuários também podem cadastrar itens necessários e o sistema deve saber casar doações com necessidades para facilitar a doação. Uma vez fechada uma doação, o sistema ajuda a organizar o encontro de doador/receptor.
 
+<p align="center">
+  <img src="http://alumni.computacao.ufcg.edu.br/static/logica/images/logo.png"/></p>
 
-
-![Computação - UFCG](http://alumni.computacao.ufcg.edu.br/static/logica/images/logo.png)
-![eDoe.com](edoe.png)
