@@ -23,6 +23,7 @@ public abstract class Item {
 	protected int quantidade;
 	protected int id;
 	private String data;
+	private String etiqueta;
 	private Validador validador = new Validador();
 
 	/**
@@ -35,13 +36,14 @@ public abstract class Item {
 	 * @param tags
 	 * @param id
 	 */
-	public Item(String descricao, int quantidade, String[] tags, int id) {
+	public Item(String descricao, int quantidade, String[] tags, int id, String etiqueta) {
 		this.validador.validaDado(descricao, ERRODESCRITOR);
 		this.validador.validaValorPositivo(quantidade, this.ERROVALOR);
 		
 		this.descricao = descricao;
 		this.quantidade = quantidade;
 		this.id = id;
+		this.etiqueta = etiqueta;
 		//this.data = data;
 		this.tags = new ArrayList<String>();
 		
@@ -54,6 +56,10 @@ public abstract class Item {
 	 * so definindo a presença do toString()
 	 */
 	public abstract String toString();
+	
+	public String getEtiqueta() {
+		return etiqueta;
+	}
 	
 	public int getId() {
 		return id;
@@ -73,7 +79,7 @@ public abstract class Item {
 		
 		this.quantidade = novaQuantidade;
 	}
-
+	
 	/**
 	 * adiciona as tags passadas como parametro na lista de tags que e contida no
 	 * objeto.
@@ -95,5 +101,41 @@ public abstract class Item {
 	public int getQuantidade() {
 		return this.quantidade;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Item other = (Item) obj;
+		if (descricao == null) {
+			if (other.descricao != null)
+				return false;
+		} else if (!descricao.equals(other.descricao))
+			return false;
+		if (id != other.id)
+			return false;
+		if (tags == null) {
+			if (other.tags != null)
+				return false;
+		} else if (!tags.equals(other.tags))
+			return false;
+		return true;
+	}
+	
+	
 
 }

@@ -6,17 +6,9 @@ package models;
  *
  */
 public class ItemDoado extends Item{
-
-	/**
-	 * Construtor de Item doado
-	 * @param idPessoa
-	 * @param descricao
-	 * @param quantidade
-	 * @param tags
-	 * @param id
-	 */
-	public ItemDoado(String descricao, int quantidade, String[] tags, int id) {
-		super(descricao, quantidade, tags, id);
+	
+	public ItemDoado(String descricao, int quantidade, String[] tags, int id, String etiquetaDoador) {
+		super(descricao, quantidade, tags, id, etiquetaDoador);
 	}
 	
 	/**

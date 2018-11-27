@@ -22,6 +22,7 @@ public class ItemController {
 	private final String ERROVALORIDITEM = "Entrada invalida: id do item nao pode ser negativo.";
 	private final String ERROTAGS = "Entrada invalida: tags nao pode ser vazia ou nula.";
 	private final String ERROTEXTODEPESQUISA = "Entrada invalida: texto da pesquisa nao pode ser vazio ou nulo.";
+	
 	private Map<String, List<Item>> itensDoados;
 	private Map<String, List<Item>> itensNecessarios;
 	private Map<String, List<Item>> itensDoadosPorUsuario;
@@ -49,13 +50,15 @@ public class ItemController {
 		}
 	}
 
-	public int adicionaItemParaDoacao(String idDoador, String descricao, int quantidade, String tags) {
+	public int adicionaItemParaDoacao(String idDoador, 
+			String descricao, int quantidade, String tags, String etiquetaDoador) {
+		
 		this.validador.validaDado(idDoador, this.ERROIDDOADOR);
 		this.validador.validaDado(descricao, this.ERRODESCRITOR);
 		this.validador.validaValorPositivo(quantidade, this.ERROVALORQTD);
 		
 		this.cont++;
-		Item aSerAdcionado = new ItemDoado(descricao, quantidade, tags.split(","), this.cont);
+		Item aSerAdcionado = new ItemDoado(descricao, quantidade, tags.split(","), this.cont, etiquetaDoador);
 		
 		if (this.itensDoados.containsKey(descricao)) {
 			for (Item item : this.itensDoados.get(descricao)) {
@@ -67,7 +70,7 @@ public class ItemController {
 			this.itensDoados.get(descricao).add(aSerAdcionado);
 		} else {
 			this.adicionaDescritor(descricao);
-			this.adicionaItemParaDoacao(idDoador, descricao, quantidade, tags);
+			this.adicionaItemParaDoacao(idDoador, descricao, quantidade, tags, etiquetaDoador);
 		}
 		
 		if (this.itensDoadosPorUsuario.containsKey(idDoador)) {
@@ -80,13 +83,13 @@ public class ItemController {
 		return this.cont;
 	}
 	
-	public int cadastraItemNecessario(String idDoador, String descricao, int quantidade, String tags, String nomeDoador) {
+	public int cadastraItemNecessario(String idDoador, String descricao, int quantidade, String tags, String etiquetaReceptor ) {
 		this.validador.validaDado(descricao, this.ERRODESCRITOR);
 		this.validador.validaValorPositivo(quantidade, this.ERROVALORQTD);
 		this.validador.validaDado(tags, this.ERROTAGS);
 		
 		this.cont++;
-		Item aSerAdcionado = new ItemNecessario(descricao, quantidade, tags.split(","), this.cont);
+		Item aSerAdcionado = new ItemNecessario(descricao, quantidade, tags.split(","), this.cont, etiquetaReceptor);
 		
 		if (this.itensNecessarios.containsKey(descricao)) {
 			for (Item item : this.itensDoados.get(descricao)) {
@@ -151,33 +154,32 @@ public class ItemController {
 	}
 	
 	public void removeItemParaDoacao (int id, String idDoador) {
+		boolean flag = false;
 		this.validador.validaValorPositivo(id, this.ERROVALORIDITEM);
 		if (!this.itensDoadosPorUsuario.containsKey(idDoador) || this.itensDoadosPorUsuario.get(idDoador).size() == 0) {
 			throw new IllegalArgumentException("O Usuario nao possui itens cadastrados.");
 		}
-		List<Item> itens = new ArrayList<>();
-		itens = this.itensDoadosPorUsuario.get(idDoador);
 		
-		for (Iterator<Item> iterator = itens.iterator(); iterator.hasNext();) {
-			Item item = (Item) iterator.next();
-			if (item.getId() == id) {
-				String desc = item.getDescricao();
-				iterator.remove();
-				this.removeItensDoados(desc, id);
-				return;
+		for (int i = 0; i < this.itensDoadosPorUsuario.get(idDoador).size() ; i++) {
+			if (this.itensDoadosPorUsuario.get(idDoador).get(i).getId() == id) {
+				this.itensDoadosPorUsuario.get(idDoador).remove(i);
+				flag = true;
+				break;
 			}
 		}
-		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
-	}
-	
-	private void removeItensDoados(String descricao, int id) {
-		List<Item> itens = new ArrayList<>(this.itensDoados.get(descricao));
-		for (Iterator<Item> iterator = itens.iterator(); iterator.hasNext();) {
-			Item item = (Item) iterator.next();
-			if (item.getId() == id) {
-				iterator.remove();
+		
+		for (String descricao : this.itensDoados.keySet()) {
+			for (Item item : this.itensDoados.get(descricao)) {
+				if (item.getId() == id) {
+					this.itensDoados.get(descricao).remove(item);
+					flag = true;
+					break;
+				}
 			}
-		} 
+		}
+		if (!flag) {
+			throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
+		}
 	}
 
 	public String listaDescritorDeItensParaDoacao() {
@@ -195,9 +197,9 @@ public class ItemController {
 	
 	private ArrayList<Item> ordenaItens(){
 		ArrayList<Item> itens = new ArrayList<>();
-		for(String descritor : this.itensDoados.keySet()) {
-			if (this.itensDoados.get(descritor).size() > 0) {
-				for(Item item : this.itensDoados.get(descritor)) {
+		for(String descritor : this.itensDoadosPorUsuario.keySet()) {
+			if (this.itensDoadosPorUsuario.get(descritor).size() > 0) {
+				for(Item item : this.itensDoadosPorUsuario.get(descritor)) {
 					itens.add(item);
 				}
 			}
@@ -209,7 +211,7 @@ public class ItemController {
 	public String listaItensParaDoacao() {
 		String msg = "";
 		for (Item item : this.ordenaItens()) {
-			msg += item.toString() + " | ";
+			msg += item.toString()+ ", doador: " + item.getEtiqueta() +" | ";
 		}
 		if (msg.length() > 0) {
 			return msg.substring(0, msg.length() - 3);

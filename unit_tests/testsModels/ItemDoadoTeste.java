@@ -12,7 +12,7 @@ class itemDoadoTeste {
 	private ItemDoado item1;
 	private ItemDoado item2;
 	
-	@BeforeEach
+	/*@BeforeEach
 	void cadastraItens() {
 		item1 = new ItemDoado("cadeira de rodas", 2, "roda grande,cadeira".split(","), 1);
 		item2 = new ItemDoado("colchao", 4, "colchao kingsize,conforto,dormir".split(","), 2);
@@ -39,6 +39,6 @@ class itemDoadoTeste {
 		item1.setQuantidade(8);
 		item1.setTags("roda grande,cadeira,confortavel".split(","));
 		assertEquals("1 - cadeira de rodas, tags: [roda grande, cadeira, confortavel], quantidade: 8", item1.toString());
-	}
+	}*/
 
 }

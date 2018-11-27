@@ -16,8 +16,8 @@ public class ItemNecessario extends Item {
 	 * @param id
 	 * @param nomePessoa
 	 */
-	public ItemNecessario(String descricao, int quantidade, String[] tags, int id) {
-		super(descricao, quantidade, tags, id);
+	public ItemNecessario(String descricao, int quantidade, String[] tags, int id, String etiqueta) {
+		super(descricao, quantidade, tags, id, etiqueta);
 	}
 
 	/**

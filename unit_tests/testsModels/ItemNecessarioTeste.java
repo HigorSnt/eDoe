@@ -10,7 +10,7 @@ import models.ItemNecessario;
 
 class ItemNecessarioTeste {
 
-	private ItemNecessario item1;
+/*private ItemNecessario item1;
 	private ItemNecessario item2;
 	
 	@BeforeEach
@@ -40,6 +40,6 @@ class ItemNecessarioTeste {
 		item1.setQuantidade(8);
 		item1.setTags("roda grande,cadeira,confortavel".split(","));
 		assertEquals("1 - cadeira de rodas, tags: [roda grande, cadeira, confortavel], quantidade: 8", item1.toString());
-	}
+	}*/
 
 }

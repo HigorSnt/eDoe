@@ -26,11 +26,6 @@ public class Facade {
 		return this.cg.pesquisaUsuarioPorId(id);
 	}
 	
-	/* remover isso dps */
-	public String getId(String id) {
-		return id;
-	}
-	
 	public String pesquisaItemParaDoacaoPorDescricao(String descricao) {
 		return this.cg.pesquisaItemParaDoacaoPorDescricao(descricao);
 	}

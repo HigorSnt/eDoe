@@ -211,4 +211,8 @@ public class UsuarioController {
 		}
 		return false;
 	}
+
+	public String getNome(String idDoador) {
+		return this.usuarios.get(idDoador).getNome();
+	}
 }

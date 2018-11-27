@@ -48,7 +48,10 @@ public class ControllerGeral {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
 		}
 		
-		return this.ic.adicionaItemParaDoacao(idDoador, descricaoItem, quantidade, tags);
+		this.validador.validaDado(idDoador, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
+		
+		return this.ic.adicionaItemParaDoacao(idDoador, descricaoItem, quantidade, tags, 
+				this.uc.getNome(idDoador) + "/" + idDoador);
 	}
 	
 	public String exibeItem (int id, String idDoador) {
