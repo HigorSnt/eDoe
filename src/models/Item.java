@@ -13,7 +13,7 @@ import aux.Validador;
  * @author kyouma
  *
  */
-public abstract class Item {
+public class Item {
 	
 	private final String ERRODESCRITOR = "Entrada invalida: descricao nao pode ser vazia ou nula.";
 	private final String ERROVALOR = "Entrada invalida: quantidade deve ser maior que zero.";
@@ -36,14 +36,13 @@ public abstract class Item {
 	 * @param tags
 	 * @param id
 	 */
-	public Item(String descricao, int quantidade, String[] tags, int id, String etiqueta) {
+	public Item(String descricao, int quantidade, String[] tags, int id) {
 		this.validador.validaDado(descricao, ERRODESCRITOR);
 		this.validador.validaValorPositivo(quantidade, this.ERROVALOR);
 		
 		this.descricao = descricao;
 		this.quantidade = quantidade;
 		this.id = id;
-		this.etiqueta = etiqueta;
 		//this.data = data;
 		this.tags = new ArrayList<String>();
 		
@@ -53,9 +52,12 @@ public abstract class Item {
 	}
 
 	/**
-	 * so definindo a presença do toString()
+	 * retorna uma representação em String do item que ele representa
 	 */
-	public abstract String toString();
+	@Override
+	public String toString() {
+		return this.id + " - " + this.descricao + ", tags: " + this.converteTagsEmString() + ", quantidade: " + this.quantidade; 
+	}
 	
 	public String getEtiqueta() {
 		return etiqueta;

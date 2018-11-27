@@ -1,8 +1,12 @@
 package models;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import aux.Validador;
 
-public class Usuario {
+public abstract class Usuario {
 	
 	private final String ERRONOME = "Entrada invalida: nome nao pode ser vazio ou nulo.";
 	private final String ERROEMAIL = "Entrada invalida: email nao pode ser vazio ou nulo.";
@@ -10,7 +14,12 @@ public class Usuario {
 	private final String ERROCLASSE = "Entrada invalida: classe nao pode ser vazia ou nula.";
 	private final String ERROOPCAOCLASSE = "Entrada invalida: opcao de classe invalida.";
 	private final String ERROID = "Entrada invalida: id do usuario nao pode ser vazio ou nulo.";
-	
+	private final String ERROIDDOADOR = "Entrada invalida: id do usuario nao pode ser vazio ou nulo.";
+	private final String ERRODESCRITOR = "Entrada invalida: descricao nao pode ser vazia ou nula.";
+	private final String ERROVALORQTD = "Entrada invalida: quantidade deve ser maior que zero.";
+	private final String ERROVALORIDITEM = "Entrada invalida: id do item nao pode ser negativo.";
+	private final String ERROTAGS = "Entrada invalida: tags nao pode ser vazia ou nula.";
+	private final String ERROTEXTODEPESQUISA = "Entrada invalida: texto da pesquisa nao pode ser vazio ou nulo.";
 	private String id;
 	private String nome;
 	private String celular;
@@ -18,7 +27,7 @@ public class Usuario {
 	private String classe;
 	private boolean ehReceptor;
 	private Validador validator = new Validador();
-	
+
 	/**
 	 * Constroi um novo usuario.
 	 * 
@@ -29,7 +38,7 @@ public class Usuario {
 	 * @param classe classe do usuario a ser cadastrado.
 	 * @param ehReceptor booleano que informa se o usuario e receptor ou doador.
 	 */
-	public Usuario(String id, String nome, String email, String celular, String classe, boolean ehReceptor) {
+	public Usuario(String id, String nome, String email, String celular, String classe) {
 		this.validator.validaDado(nome, this.ERRONOME);
 		this.validator.validaDado(id, this.ERROID);
 		this.validator.validaDado(celular, this.ERROCELULAR);
@@ -42,7 +51,6 @@ public class Usuario {
 		this.celular = celular;
 		this.email = email;
 		this.classe = classe;
-		this.ehReceptor = ehReceptor;
 	}
 
 	/**
@@ -93,8 +101,17 @@ public class Usuario {
 	 * 
 	 * @return retorna uma string no formato: NOME/ID, EMAIL, CELULAR, CLASSE, STATUS: xxxxxx
 	 */
-	public String toString() {
-		return this.nome + "/" + this.id + ", " + this.email + ", " + this.celular + ", status: " + (this.ehReceptor ? "receptor" : "doador");
+	public abstract String toString(); 
+	
+	
+	public String getId() {
+		return this.id;
+	}
+	public String getCelular() {
+		return this.celular;
+	}
+	public String getEmail() {
+		return this.email;
 	}
 
 	@Override
@@ -124,6 +141,8 @@ public class Usuario {
 			return false;
 		return true;
 	}
+
+
 	
 	
 }

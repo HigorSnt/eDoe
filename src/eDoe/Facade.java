@@ -1,11 +1,11 @@
 package eDoe;
 
-import controllers.ControllerGeral;
+import controllers.UsuarioController;
 import easyaccept.EasyAccept;
 
 public class Facade {
 	
-	private ControllerGeral cg = new ControllerGeral();
+	private UsuarioController cg = new UsuarioController();
 
 	public static void main(String[] args) {
 		args = new String[] {"eDoe.Facade", "acceptance_tests/use_case_1.txt", 
@@ -35,7 +35,7 @@ public class Facade {
 	}
 	
 	public String atualizaUsuario (String id, String nome, String email, String celular) {
-		return this.cg.atualizaUsuario(id, nome, email, celular);
+		return this.cg.alteraDadosDoador(id, nome, email, celular);
 	}
 	
 	public void removeUsuario (String id) {
