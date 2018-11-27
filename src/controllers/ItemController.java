@@ -154,16 +154,14 @@ public class ItemController {
 	}
 	
 	public void removeItemParaDoacao (int id, String idDoador) {
-		boolean flag = false;
 		this.validador.validaValorPositivo(id, this.ERROVALORIDITEM);
 		if (!this.itensDoadosPorUsuario.containsKey(idDoador) || this.itensDoadosPorUsuario.get(idDoador).size() == 0) {
 			throw new IllegalArgumentException("O Usuario nao possui itens cadastrados.");
 		}
 		
-		for (int i = 0; i < this.itensDoadosPorUsuario.get(idDoador).size() ; i++) {
+		for (int i = 0; i < this.itensDoadosPorUsuario.get(idDoador).size(); i++) {
 			if (this.itensDoadosPorUsuario.get(idDoador).get(i).getId() == id) {
 				this.itensDoadosPorUsuario.get(idDoador).remove(i);
-				flag = true;
 				break;
 			}
 		}
@@ -172,14 +170,11 @@ public class ItemController {
 			for (Item item : this.itensDoados.get(descricao)) {
 				if (item.getId() == id) {
 					this.itensDoados.get(descricao).remove(item);
-					flag = true;
-					break;
+					return;
 				}
 			}
 		}
-		if (!flag) {
-			throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
-		}
+		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 	}
 
 	public String listaDescritorDeItensParaDoacao() {
