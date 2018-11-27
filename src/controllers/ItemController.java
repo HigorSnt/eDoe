@@ -95,7 +95,6 @@ public class ItemController {
 			for (Item item : this.itensDoados.get(descricao)) {
 				if (item.converteTagsEmString().equals(aSerAdcionado.converteTagsEmString())) {
 					item.setQuantidade(quantidade);
-					return item.getId();
 				}
 			}
 			this.itensNecessarios.get(descricao).add(aSerAdcionado);
@@ -107,7 +106,6 @@ public class ItemController {
 			for (Item item : this.itensDoados.get(descricao)) {
 				if (item.converteTagsEmString().equals(aSerAdcionado.converteTagsEmString())) {
 					item.setQuantidade(quantidade);
-					return item.getId();
 				}
 			}
 			this.itensDoadosPorUsuario.get(idDoador).add(aSerAdcionado);
@@ -155,13 +153,14 @@ public class ItemController {
 	
 	public void removeItemParaDoacao (int id, String idDoador) {
 		this.validador.validaValorPositivo(id, this.ERROVALORIDITEM);
+		
 		if (!this.itensDoadosPorUsuario.containsKey(idDoador) || this.itensDoadosPorUsuario.get(idDoador).size() == 0) {
 			throw new IllegalArgumentException("O Usuario nao possui itens cadastrados.");
 		}
 		
-		for (int i = 0; i < this.itensDoadosPorUsuario.get(idDoador).size(); i++) {
-			if (this.itensDoadosPorUsuario.get(idDoador).get(i).getId() == id) {
-				this.itensDoadosPorUsuario.get(idDoador).remove(i);
+		for (Item item : this.itensDoadosPorUsuario.get(idDoador)) {
+			if (item.getId() == id) {
+				this.itensDoadosPorUsuario.get(idDoador).remove(item);
 				break;
 			}
 		}
@@ -174,6 +173,7 @@ public class ItemController {
 				}
 			}
 		}
+		
 		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 	}
 
