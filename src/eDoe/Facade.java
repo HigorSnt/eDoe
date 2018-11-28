@@ -58,7 +58,7 @@ public class Facade {
 		return this.cg.atualizaItemParaDoacao(id, idDoador, quantidade, tags);
 	}
 	
-	public void removeItemParaDoacao (int id, String idDoador) {
+	public void removeItemParaDoacao (int id, String idDoador) throws Exception {
 		this.cg.removeItemParaDoacao(id, idDoador);
 	}
 	

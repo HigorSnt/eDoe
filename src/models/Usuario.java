@@ -8,7 +8,7 @@ import java.util.Map;
 import aux.Validador;
 
 public class Usuario {
-	
+
 	private final String ERRONOME = "Entrada invalida: nome nao pode ser vazio ou nulo.";
 	private final String ERROEMAIL = "Entrada invalida: email nao pode ser vazio ou nulo.";
 	private final String ERROCELULAR = "Entrada invalida: celular nao pode ser vazio ou nulo.";
@@ -33,14 +33,14 @@ public class Usuario {
 	/**
 	 * Constroi um novo usuario.
 	 * 
-	 * @param id CPF/CNPJ do usuario a ser cadastrado.
-	 * @param nome nome do usuario a ser cadastrado.
-	 * @param email email do usuario a ser cadastrado.
-	 * @param celular celular do usuario a ser cadastrado.
-	 * @param classe classe do usuario a ser cadastrado.
+	 * @param id         CPF/CNPJ do usuario a ser cadastrado.
+	 * @param nome       nome do usuario a ser cadastrado.
+	 * @param email      email do usuario a ser cadastrado.
+	 * @param celular    celular do usuario a ser cadastrado.
+	 * @param classe     classe do usuario a ser cadastrado.
 	 * @param ehReceptor booleano que informa se o usuario e receptor ou doador.
 	 */
-	public Usuario(String id, String nome, String email, String celular, String classe) {
+	public Usuario(String id, String nome, String email, String celular, String classe, boolean ehReceptor) {
 		this.validator.validaDado(nome, this.ERRONOME);
 		this.validator.validaDado(id, this.ERROID);
 		this.validator.validaDado(celular, this.ERROCELULAR);
@@ -49,12 +49,12 @@ public class Usuario {
 		this.validator.validaClasse(classe, this.ERROOPCAOCLASSE);
 		this.itens = new LinkedHashMap<>();
 
-		
 		this.id = id;
 		this.nome = nome;
 		this.celular = celular;
 		this.email = email;
 		this.classe = classe;
+		this.ehReceptor = ehReceptor;
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class Usuario {
 	public String getNome() {
 		return nome;
 	}
-	
+
 	public boolean isEhReceptor() {
 		return ehReceptor;
 	}
@@ -79,7 +79,7 @@ public class Usuario {
 		this.validator.validaDado(nome, this.ERRONOME);
 		this.nome = nome;
 	}
-	
+
 	/**
 	 * Seta um novo celular para o usuario.
 	 * 
@@ -89,7 +89,7 @@ public class Usuario {
 		this.validator.validaDado(celular, this.ERROCELULAR);
 		this.celular = celular;
 	}
-	
+
 	/**
 	 * Seta um novo email para o usuario.
 	 * 
@@ -99,23 +99,31 @@ public class Usuario {
 		this.validator.validaDado(email, this.ERROEMAIL);
 		this.email = email;
 	}
-	
+
 	/**
 	 * Retorna um String que corresponde ao usuario.
 	 * 
-	 * @return retorna uma string no formato: NOME/ID, EMAIL, CELULAR, CLASSE, STATUS: xxxxxx
+	 * @return retorna uma string no formato: NOME/ID, EMAIL, CELULAR, CLASSE,
+	 *         STATUS: xxxxxx
 	 */
 	public String toString() {
-		return this.getNome() + "/" + this.getId() + ", " + this.getEmail() + ", " + this.getCelular() + ", status: doador";
+		String status;
+		if (ehReceptor) {
+			status = ", status: receptor";
+		} else {
+			status = ", status: doador";
+		}
+		return this.getNome() + "/" + this.getId() + ", " + this.getEmail() + ", " + this.getCelular() + status;
 	}
-	
-	
+
 	public String getId() {
 		return this.id;
 	}
+
 	public String getCelular() {
 		return this.celular;
 	}
+
 	public String getEmail() {
 		return this.email;
 	}
@@ -147,8 +155,6 @@ public class Usuario {
 			return false;
 		return true;
 	}
-
-
 
 	public List<Item> procuraItensComNome(String descricao) {
 		List<Item> itens = new ArrayList<>();
@@ -201,13 +207,22 @@ public class Usuario {
 		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 	}
 
-	public void removeItemParaDoacao(int id) {
+	public void removeItemParaDoacao(int id) throws Exception {
+		boolean achou = false;
+		if (this.itens.isEmpty()) {
+			throw new Exception("O Usuario nao possui itens cadastrados.");
+		}
+		
 		for (String descricao : this.itens.keySet()) {
 			for (Item item : this.itens.get(descricao)) {
 				if (item.getId() == id) {
 					this.itens.get(descricao).remove(item);
+					achou = true;
 				}
 			}
+		}
+		if (!achou) {
+			throw new Exception("Item nao encontrado: " + id + ".");
 		}
 	}
 
@@ -221,23 +236,27 @@ public class Usuario {
 		}
 		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 
-		
 	}
 
 	public int adicionaItemParaDoacao(String descricaoItem, int quantidade, String tags, int cont) {
 		Item aSerAdcionado = new Item(descricaoItem, quantidade, tags.split(","), cont);
 		if (this.itens.containsKey(descricaoItem)) {
-			if (this.itens.get(descricaoItem).contains(aSerAdcionado)) {
-				this.itens.remove(aSerAdcionado);
+			boolean achouItemIgual = false;
+			for (Item i : this.itens.get(descricaoItem)) {
+				if (i.equals(aSerAdcionado)) {
+					i.setQuantidade(quantidade);
+					achouItemIgual = true;
+				}
 			}
-			this.itens.get(descricaoItem).add(aSerAdcionado);
-		}else {
+			if (!achouItemIgual) {
+				this.itens.get(descricaoItem).add(aSerAdcionado);
+			}
+		} else {
 			this.itens.put(descricaoItem, new ArrayList<>());
 			this.itens.get(descricaoItem).add(new Item(descricaoItem, quantidade, tags.split(","), cont));
 
 		}
-			
+
 		return cont;
 	}
 }
-	
