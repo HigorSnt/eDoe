@@ -10,7 +10,7 @@ public class UsuarioDoador extends Usuario {
 	private Map<String, List<Item>> itens;
 
 	public UsuarioDoador(String id, String nome, String email, String celular, String classe) {
-		super(id, nome, email, celular, classe, false);
+		super(id, nome, email, celular, classe);
 		this.itens = new LinkedHashMap<>();
 
 	}
