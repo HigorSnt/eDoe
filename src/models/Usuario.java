@@ -38,7 +38,7 @@ public abstract class Usuario {
 	 * @param classe classe do usuario a ser cadastrado.
 	 * @param ehReceptor booleano que informa se o usuario e receptor ou doador.
 	 */
-	public Usuario(String id, String nome, String email, String celular, String classe) {
+	public Usuario(String id, String nome, String email, String celular, String classe, boolean ehReceptor) {
 		this.validator.validaDado(nome, this.ERRONOME);
 		this.validator.validaDado(id, this.ERROID);
 		this.validator.validaDado(celular, this.ERROCELULAR);
@@ -51,6 +51,7 @@ public abstract class Usuario {
 		this.celular = celular;
 		this.email = email;
 		this.classe = classe;
+		this.ehReceptor = ehReceptor;
 	}
 
 	/**
@@ -102,7 +103,6 @@ public abstract class Usuario {
 	 * @return retorna uma string no formato: NOME/ID, EMAIL, CELULAR, CLASSE, STATUS: xxxxxx
 	 */
 	public abstract String toString(); 
-	
 	
 	public String getId() {
 		return this.id;

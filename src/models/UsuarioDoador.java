@@ -10,9 +10,20 @@ public class UsuarioDoador extends Usuario {
 	private Map<String, List<Item>> itens;
 
 	public UsuarioDoador(String id, String nome, String email, String celular, String classe) {
-		super(id, nome, email, celular, classe);
+		super(id, nome, email, celular, classe, false);
 		this.itens = new LinkedHashMap<>();
 
+	}
+	
+	public String getDescricaoItem(int id){
+		for (List<Item> valor : this.itens.values()) {
+			for (Item item : valor) {
+				if (item.getId() == id) {
+					return item.getDescricao();
+				}
+			}
+		}
+		throw new IllegalArgumentException();
 	}
 	
 	public String toString() {
@@ -95,8 +106,6 @@ public class UsuarioDoador extends Usuario {
 			}
 		}
 		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
-
-		
 	}
 
 	public int adicionaItemParaDoacao(String descricaoItem, int quantidade, String tags, int cont) {

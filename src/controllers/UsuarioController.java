@@ -31,7 +31,6 @@ public class UsuarioController {
 	private final String ERRODESCRITOR = "Entrada invalida: descricao nao pode ser vazia ou nula.";
 	private final String ERROVALORQTD = "Entrada invalida: quantidade deve ser maior que zero.";
 	private final String ERROVALORIDITEM = "Entrada invalida: id do item nao pode ser negativo.";
-	private final String ERROTAGS = "Entrada invalida: tags nao pode ser vazia ou nula.";
 	private final String ERROTEXTODEPESQUISA = "Entrada invalida: texto da pesquisa nao pode ser vazio ou nulo.";
 	
 	private Map<String, Usuario> usuarios;
@@ -271,9 +270,7 @@ public class UsuarioController {
 		this.cont++;
 		UsuarioDoador user = (UsuarioDoador)this.usuarios.get(idDoador);
 		
-		int qtd = this.descricoes.get(descricaoItem);
-		qtd = quantidade;
-		this.descricoes.put(descricaoItem, qtd);
+		this.descricoes.put(descricaoItem, quantidade);
 		
 		return user.adicionaItemParaDoacao(descricaoItem, quantidade, tags, this.cont);
 	}
@@ -295,7 +292,13 @@ public class UsuarioController {
 		}
 		
 		UsuarioDoador user = (UsuarioDoador)this.usuarios.get(idDoador);
-		return user.atualizaItemParaDoacao(id, quantidade, tags);
+		String saida = user.atualizaItemParaDoacao(id, quantidade, tags);
+		
+		if (quantidade > 0) {
+			String desc = user.getDescricaoItem(id);
+			this.descricoes.put(desc,quantidade);
+		}
+		return saida;
 	}
 	
 	public void removeItemParaDoacao (int id, String idDoador) {
@@ -321,22 +324,27 @@ public class UsuarioController {
 	}
 
 	public String listaItensParaDoacao() {
-		Map<Integer, UsuarioDoador> ligaItemAoUsuario= new HashMap<>();
+		Map<Integer, UsuarioDoador> ligaItemAoUsuario = new HashMap<>();
 		List<Item> itens = new ArrayList<>();
-		for (String id: this.usuarios.keySet()) {
-			UsuarioDoador user = (UsuarioDoador)this.usuarios.get(id);
-			itens.addAll(user.pegaTodosOsItens());
-		}
-		Collections.sort(itens,new QuantidadeComparator());
 		String saida = "";
+		
+		for (String id : this.usuarios.keySet()) {
+			if (!this.usuarios.get(id).isEhReceptor()) {
+				UsuarioDoador user = (UsuarioDoador)this.usuarios.get(id);
+				List<Item> itensDeUsuario = user.pegaTodosOsItens();
+				for (Item item : itensDeUsuario) {
+					ligaItemAoUsuario.put((Integer)item.getId(), user);
+					itens.add(item);
+				}
+			}
+		}
+		
+		Collections.sort(itens,new QuantidadeComparator());
 		for (Item item: itens) {
 			saida += item + ", " + this.usuarios.get(ligaItemAoUsuario.get(item.getId()).representacaoParaListagemDeDoacao());
 		}
 		return saida;
-		
 	}
-	
-
 
 	public String pesquisaItemParaDoacaoPorDescricao(String descricao) {
 		List<Item> itensComDescricao = new ArrayList<>();		
