@@ -19,8 +19,6 @@ public class UsuarioDoador extends Usuario {
 		return this.getNome() + "/" + this.getId() + ", " + this.getEmail() + ", " + this.getCelular() + ", status: doador";
 	}
 
-
-
 	public List<Item> procuraItensComNome(String descricao) {
 		List<Item> itens = new ArrayList<>();
 
@@ -73,13 +71,19 @@ public class UsuarioDoador extends Usuario {
 	}
 
 	public void removeItemParaDoacao(int id) {
+		if (this.itens.size() == 0) {
+			throw new IllegalArgumentException("O Usuario nao possui itens cadastrados.");
+		}
+		
 		for (String descricao : this.itens.keySet()) {
 			for (Item item : this.itens.get(descricao)) {
 				if (item.getId() == id) {
 					this.itens.get(descricao).remove(item);
+					return;
 				}
 			}
 		}
+		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 	}
 
 	public String exibeItem(int id) {
@@ -96,8 +100,16 @@ public class UsuarioDoador extends Usuario {
 	}
 
 	public int adicionaItemParaDoacao(String descricaoItem, int quantidade, String tags, int cont) {
+		Item itemNovo = new Item(descricaoItem, quantidade, tags.split(","), cont);
+		
 		if (this.itens.containsKey(descricaoItem)) {
-			this.itens.get(descricaoItem).add(new Item(descricaoItem, quantidade, tags.split(","), cont));
+			for (Item item : this.itens.get(descricaoItem)) {
+				if (item.converteTagsEmString().equals(itemNovo.converteTagsEmString())) {
+					item.setQuantidade(quantidade);
+					return item.getId();
+				}
+			}
+			this.itens.get(descricaoItem).add(itemNovo);
 		}else {
 			this.itens.put(descricaoItem, new ArrayList<>()) ;
 			this.itens.get(descricaoItem).add(new Item(descricaoItem, quantidade, tags.split(","), cont));

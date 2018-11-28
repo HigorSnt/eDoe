@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import aux.DescricaoComparator;
@@ -32,17 +33,16 @@ public class UsuarioController {
 	private final String ERROVALORIDITEM = "Entrada invalida: id do item nao pode ser negativo.";
 	private final String ERROTAGS = "Entrada invalida: tags nao pode ser vazia ou nula.";
 	private final String ERROTEXTODEPESQUISA = "Entrada invalida: texto da pesquisa nao pode ser vazio ou nulo.";
-	private Map<String, UsuarioDoador> usuariosDoadores;
-	private Map<String, UsuarioReceptor> usuariosReceptores;
+	
+	private Map<String, Usuario> usuarios;
 	private Validador validador;
-	private HashMap<String, Integer> descricoes;
+	private Map<String, Integer> descricoes;
 	private int cont;
 	
 	public UsuarioController() {
-		this.usuariosDoadores = new LinkedHashMap<String, UsuarioDoador>();
-		this.usuariosReceptores = new LinkedHashMap<String, UsuarioReceptor>();
+		this.usuarios = new LinkedHashMap<String, Usuario>();
 		this.validador = new Validador();
-		this.descricoes = new HashMap<>();
+		this.descricoes = new TreeMap<>();
 		this.cont = 0;
 	}
 	
@@ -66,11 +66,11 @@ public class UsuarioController {
 		this.validador.validaClasse(classe, this.ERROOPCAOCLASSE);
 		
 		UsuarioDoador user = new UsuarioDoador(id, nome, email, celular, classe);
-		if (this.usuariosDoadores.containsKey(id) || this.usuariosReceptores.containsKey(id)) {
+		if (this.usuarios.containsKey(id)){ 
 			throw new IllegalArgumentException("Usuario ja existente: " + id + ".");
 		}
 		
-		this.usuariosDoadores.put(id, user);
+		this.usuarios.put(id, user);
 		return id;
 	}
 	
@@ -94,8 +94,8 @@ public class UsuarioController {
 		this.validador.validaClasse(classe, this.ERROOPCAOCLASSE);
 		
 		UsuarioReceptor user = new UsuarioReceptor(id, nome, email, celular, classe);
-		if (!(this.usuariosReceptores.containsKey(id) || this.usuariosDoadores.containsKey(id))) {
-			this.usuariosReceptores.put(id, user);
+		if (!(this.usuarios.containsKey(id))) {
+			this.usuarios.put(id, user);
 			return id;
 		}
 		throw new IllegalArgumentException("Usuario ja existente: " + id + ".");
@@ -119,7 +119,7 @@ public class UsuarioController {
 				String email = array[2];
 				String celular = array[3];
 				String classe = array[4];
-				if (this.usuariosReceptores.containsKey(id)) {
+				if (this.usuarios.containsKey(id)) {
 					this.alteraDadosReceptor(id, nome, email, celular);
 				}else {
 					this.adicionaReceptor(id, nome, email, celular, classe);
@@ -140,10 +140,10 @@ public class UsuarioController {
 	public String pesquisaUsuarioPorId(String id) {
 		this.validador.validaDado(id, this.ERROID);
 		
-		if(this.usuariosDoadores.containsKey(id)) {
-			return this.usuariosDoadores.get(id).toString();
-		}else if(this.usuariosReceptores.containsKey(id)) {
-			return this.usuariosReceptores.get(id).toString();
+		if(this.usuarios.containsKey(id)) {
+			return this.usuarios.get(id).toString();
+		}else if(this.usuarios.containsKey(id)) {
+			return this.usuarios.get(id).toString();
 		}
 		throw new IllegalArgumentException("Usuario nao encontrado: " + id + ".");
 	}
@@ -160,20 +160,20 @@ public class UsuarioController {
 	public String alteraDadosReceptor(String id, String nome, String email, String celular) {
 		this.validador.validaDado(id, this.ERROID);
 		
-		if(!this.usuariosReceptores.containsKey(id)) {
+		if(!this.usuarios.containsKey(id)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: "+ id + ".");
 		}
 		if (!(nome == null) && !nome.trim().equals("")) {
-			this.usuariosReceptores.get(id).setNome(nome);
+			this.usuarios.get(id).setNome(nome);
 		}
 		if (!(celular == null) && !celular.trim().equals("")) {
-			this.usuariosReceptores.get(id).setCelular(celular);
+			this.usuarios.get(id).setCelular(celular);
 		}
 		if (!(email == null) && !email.trim().equals("")) {
-			this.usuariosReceptores.get(id).setEmail(email);
+			this.usuarios.get(id).setEmail(email);
 		}
 		
-		return this.usuariosReceptores.get(id).toString(); 
+		return this.usuarios.get(id).toString(); 
 	}
 
 	/**
@@ -188,16 +188,9 @@ public class UsuarioController {
 		boolean flag = false;
 		List<Usuario> lista = new ArrayList<>();
 		
-		for (String id : this.usuariosDoadores.keySet()) {
-			if(this.usuariosDoadores.get(id).getNome().equals(nome)) {
-				lista.add(this.usuariosDoadores.get(id));
-				flag = true;
-			}
-		}
-		
-		for (String id : this.usuariosReceptores.keySet()) {
-			if(this.usuariosReceptores.get(id).getNome().equals(nome)) {
-				lista.add(this.usuariosReceptores.get(id));
+		for (String id : this.usuarios.keySet()) {
+			if(this.usuarios.get(id).getNome().equals(nome)) {
+				lista.add(this.usuarios.get(id));
 				flag = true;
 			}
 		}
@@ -221,20 +214,20 @@ public class UsuarioController {
 	public String alteraDadosDoador(String id, String nome, String email, String celular) {
 		this.validador.validaDado(id, this.ERROID);
 		
-		if(!this.usuariosDoadores.containsKey(id)) {
+		if(!this.usuarios.containsKey(id)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: "+ id + ".");
 		}
 		if (!(nome == null) && !nome.trim().equals("")) {
-			this.usuariosDoadores.get(id).setNome(nome);
+			this.usuarios.get(id).setNome(nome);
 		}
 		if (!(celular == null) && !celular.trim().equals("")) {
-			this.usuariosDoadores.get(id).setCelular(celular);
+			this.usuarios.get(id).setCelular(celular);
 		}
 		if (!(email == null) && !email.trim().equals("")) {
-			this.usuariosDoadores.get(id).setEmail(email);
+			this.usuarios.get(id).setEmail(email);
 		}
 		
-		return this.usuariosDoadores.get(id).toString(); 
+		return this.usuarios.get(id).toString(); 
 	}
 
 
@@ -246,50 +239,75 @@ public class UsuarioController {
 	public void removeUsuario(String id) {
 		this.validador.validaDado(id, this.ERROID);
 		
-		if(this.usuariosDoadores.containsKey(id)) {
-			this.usuariosDoadores.remove(id);
+		if(!this.usuarios.containsKey(id)) {
+			throw new IllegalArgumentException("Usuario nao encontrado: "+ id + ".");
 		}
-	
-		throw new IllegalArgumentException("Usuario nao encontrado: "+ id + ".");
+		this.usuarios.remove(id);
 	}
 
 	public void adicionaDescritor(String descricao) {
-		this.descricoes.put(descricao,0);
+		this.validador.validaDado(descricao, this.ERRODESCRITOR);
+		
+		if (this.descricoes.containsKey(descricao.toLowerCase())) {
+			throw new IllegalArgumentException("Descritor de Item ja existente: " + descricao.toLowerCase() + ".");
+		}
+		
+		this.descricoes.put(descricao.toLowerCase(),0);
 	}
 	
 	public int adicionaItemParaDoacao(String idDoador, String descricaoItem, 
 			int quantidade, String tags) {
-		this.validador.validaDado(idDoador, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
-		if (idDoador != null && !this.usuariosDoadores.containsKey(idDoador)) {
+		this.validador.validaDado(idDoador, this.ERROIDDOADOR);
+		this.validador.validaValorPositivo(quantidade, this.ERROVALORQTD);
+		this.validador.validaDado(descricaoItem, ERRODESCRITOR);
+		
+		if (idDoador != null && !this.usuarios.containsKey(idDoador)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
+		}
+		if (!this.descricoes.containsKey(descricaoItem)) {
+			this.descricoes.put(descricaoItem.toLowerCase(), 0);
 		}
 		
 		this.cont++;
-		return this.usuariosDoadores.get(idDoador).adicionaItemParaDoacao(descricaoItem, quantidade, tags, this.cont);
+		UsuarioDoador user = (UsuarioDoador)this.usuarios.get(idDoador);
+		
+		int qtd = this.descricoes.get(descricaoItem);
+		qtd = quantidade;
+		this.descricoes.put(descricaoItem, qtd);
+		
+		return user.adicionaItemParaDoacao(descricaoItem, quantidade, tags, this.cont);
 	}
 	
 	public String exibeItem (int id, String idDoador) {
-		if (idDoador != null && !this.usuariosDoadores.containsKey(idDoador)) {
+		if (idDoador != null && !this.usuarios.containsKey(idDoador)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
 		}
 		
-		return this.usuariosDoadores.get(idDoador).exibeItem(id);
+		UsuarioDoador user = (UsuarioDoador)this.usuarios.get(idDoador);
+		return user.exibeItem(id);
 	}
 
 	public String atualizaItemParaDoacao(int id, String idDoador, int quantidade, String tags) {
-		this.validador.validaDado(idDoador, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
-		if (idDoador != null && !this.usuariosDoadores.containsKey(idDoador)) {
+		this.validador.validaDado(idDoador, this.ERROIDDOADOR);
+		this.validador.validaValorPositivo(id, this.ERROVALORIDITEM);
+		if (idDoador != null && !this.usuarios.containsKey(idDoador)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
 		}
-		return this.usuariosDoadores.get(idDoador).atualizaItemParaDoacao(id, quantidade, tags);
+		
+		UsuarioDoador user = (UsuarioDoador)this.usuarios.get(idDoador);
+		return user.atualizaItemParaDoacao(id, quantidade, tags);
 	}
 	
 	public void removeItemParaDoacao (int id, String idDoador) {
 		this.validador.validaDado(idDoador, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
-		if (!this.usuariosDoadores.containsKey(idDoador)) {
+		this.validador.validaValorPositivo(id, this.ERROVALORIDITEM);
+		
+		if (!this.usuarios.containsKey(idDoador)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
 		}
-		this.usuariosDoadores.get(idDoador).removeItemParaDoacao(id);
+		
+		UsuarioDoador user = (UsuarioDoador)this.usuarios.get(idDoador);
+		user.removeItemParaDoacao(id);
 	}
 
 	public String listaDescritorDeItensParaDoacao() {
@@ -305,13 +323,14 @@ public class UsuarioController {
 	public String listaItensParaDoacao() {
 		Map<Integer, UsuarioDoador> ligaItemAoUsuario= new HashMap<>();
 		List<Item> itens = new ArrayList<>();
-		for (String id: this.usuariosDoadores.keySet()) {
-			itens.addAll(this.usuariosDoadores.get(id).pegaTodosOsItens());
+		for (String id: this.usuarios.keySet()) {
+			UsuarioDoador user = (UsuarioDoador)this.usuarios.get(id);
+			itens.addAll(user.pegaTodosOsItens());
 		}
 		Collections.sort(itens,new QuantidadeComparator());
 		String saida = "";
 		for (Item item: itens) {
-			saida += item + ", " + this.usuariosDoadores.get(ligaItemAoUsuario.get(item.getId()).representacaoParaListagemDeDoacao());
+			saida += item + ", " + this.usuarios.get(ligaItemAoUsuario.get(item.getId()).representacaoParaListagemDeDoacao());
 		}
 		return saida;
 		
@@ -322,8 +341,9 @@ public class UsuarioController {
 	public String pesquisaItemParaDoacaoPorDescricao(String descricao) {
 		List<Item> itensComDescricao = new ArrayList<>();		
 		String saida = "";
-		for (String id: this.usuariosDoadores.keySet()) {
-			itensComDescricao.addAll(this.usuariosDoadores.get(id).procuraItensComNome(descricao));
+		for (String id: this.usuarios.keySet()) {
+			UsuarioDoador user = (UsuarioDoador)this.usuarios.get(id);
+			itensComDescricao.addAll(user.procuraItensComNome(descricao));
 		}
 		Collections.sort(itensComDescricao, new DescricaoComparator());
 		
