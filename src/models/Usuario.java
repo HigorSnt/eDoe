@@ -202,7 +202,7 @@ public class Usuario {
 		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 	}
 
-	public void removeItemParaDoacao(int id) throws Exception {
+	public String removeItemParaDoacao(int id) throws Exception {
 		if (this.itens.isEmpty()) {
 			throw new Exception("O Usuario nao possui itens cadastrados.");
 		}
@@ -210,8 +210,9 @@ public class Usuario {
 		for (String descricao : this.itens.keySet()) {
 			for (Item item : this.itens.get(descricao)) {
 				if (item.getId() == id) {
+					int qtd = item.getQuantidade();
 					this.itens.get(descricao).remove(item);
-					return;
+					return descricao + "," + qtd;
 				}
 			}
 		}

@@ -302,7 +302,8 @@ public class UsuarioController {
 		if (!this.usuarios.containsKey(idDoador)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
 		}
-		this.usuarios.get(idDoador).removeItemParaDoacao(id);
+		String[] desc = this.usuarios.get(idDoador).removeItemParaDoacao(id).split(",");
+		this.descricoes.put(desc[0], this.descricoes.get(desc[0]) - Integer.parseInt(desc[1]));
 	}
 
 	public String listaDescritorDeItensParaDoacao() {
