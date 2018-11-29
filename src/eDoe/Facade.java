@@ -10,13 +10,22 @@ public class Facade {
 	public static void main(String[] args) {
 		args = new String[] {"eDoe.Facade", "acceptance_tests/use_case_1.txt", 
 				"acceptance_tests/use_case_2.txt",
-				"acceptance_tests/use_case_3.txt"};
+				"acceptance_tests/use_case_3.txt", "acceptance_tests/use_case_4.txt"};
 		EasyAccept.main(args);
 	}
 	
 	public String adicionaDoador (String id, String nome, String email, String celular, String classe) {
 		return this.cg.adicionaDoador(id, nome, email, celular, classe);
 	}
+	
+	public int adicionaItemNecessario(String idReceptor, String descricaoItem, int quantidade, String tags) {
+		return this.cg.adicionaItemNecessario(idReceptor, descricaoItem, quantidade, tags);
+	}
+	
+	public String atualizaItemNecessario(String idReceptor, int id, int quantidade, String tags) {
+		return this.cg.atualizaItemNecessario(id, idReceptor, quantidade, tags);
+	}
+	
 	
 	public void lerReceptores (String caminho) {
 		this.cg.lerReceptores(caminho);

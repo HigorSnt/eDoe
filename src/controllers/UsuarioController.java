@@ -259,13 +259,38 @@ public class UsuarioController {
 	}
 
 	public int adicionaItemParaDoacao(String idDoador, String descricaoItem, int quantidade, String tags) {
-		this.validador.validaDado(idDoador, this.ERROIDDOADOR);
-		this.validador.validaDado(descricaoItem, this.ERRODESCRITOR);
-		this.validador.validaValorPositivo(quantidade, this.ERROVALORQTD);
-		
+		this.validador.validaDado(idDoador, this.ERROIDDOADOR);		
 		if (!this.usuarios.containsKey(idDoador)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
 		}
+		
+		if(!this.usuarios.get(idDoador).isEhReceptor()) {
+			return this.adicionaItem(idDoador, descricaoItem, quantidade, tags);
+		}else {
+			throw new IllegalArgumentException("Entrada invalida: usuario nao e doador.");
+		}
+	
+	}
+
+	public int adicionaItemNecessario(String idReceptor, String descricaoItem, int quantidade, String tags) {
+		this.validador.validaDado(idReceptor, this.ERROIDDOADOR);		
+		if (!this.usuarios.containsKey(idReceptor)) {
+			throw new IllegalArgumentException("Usuario nao encontrado: " + idReceptor + ".");
+		}
+		
+		if(this.usuarios.get(idReceptor).isEhReceptor()) {
+			return this.adicionaItem(idReceptor, descricaoItem, quantidade, tags);
+		}else {
+			throw new IllegalArgumentException("Entrada invalida: usuario nao e receptor.");
+		}
+	
+	}
+	
+	
+	
+	private int adicionaItem(String idDoador, String descricaoItem, int quantidade, String tags) {
+		this.validador.validaDado(descricaoItem, this.ERRODESCRITOR);
+		this.validador.validaValorPositivo(quantidade, this.ERROVALORQTD);
 
 		this.cont++;
 		this.descricoes.put(descricaoItem.toLowerCase(), quantidade);
@@ -281,6 +306,15 @@ public class UsuarioController {
 	}
 
 	public String atualizaItemParaDoacao(int id, String idDoador, int quantidade, String tags) {
+		return this.atualizaItem(id, idDoador, quantidade, tags);
+	}
+
+	public String atualizaItemNecessario(int id, String idReceptor, int quantidade, String tags) {
+		return this.atualizaItem(id, idReceptor, quantidade, tags);
+	}
+	
+	
+	private String atualizaItem(int id, String idDoador, int quantidade, String tags) {
 		this.validador.validaDado(idDoador, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
 		this.validador.validaValorPositivo(id, "Entrada invalida: id do item nao pode ser negativo.");
 		
