@@ -247,6 +247,9 @@ public class UsuarioController {
 		}
 	}
 
+	/**
+	 * @param descricao
+	 */
 	public void adicionaDescritor(String descricao) {
 		this.validador.validaDado(descricao, this.ERRODESCRITOR);
 		
@@ -257,6 +260,16 @@ public class UsuarioController {
 		this.descricoes.put(descricao, 0);
 	}
 
+	/**
+	 * Adiciona novo item para doacao.
+	 * 
+	 * @param idDoador id do doador.
+	 * @param descricaoItem descricao do item.
+	 * @param quantidade quantidade do item.
+	 * @param tags tags do item.
+	 * 
+	 * @return retorna o Id do item.
+	 */
 	public int adicionaItemParaDoacao(String idDoador, String descricaoItem, int quantidade, String tags) {
 		this.validador.validaDado(idDoador, this.ERROIDDOADOR);		
 		if (!this.usuarios.containsKey(idDoador)) {
@@ -271,6 +284,16 @@ public class UsuarioController {
 	
 	}
 
+	/**
+	 * Adiciona item necessario.
+	 * 
+	 * @param idReceptor id do receptor.
+	 * @param descricaoItem descricao do item.
+	 * @param quantidade quantidade do item.
+	 * @param tags tags do item.
+	 * 
+	 * @return retorna id do item.
+	 */
 	public int adicionaItemNecessario(String idReceptor, String descricaoItem, int quantidade, String tags) {
 		this.validador.validaDado(idReceptor, this.ERROIDDOADOR);		
 		if (!this.usuarios.containsKey(idReceptor)) {
@@ -285,16 +308,35 @@ public class UsuarioController {
 	
 	}
 	
-	private int adicionaItem(String idDoador, String descricaoItem, int quantidade, String tags) {
+	/**
+	 * Adiciona qualquer item.
+	 * 
+	 * @param id id do consagrado.
+	 * @param descricaoItem descricao do item.
+	 * @param quantidade quantidade do item.
+	 * @param tags tags do item.
+	 * 
+	 * @return retorna id do item.
+	 * 
+	 */
+	private int adicionaItem(String id, String descricaoItem, int quantidade, String tags) {
 		this.validador.validaDado(descricaoItem, this.ERRODESCRITOR);
 		this.validador.validaValorPositivo(quantidade, this.ERROVALORQTD);
 
 		this.cont++;
 		descricaoItem = descricaoItem.toLowerCase();
 		this.descricoes.put(descricaoItem, quantidade);
-		return this.usuarios.get(idDoador).adicionaItemParaDoacao(descricaoItem, quantidade, tags, this.cont);
+		return this.usuarios.get(id).adicionaItemParaDoacao(descricaoItem, quantidade, tags, this.cont);
 	}
 
+	/**
+	 * Exibe item.
+	 * 
+	 * @param id id do item.
+	 * @param idDoador id do doador.
+	 * 
+	 * @return retorna a representacao do item.
+	 */
 	public String exibeItem(int id, String idDoador) {
 		if (idDoador != null && !this.usuarios.containsKey(idDoador)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
@@ -303,15 +345,45 @@ public class UsuarioController {
 		return this.usuarios.get(idDoador).exibeItem(id);
 	}
 
+	/**
+	 * Atualiza item para doacao.
+	 * 
+	 * @param id id do item.
+	 * @param idDoador id do doador.
+	 * @param quantidade quantidade do item.
+	 * @param tags tags do item.
+	 * 
+	 * @return retorna a representacao do item.
+	 */
 	public String atualizaItemParaDoacao(int id, String idDoador, int quantidade, String tags) {
 		return this.atualizaItem(id, idDoador, quantidade, tags);
 	}
 
+	/**
+	 * Atualiza item necessario.
+	 * 
+	 * @param id id do item.
+	 * @param idReceptor id do receptor.
+	 * @param quantidade quantidade do item.
+	 * @param tags tags do item.
+	 * 
+	 * @return retorna a representacao do item.
+	 */
 	public String atualizaItemNecessario(int id, String idReceptor, int quantidade, String tags) {
 		return this.atualizaItem(id, idReceptor, quantidade, tags);
 	}
 	
 	
+	/**
+	 * Atualiza qualquer item.
+	 * 
+	 * @param id id do item.
+	 * @param idMoral id do usuario ligado ao item.
+	 * @param quantidade quantidade do item.
+	 * @param tags tags do item.
+	 * 
+	 * @return retorna a representacao do item.
+	 */
 	private String atualizaItem(int id, String idMoral, int quantidade, String tags) {
 		this.validador.validaDado(idMoral, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
 		this.validador.validaValorPositivo(id, "Entrada invalida: id do item nao pode ser negativo.");
@@ -329,6 +401,14 @@ public class UsuarioController {
 		return this.usuarios.get(idMoral).atualizaItem(id, quantidade, tags);
 	}
 
+	/**
+	 * Remove item para doacao.
+	 * 
+	 * @param id id do item.
+	 * @param idDoador id do doador.
+	 * 
+	 * @throws Exception caso o item nao exista.
+	 */
 	public void removeItemParaDoacao(int id, String idDoador) throws Exception {
 		this.validador.validaDado(idDoador, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
 		this.validador.validaValorPositivo(id, "Entrada invalida: id do item nao pode ser negativo.");
@@ -339,6 +419,9 @@ public class UsuarioController {
 		this.descricoes.put(desc[0], this.descricoes.get(desc[0]) - Integer.parseInt(desc[1]));
 	}
 
+	/**
+	 * @return retorna todos descritores de itens para doacao.
+	 */
 	public String listaDescritorDeItensParaDoacao() {
 		String saida = "";
 
@@ -349,6 +432,9 @@ public class UsuarioController {
 		return saida.substring(0, saida.length() - 3);
 	}
 
+	/**
+	 * @return retorna a representacao de todos itens apra doacao.
+	 */
 	public String listaItensParaDoacao() {
 		Map<Integer, Usuario> ligaItemAoUsuario = new HashMap<>();
 		List<Item> itens = new ArrayList<>();
@@ -372,6 +458,13 @@ public class UsuarioController {
 
 	}
 
+	/**
+	 * Pesquisa itens de doacao por descricao.
+	 * 
+	 * @param descricao a descricao que esta sendo pesquisada.
+	 * 
+	 * @return retorna todos itens com determinada descricao.
+	 */
 	public String pesquisaItemParaDoacaoPorDescricao(String descricao) {
 		this.validador.validaDado(descricao, this.ERROTEXTODEPESQUISA);
 		List<Item> itensComDescricao = new ArrayList<>();
@@ -387,6 +480,9 @@ public class UsuarioController {
 		return saida.substring(0, saida.length() - 3);
 	}
 
+	/**
+	 * @return retorna a representacao de todos itens necessarios.
+	 */
 	public String listaItensNecessarios() {
 		Map<Integer, Usuario> ligaItemAoUsuario = new HashMap<>();
 		List<Item> itens = new ArrayList<>();
@@ -410,6 +506,14 @@ public class UsuarioController {
 		return saida.substring(0, saida.length() - 3);
 	}
 
+	/**
+	 * Remove item necessario.
+	 * 
+	 * @param idReceptor id do receptor.
+	 * @param idItem id do item.
+	 * 
+	 * @throws Exception caso o item nao exista.
+	 */
 	public void removeItemNecessario(String idReceptor, int idItem) throws Exception {
 		this.validador.validaDado(idReceptor, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
 		this.validador.validaValorPositivo(idItem, "Entrada invalida: id do item nao pode ser negativo.");
@@ -421,9 +525,6 @@ public class UsuarioController {
 	}
 
 }
-
-//At line 50:Line 50, file acceptance_tests/use_case_4.txt: Expected <27 - livro, tags: [Infantil, Matematica, Didatico], quantidade: 3, Receptor: Murilo Luiz Brito/84473712044 | 14 - toalha de banho, tags: [Adulto, TAM G, Azul], quantidade: 2, Receptor: Sonia Daniela/31862316040 | 15 - toalha de banho, tags: [Adulto, TAM G, Branca], quantidade: 1, Receptor: Sara Jennifer Vieira/24875800037 | 16 - frauda, tags: [Higiene, Infantil, P], quantidade: 15, Receptor: Luiza Elisa Lopes/72859801000118 | 17 - frauda, tags: [Higiene, Infantil, M], quantidade: 10, Receptor: Cristiane Isabella Caldeira/87831113000117 | 18 - frauda, tags: [Higiene, Adulto, GG], quantidade: 30, Receptor: Luiza Elisa Lopes/72859801000118 | 19 - alimento, tags: [Alimentacao, Saude], quantidade: 5, Receptor: Lucca Iago/57091431030 | 20 - sabonete, tags: [Higiene], quantidade: 8, Receptor: Sara Jennifer Vieira/24875800037 | 21 - livro, tags: [], quantidade: 1, Receptor: Sara Jennifer Vieira/24875800037 | 22 - cadeira de rodas, tags: [roda grande, 80kg, conforto], quantidade: 7, Receptor: Luiza Elisa Lopes/72859801000118 | 23 - colchao, tags: [colchao kingsize, conforto], quantidade: 6, Receptor: Murilo Luiz Brito/84473712044 | 24 - jaqueta de couro, tags: [outfit, couro de bode], quantidade: 3, Receptor: Antonella Sonia Moraes/32719454000103 | 25 - travesseiro, tags: [travesseiro de pena, conforto, dormir], quantidade: 2, Receptor: Rafaela Beatriz/51567490000143 | 26 - camiseta, tags: [outfit, poliester, roupa], quantidade: 11, Receptor: Murilo Luiz Brito/84473712044>, 
-//but was                                                            <13 - livro, tags: [Infantil, Matematica, Didatico], quantidade: 3, Receptor: Murilo Luiz Brito/84473712044 | 14 - toalha de banho, tags: [Adulto, TAM G, Azul], quantidade: 2, Receptor: Sonia Daniela/31862316040 | 15 - toalha de banho, tags: [Adulto, TAM G, Branca], quantidade: 1, Receptor: Sara Jennifer Vieira/24875800037 | 16 - frauda, tags: [Higiene, Infantil, P], quantidade: 15, Receptor: Luiza Elisa Lopes/72859801000118 | 17 - frauda, tags: [Higiene, Infantil, M], quantidade: 10, Receptor: Cristiane Isabella Caldeira/87831113000117 | 18 - frauda, tags: [Higiene, Adulto, GG], quantidade: 30, Receptor: Luiza Elisa Lopes/72859801000118 | 19 - alimento, tags: [Alimentacao, Saude], quantidade: 5, Receptor: Lucca Iago/57091431030 | 20 - sabonete, tags: [Higiene], quantidade: 8, Receptor: Sara Jennifer Vieira/24875800037 | 21 - livro, tags: [], quantidade: 1, Receptor: Sara Jennifer Vieira/24875800037 | 22 - cadeira de rodas, tags: [roda grande, 80kg, conforto], quantidade: 7, Receptor: Luiza Elisa Lopes/72859801000118 | 23 - colchao, tags: [colchao kingsize, conforto], quantidade: 6, Receptor: Murilo Luiz Brito/84473712044 | 24 - jaqueta de couro, tags: [outfit, couro de bode], quantidade: 3, Receptor: Antonella Sonia Moraes/32719454000103 | 25 - travesseiro, tags: [travesseiro de pena, conforto, dormir], quantidade: 2, Receptor: Rafaela Beatriz/51567490000143 | 26 - camiseta, tags: [outfit, poliester, roupa], quantidade: 11, Receptor: Murilo Luiz Brito/84473712044>
 
 
 

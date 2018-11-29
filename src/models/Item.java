@@ -96,7 +96,7 @@ public class Item {
 		}
 	}
 
-	public String converteTagsEmString() {
+	private String converteTagsEmString() {
 		return "[" + this.tags.stream().map(t -> t.toString()).collect(Collectors.joining(", ")) + "]";
 	}
 	
