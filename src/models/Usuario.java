@@ -159,6 +159,38 @@ public class Usuario {
 			return false;
 		return true;
 	}
+	
+	/**
+	 * Adiciona item para descricao.
+	 * 
+	 * @param descricaoItem descricao do item.
+	 * @param quantidade quantidade do item.
+	 * @param tags tags do item.
+	 * @param cont contador que sera o id.
+	 * 
+	 * @return retorna o id do item.
+	 */
+	public int adicionaItemParaDoacao(String descricaoItem, int quantidade, String tags, int cont) {
+		Item aSerAdcionado = new Item(descricaoItem, quantidade, tags.split(","), cont);
+		if (this.itens.containsKey(descricaoItem)) {
+			boolean achouItemIgual = false;
+			for (Item i : this.itens.get(descricaoItem)) {
+				if (i.equals(aSerAdcionado)) {
+					i.setQuantidade(quantidade);
+					achouItemIgual = true;
+					return i.getId();
+				}
+			}
+			if (!achouItemIgual) {
+				this.itens.get(descricaoItem).add(aSerAdcionado);
+			}
+		} else {
+			this.itens.put(descricaoItem, new ArrayList<>());
+			this.itens.get(descricaoItem).add(new Item(descricaoItem, quantidade, tags.split(","), cont));
+		}
+
+		return cont;
+	}
 
 	/**
 	 * Procura os itens com determina descricao.
@@ -278,39 +310,6 @@ public class Usuario {
 			}
 		}
 		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
-	}
-
-	/**
-	 * Adiciona item para descricao.
-	 * 
-	 * @param descricaoItem descricao do item.
-	 * @param quantidade quantidade do item.
-	 * @param tags tags do item.
-	 * @param cont contador que sera o id.
-	 * 
-	 * @return retorna o id do item.
-	 */
-	public int adicionaItemParaDoacao(String descricaoItem, int quantidade, String tags, int cont) {
-		Item aSerAdcionado = new Item(descricaoItem, quantidade, tags.split(","), cont);
-		if (this.itens.containsKey(descricaoItem)) {
-			boolean achouItemIgual = false;
-			for (Item i : this.itens.get(descricaoItem)) {
-				if (i.equals(aSerAdcionado)) {
-					i.setQuantidade(quantidade);
-					achouItemIgual = true;
-					return i.getId();
-				}
-			}
-			if (!achouItemIgual) {
-				this.itens.get(descricaoItem).add(aSerAdcionado);
-			}
-		} else {
-			this.itens.put(descricaoItem, new ArrayList<>());
-			this.itens.get(descricaoItem).add(new Item(descricaoItem, quantidade, tags.split(","), cont));
-
-		}
-
-		return cont;
 	}
 
 	/**

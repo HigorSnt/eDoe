@@ -2,9 +2,14 @@ package testsModels;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import models.Item;
 import models.Usuario;
 
 class UsuarioTeste {
@@ -91,6 +96,73 @@ class UsuarioTeste {
 		assertFalse(us2.equals(u2));
 		assertFalse(us2.equals(u3));
 		assertTrue(us2.equals(u));
+	}
+	
+	@BeforeEach
+	void cadastrandoItens() {
+		us1.adicionaItemParaDoacao("cadeira de rodas", 5, "roda grande,cadeira", 1);
+		us1.adicionaItemParaDoacao("colchao", 5, "colchao kingsize,conforto,dormir", 2);
+		us1.adicionaItemParaDoacao("calca jeans", 3, "", 3);
+	}
+	
+	@Test
+	void testAdicionaItemParaDoacao() {
+		assertEquals("2 - colchao, tags: [colchao kingsize, conforto, dormir], quantidade: 5", us1.exibeItem(2));
+		us1.adicionaItemParaDoacao("colchao", 10, "colchao kingsize,conforto,dormir", 2);
+		assertEquals("2 - colchao, tags: [colchao kingsize, conforto, dormir], quantidade: 10", us1.exibeItem(2));
+		us1.adicionaItemParaDoacao("jaqueta de couro", 5, "outfit,couro de jacare", 4);
+		us1.adicionaItemParaDoacao("jaqueta de couro", 5, "outfit,couro de cobra", 5);
+		assertEquals("5 - jaqueta de couro, tags: [outfit, couro de cobra], quantidade: 5", us1.exibeItem(5));
+	}
+	
+	@Test
+	void testProcuraItensComNome() {
+		List<Item> lista = new ArrayList<>();
+		lista = us1.procuraItensComNome("colchao");
+		assertEquals("2 - colchao, tags: [colchao kingsize, conforto, dormir], quantidade: 5", lista.stream().map(i -> i.toString()).collect(Collectors.joining(" | ")));
+	}
+	
+	@Test
+	void testPegaTodosOsItens() {
+		List<Item> itens = new ArrayList<>();
+		itens = us1.pegaTodosOsItens();
+		
+		assertEquals("1 - cadeira de rodas, tags: [roda grande, cadeira], quantidade: 5 | "
+				+ "2 - colchao, tags: [colchao kingsize, conforto, dormir], quantidade: 5 | "
+				+ "3 - calca jeans, tags: [], quantidade: 3", itens.stream().map(i -> i.toString()).collect(Collectors.joining(" | ")));
+	}
+	
+	@Test
+	void testRepresentacaoParaListagemDeDoacao() {
+		assertEquals("doador: Elizabeth Ashe/70513372911", us1.representacaoParaListagemDeDoacao());
+		assertEquals("Receptor: Elizabeth Ashe/70513372911", us3.representacaoParaListagemDeDoacao());
+	}
+	
+	@Test
+	void testAtualizaItem() {
+		assertThrows(IllegalArgumentException.class, ()-> us1.atualizaItem(10, 5, ""));
+		assertEquals("1 - cadeira de rodas, tags: [roda grande, cadeira], quantidade: 5", us1.exibeItem(1));
+		us1.atualizaItem(1, 10, "");
+		assertEquals("1 - cadeira de rodas, tags: [roda grande, cadeira], quantidade: 10", us1.exibeItem(1));
+		us1.atualizaItem(1, 0, "roda grande");
+		assertEquals("1 - cadeira de rodas, tags: [roda grande], quantidade: 10", us1.exibeItem(1));
+		us1.atualizaItem(1, 0, null);
+		assertEquals("1 - cadeira de rodas, tags: [roda grande], quantidade: 10", us1.exibeItem(1));
+	}
+	
+	@Test
+	void testRemoveItem() {
+		assertThrows(IllegalArgumentException.class, ()-> us1.removeItem(-4));
+		assertThrows(IllegalArgumentException.class, ()-> us2.removeItem(1));
+		assertEquals("1 - cadeira de rodas, tags: [roda grande, cadeira], quantidade: 5", us1.exibeItem(1));
+		us1.removeItem(1);
+		assertThrows(IllegalArgumentException.class, ()-> us1.exibeItem(1));
+	}
+	
+	@Test
+	void testGetDescricaoItem() {
+		assertThrows(IllegalArgumentException.class, ()-> us1.getDescricaoItem(10));
+		assertEquals("calca jeans", us1.getDescricaoItem(3));
 	}
 
 }
