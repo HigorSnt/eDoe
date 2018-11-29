@@ -111,14 +111,23 @@ public class Usuario {
 		return this.getNome() + "/" + this.getId() + ", " + this.getEmail() + ", " + this.getCelular() + status;
 	}
 
+	/**
+	 * @return retorna id do usuario.
+	 */
 	public String getId() {
 		return this.id;
 	}
 
+	/**
+	 * @return retorna o celular do usuario.
+	 */
 	public String getCelular() {
 		return this.celular;
 	}
 
+	/**
+	 * @return retorna o email do usuario.
+	 */
 	public String getEmail() {
 		return this.email;
 	}
@@ -151,6 +160,13 @@ public class Usuario {
 		return true;
 	}
 
+	/**
+	 * Procura os itens com determina descricao.
+	 * 
+	 * @param descricao descricao procurada.
+	 * 
+	 * @return retorna todos itens com a descricao procurada.
+	 */
 	public List<Item> procuraItensComNome(String descricao) {
 		List<Item> itens = new ArrayList<>();
 
@@ -171,6 +187,9 @@ public class Usuario {
 		return itens;
 	}
 
+	/**
+	 * @return retorna uma lista com todos itens.
+	 */
 	public List<Item> pegaTodosOsItens() {
 		List<Item> itens = new ArrayList<>();
 		for (String descricao : this.itens.keySet()) {
@@ -180,11 +199,26 @@ public class Usuario {
 		return itens;
 	}
 
+	/**
+	 * @return retorna a representacao do usuario.
+	 */
 	public String representacaoParaListagemDeDoacao() {
-		return "doador: " + this.getNome() + "/" + this.getId();
+		if(!this.isEhReceptor()) {
+			return "doador: " + this.getNome() + "/" + this.getId();
+		}
+		return "Receptor: " + this.getNome() + "/" + this.getId();
 	}
 
-	public String atualizaItemParaDoacao(int id, int quantidade, String tags) {
+	/**
+	 * Atualiza um determinado item.
+	 * 
+	 * @param id id do item.
+	 * @param quantidade quantidade do item.
+	 * @param tags tags do item.
+	 * 
+	 * @return retorna a representacao do item.
+	 */
+	public String atualizaItem(int id, int quantidade, String tags) {
 		for (String descricao : this.itens.keySet()) {
 			for (Item item : this.itens.get(descricao)) {
 				if (item.getId() == id) {
@@ -202,7 +236,16 @@ public class Usuario {
 		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 	}
 
-	public String removeItemParaDoacao(int id) throws Exception {
+	/**
+	 * Remove determinado item.
+	 * 
+	 * @param id id do item.
+	 * 
+	 * @return retorna a descricao e quantidade do item.
+	 * 
+	 * @throws Exception lanca excessao quando o item nao existe.
+	 */
+	public String removeItem(int id) throws Exception {
 		if (this.itens.isEmpty()) {
 			throw new Exception("O Usuario nao possui itens cadastrados.");
 		}
@@ -219,6 +262,13 @@ public class Usuario {
 		throw new Exception("Item nao encontrado: " + id + ".");
 	}
 
+	/**
+	 * Exibe um item.
+	 * 
+	 * @param id id do item.
+	 * 
+	 * @return retorna representacao do item.
+	 */
 	public String exibeItem(int id) {
 		for (String descricao : this.itens.keySet()) {
 			for (Item item : this.itens.get(descricao)) {
@@ -231,6 +281,16 @@ public class Usuario {
 
 	}
 
+	/**
+	 * Adiciona item para descricao.
+	 * 
+	 * @param descricaoItem descricao do item.
+	 * @param quantidade quantidade do item.
+	 * @param tags tags do item.
+	 * @param cont contador que sera o id.
+	 * 
+	 * @return retorna o id do item.
+	 */
 	public int adicionaItemParaDoacao(String descricaoItem, int quantidade, String tags, int cont) {
 		Item aSerAdcionado = new Item(descricaoItem, quantidade, tags.split(","), cont);
 		if (this.itens.containsKey(descricaoItem)) {
@@ -239,6 +299,7 @@ public class Usuario {
 				if (i.equals(aSerAdcionado)) {
 					i.setQuantidade(quantidade);
 					achouItemIgual = true;
+					return i.getId();
 				}
 			}
 			if (!achouItemIgual) {
@@ -253,6 +314,13 @@ public class Usuario {
 		return cont;
 	}
 
+	/**
+	 * Retorna descricao do item.
+	 * 
+	 * @param id id do item.
+	 * 
+	 * @return retorna descricao do item.
+	 */
 	public String getDescricaoItem(int id){
 		for (List<Item> valor : this.itens.values()) {
 			for (Item item : valor) {
@@ -261,6 +329,6 @@ public class Usuario {
 				}
 			}
 		}
-		throw new IllegalArgumentException();
+		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 	}
 }

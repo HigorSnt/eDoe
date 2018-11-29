@@ -13,6 +13,7 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import aux.DescricaoComparator;
+import aux.IdComparator;
 import aux.QuantidadeComparator;
 import aux.Validador;
 import models.Item;
@@ -141,8 +142,6 @@ public class UsuarioController {
 
 		if (this.usuarios.containsKey(id)) {
 			return this.usuarios.get(id).toString();
-		} else if (this.usuarios.containsKey(id)) {
-			return this.usuarios.get(id).toString();
 		}
 		throw new IllegalArgumentException("Usuario nao encontrado: " + id + ".");
 	}
@@ -248,6 +247,9 @@ public class UsuarioController {
 		}
 	}
 
+	/**
+	 * @param descricao
+	 */
 	public void adicionaDescritor(String descricao) {
 		this.validador.validaDado(descricao, this.ERRODESCRITOR);
 		
@@ -258,6 +260,16 @@ public class UsuarioController {
 		this.descricoes.put(descricao, 0);
 	}
 
+	/**
+	 * Adiciona novo item para doacao.
+	 * 
+	 * @param idDoador id do doador.
+	 * @param descricaoItem descricao do item.
+	 * @param quantidade quantidade do item.
+	 * @param tags tags do item.
+	 * 
+	 * @return retorna o Id do item.
+	 */
 	public int adicionaItemParaDoacao(String idDoador, String descricaoItem, int quantidade, String tags) {
 		this.validador.validaDado(idDoador, this.ERROIDDOADOR);		
 		if (!this.usuarios.containsKey(idDoador)) {
@@ -272,6 +284,16 @@ public class UsuarioController {
 	
 	}
 
+	/**
+	 * Adiciona item necessario.
+	 * 
+	 * @param idReceptor id do receptor.
+	 * @param descricaoItem descricao do item.
+	 * @param quantidade quantidade do item.
+	 * @param tags tags do item.
+	 * 
+	 * @return retorna id do item.
+	 */
 	public int adicionaItemNecessario(String idReceptor, String descricaoItem, int quantidade, String tags) {
 		this.validador.validaDado(idReceptor, this.ERROIDDOADOR);		
 		if (!this.usuarios.containsKey(idReceptor)) {
@@ -286,17 +308,35 @@ public class UsuarioController {
 	
 	}
 	
-	
-	
-	private int adicionaItem(String idDoador, String descricaoItem, int quantidade, String tags) {
+	/**
+	 * Adiciona qualquer item.
+	 * 
+	 * @param id id do consagrado.
+	 * @param descricaoItem descricao do item.
+	 * @param quantidade quantidade do item.
+	 * @param tags tags do item.
+	 * 
+	 * @return retorna id do item.
+	 * 
+	 */
+	private int adicionaItem(String id, String descricaoItem, int quantidade, String tags) {
 		this.validador.validaDado(descricaoItem, this.ERRODESCRITOR);
 		this.validador.validaValorPositivo(quantidade, this.ERROVALORQTD);
 
 		this.cont++;
-		this.descricoes.put(descricaoItem.toLowerCase(), quantidade);
-		return this.usuarios.get(idDoador).adicionaItemParaDoacao(descricaoItem, quantidade, tags, this.cont);
+		descricaoItem = descricaoItem.toLowerCase();
+		this.descricoes.put(descricaoItem, quantidade);
+		return this.usuarios.get(id).adicionaItemParaDoacao(descricaoItem, quantidade, tags, this.cont);
 	}
 
+	/**
+	 * Exibe item.
+	 * 
+	 * @param id id do item.
+	 * @param idDoador id do doador.
+	 * 
+	 * @return retorna a representacao do item.
+	 */
 	public String exibeItem(int id, String idDoador) {
 		if (idDoador != null && !this.usuarios.containsKey(idDoador)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
@@ -305,41 +345,83 @@ public class UsuarioController {
 		return this.usuarios.get(idDoador).exibeItem(id);
 	}
 
+	/**
+	 * Atualiza item para doacao.
+	 * 
+	 * @param id id do item.
+	 * @param idDoador id do doador.
+	 * @param quantidade quantidade do item.
+	 * @param tags tags do item.
+	 * 
+	 * @return retorna a representacao do item.
+	 */
 	public String atualizaItemParaDoacao(int id, String idDoador, int quantidade, String tags) {
 		return this.atualizaItem(id, idDoador, quantidade, tags);
 	}
 
+	/**
+	 * Atualiza item necessario.
+	 * 
+	 * @param id id do item.
+	 * @param idReceptor id do receptor.
+	 * @param quantidade quantidade do item.
+	 * @param tags tags do item.
+	 * 
+	 * @return retorna a representacao do item.
+	 */
 	public String atualizaItemNecessario(int id, String idReceptor, int quantidade, String tags) {
 		return this.atualizaItem(id, idReceptor, quantidade, tags);
 	}
 	
 	
-	private String atualizaItem(int id, String idDoador, int quantidade, String tags) {
-		this.validador.validaDado(idDoador, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
+	/**
+	 * Atualiza qualquer item.
+	 * 
+	 * @param id id do item.
+	 * @param idMoral id do usuario ligado ao item.
+	 * @param quantidade quantidade do item.
+	 * @param tags tags do item.
+	 * 
+	 * @return retorna a representacao do item.
+	 */
+	private String atualizaItem(int id, String idMoral, int quantidade, String tags) {
+		this.validador.validaDado(idMoral, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
 		this.validador.validaValorPositivo(id, "Entrada invalida: id do item nao pode ser negativo.");
 		
-		if (!this.usuarios.containsKey(idDoador)) {
-			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
+		if (!this.usuarios.containsKey(idMoral)) {
+			throw new IllegalArgumentException("Usuario nao encontrado: " + idMoral + ".");
 		}
 		
 		if (quantidade > 0) {
-			String desc = this.usuarios.get(idDoador).getDescricaoItem(id);
+			
+			String desc = this.usuarios.get(idMoral).getDescricaoItem(id);
 			this.descricoes.put(desc,quantidade);
 		}
 		
-		return this.usuarios.get(idDoador).atualizaItemParaDoacao(id, quantidade, tags);
+		return this.usuarios.get(idMoral).atualizaItem(id, quantidade, tags);
 	}
 
+	/**
+	 * Remove item para doacao.
+	 * 
+	 * @param id id do item.
+	 * @param idDoador id do doador.
+	 * 
+	 * @throws Exception caso o item nao exista.
+	 */
 	public void removeItemParaDoacao(int id, String idDoador) throws Exception {
 		this.validador.validaDado(idDoador, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
 		this.validador.validaValorPositivo(id, "Entrada invalida: id do item nao pode ser negativo.");
 		if (!this.usuarios.containsKey(idDoador)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
 		}
-		String[] desc = this.usuarios.get(idDoador).removeItemParaDoacao(id).split(",");
+		String[] desc = this.usuarios.get(idDoador).removeItem(id).split(",");
 		this.descricoes.put(desc[0], this.descricoes.get(desc[0]) - Integer.parseInt(desc[1]));
 	}
 
+	/**
+	 * @return retorna todos descritores de itens para doacao.
+	 */
 	public String listaDescritorDeItensParaDoacao() {
 		String saida = "";
 
@@ -350,11 +432,15 @@ public class UsuarioController {
 		return saida.substring(0, saida.length() - 3);
 	}
 
+	/**
+	 * @return retorna a representacao de todos itens apra doacao.
+	 */
 	public String listaItensParaDoacao() {
 		Map<Integer, Usuario> ligaItemAoUsuario = new HashMap<>();
 		List<Item> itens = new ArrayList<>();
 
 		for (String id : this.usuarios.keySet()) {
+			
 			List<Item> itensDeUsuario = this.usuarios.get(id).pegaTodosOsItens();
 			for (Item item : itensDeUsuario) {
 				ligaItemAoUsuario.put(item.getId(), this.usuarios.get(id));
@@ -372,6 +458,13 @@ public class UsuarioController {
 
 	}
 
+	/**
+	 * Pesquisa itens de doacao por descricao.
+	 * 
+	 * @param descricao a descricao que esta sendo pesquisada.
+	 * 
+	 * @return retorna todos itens com determinada descricao.
+	 */
 	public String pesquisaItemParaDoacaoPorDescricao(String descricao) {
 		this.validador.validaDado(descricao, this.ERROTEXTODEPESQUISA);
 		List<Item> itensComDescricao = new ArrayList<>();
@@ -387,4 +480,51 @@ public class UsuarioController {
 		return saida.substring(0, saida.length() - 3);
 	}
 
+	/**
+	 * @return retorna a representacao de todos itens necessarios.
+	 */
+	public String listaItensNecessarios() {
+		Map<Integer, Usuario> ligaItemAoUsuario = new HashMap<>();
+		List<Item> itens = new ArrayList<>();
+
+		for (String id : this.usuarios.keySet()) {
+			if(this.usuarios.get(id).isEhReceptor()) {
+				List<Item> itensDeUsuario = this.usuarios.get(id).pegaTodosOsItens();
+				for (Item item : itensDeUsuario) {
+					ligaItemAoUsuario.put(item.getId(), this.usuarios.get(id));
+				}
+				itens.addAll(itensDeUsuario); 
+			}
+			
+		}
+		Collections.sort(itens, new IdComparator());
+		String saida = "";
+		for (Item item : itens) {
+			String representacaoDeUsuario = ligaItemAoUsuario.get(item.getId()).representacaoParaListagemDeDoacao();
+			saida += item + ", " + representacaoDeUsuario + " | ";
+		}
+		return saida.substring(0, saida.length() - 3);
+	}
+
+	/**
+	 * Remove item necessario.
+	 * 
+	 * @param idReceptor id do receptor.
+	 * @param idItem id do item.
+	 * 
+	 * @throws Exception caso o item nao exista.
+	 */
+	public void removeItemNecessario(String idReceptor, int idItem) throws Exception {
+		this.validador.validaDado(idReceptor, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
+		this.validador.validaValorPositivo(idItem, "Entrada invalida: id do item nao pode ser negativo.");
+		if (!this.usuarios.containsKey(idReceptor)) {
+			throw new IllegalArgumentException("Usuario nao encontrado: " + idReceptor + ".");
+		}
+		String[] desc = this.usuarios.get(idReceptor).removeItem(idItem).split(",");
+		this.descricoes.put(desc[0], this.descricoes.get(desc[0]) - Integer.parseInt(desc[1]));
+	}
+
 }
+
+
+
