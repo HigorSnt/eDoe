@@ -181,10 +181,13 @@ public class Usuario {
 	}
 
 	public String representacaoParaListagemDeDoacao() {
-		return "doador: " + this.getNome() + "/" + this.getId();
+		if(!this.isEhReceptor()) {
+			return "doador: " + this.getNome() + "/" + this.getId();
+		}
+		return "Receptor: " + this.getNome() + "/" + this.getId();
 	}
 
-	public String atualizaItemParaDoacao(int id, int quantidade, String tags) {
+	public String atualizaItem(int id, int quantidade, String tags) {
 		for (String descricao : this.itens.keySet()) {
 			for (Item item : this.itens.get(descricao)) {
 				if (item.getId() == id) {
@@ -202,7 +205,7 @@ public class Usuario {
 		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 	}
 
-	public String removeItemParaDoacao(int id) throws Exception {
+	public String removeItem(int id) throws Exception {
 		if (this.itens.isEmpty()) {
 			throw new Exception("O Usuario nao possui itens cadastrados.");
 		}
@@ -239,6 +242,7 @@ public class Usuario {
 				if (i.equals(aSerAdcionado)) {
 					i.setQuantidade(quantidade);
 					achouItemIgual = true;
+					return i.getId();
 				}
 			}
 			if (!achouItemIgual) {
@@ -261,6 +265,6 @@ public class Usuario {
 				}
 			}
 		}
-		throw new IllegalArgumentException();
+		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 	}
 }

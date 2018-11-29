@@ -78,5 +78,13 @@ public class Facade {
 	public String listaItensParaDoacao() {
 		return this.cg.listaItensParaDoacao();
 	}
+	
+	public String listaItensNecessarios() {
+		return this.cg.listaItensNecessarios();
+	}
+	
+	public void removeItemNecessario(String idReceptor, int idItem) throws Exception {
+		this.cg.removeItemNecessario(idReceptor, idItem);
+	}
 
 }
