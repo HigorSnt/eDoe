@@ -299,8 +299,7 @@ public class UsuarioController {
 		if (!this.usuarios.containsKey(idReceptor)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idReceptor + ".");
 		}
-		
-		if(this.usuarios.get(idReceptor).isEhReceptor()) {
+				if(this.usuarios.get(idReceptor).isEhReceptor()) {
 			return this.adicionaItem(idReceptor, descricaoItem, quantidade, tags);
 		}else {
 			throw new IllegalArgumentException("Entrada invalida: usuario nao e receptor.");
@@ -338,7 +337,7 @@ public class UsuarioController {
 	 * @return retorna a representacao do item.
 	 */
 	public String exibeItem(int id, String idDoador) {
-		if (idDoador != null && !this.usuarios.containsKey(idDoador)) {
+		if (!this.usuarios.containsKey(idDoador)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
 		}
 
@@ -378,27 +377,26 @@ public class UsuarioController {
 	 * Atualiza qualquer item.
 	 * 
 	 * @param id id do item.
-	 * @param idMoral id do usuario ligado ao item.
+	 * @param idUsuario id do usuario ligado ao item.
 	 * @param quantidade quantidade do item.
 	 * @param tags tags do item.
 	 * 
 	 * @return retorna a representacao do item.
 	 */
-	private String atualizaItem(int id, String idMoral, int quantidade, String tags) {
-		this.validador.validaDado(idMoral, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
+	private String atualizaItem(int id, String idUsuario, int quantidade, String tags) {
+		this.validador.validaDado(idUsuario, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
 		this.validador.validaValorPositivo(id, "Entrada invalida: id do item nao pode ser negativo.");
 		
-		if (!this.usuarios.containsKey(idMoral)) {
-			throw new IllegalArgumentException("Usuario nao encontrado: " + idMoral + ".");
+		if (!this.usuarios.containsKey(idUsuario)) {
+			throw new IllegalArgumentException("Usuario nao encontrado: " + idUsuario + ".");
 		}
 		
 		if (quantidade > 0) {
-			
-			String desc = this.usuarios.get(idMoral).getDescricaoItem(id);
+			String desc = this.usuarios.get(idUsuario).getDescricaoItem(id);
 			this.descricoes.put(desc,quantidade);
 		}
 		
-		return this.usuarios.get(idMoral).atualizaItem(id, quantidade, tags);
+		return this.usuarios.get(idUsuario).atualizaItem(id, quantidade, tags);
 	}
 
 	/**
@@ -409,12 +407,14 @@ public class UsuarioController {
 	 * 
 	 * @throws Exception caso o item nao exista.
 	 */
-	public void removeItemParaDoacao(int id, String idDoador) throws Exception {
+	public void removeItemParaDoacao(int id, String idDoador) {
 		this.validador.validaDado(idDoador, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
 		this.validador.validaValorPositivo(id, "Entrada invalida: id do item nao pode ser negativo.");
+		
 		if (!this.usuarios.containsKey(idDoador)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
 		}
+		
 		String[] desc = this.usuarios.get(idDoador).removeItem(id).split(",");
 		this.descricoes.put(desc[0], this.descricoes.get(desc[0]) - Integer.parseInt(desc[1]));
 	}
@@ -440,12 +440,13 @@ public class UsuarioController {
 		List<Item> itens = new ArrayList<>();
 
 		for (String id : this.usuarios.keySet()) {
-			
-			List<Item> itensDeUsuario = this.usuarios.get(id).pegaTodosOsItens();
-			for (Item item : itensDeUsuario) {
-				ligaItemAoUsuario.put(item.getId(), this.usuarios.get(id));
+			if (!this.usuarios.get(id).isEhReceptor()) {
+				List<Item> itensDeUsuario = this.usuarios.get(id).pegaTodosOsItens();
+				for (Item item : itensDeUsuario) {
+					ligaItemAoUsuario.put(item.getId(), this.usuarios.get(id));
+				}
+				itens.addAll(itensDeUsuario);
 			}
-			itens.addAll(itensDeUsuario);
 		}
 
 		Collections.sort(itens, new QuantidadeComparator());
@@ -514,7 +515,7 @@ public class UsuarioController {
 	 * 
 	 * @throws Exception caso o item nao exista.
 	 */
-	public void removeItemNecessario(String idReceptor, int idItem) throws Exception {
+	public void removeItemNecessario(String idReceptor, int idItem) {
 		this.validador.validaDado(idReceptor, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
 		this.validador.validaValorPositivo(idItem, "Entrada invalida: id do item nao pode ser negativo.");
 		if (!this.usuarios.containsKey(idReceptor)) {

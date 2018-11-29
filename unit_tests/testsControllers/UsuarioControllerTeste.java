@@ -85,7 +85,6 @@ class UsuarioControllerTeste {
 		// Usuario ja cadastrado
 		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaReceptor("84473712044", "Murilo Luiz Brito", "muriloluizbrito-81@ipmmi.org.br",
 				"(31) 99776-7434", "PESSOA_FISICA"));
-		
 	}
 	
 	@Test
@@ -114,20 +113,13 @@ class UsuarioControllerTeste {
 			" | Lucas Fernandes/10357071312, amigao@gmail.com, (83) 94813-4871, status: doador", 
 			uc.pesquisaUsuarioPorNome("Lucas Fernandes"));
 	}
-	/**
-	 * uc.adicionaDoador("70513372911", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
-				"(83) 92918-0211","PESSOA_FISICA");
-	 * 
-	 */
+	
 	@Test
-	void testAlteraDados() {
-		assertEquals("Murilo Luiz Brito/84473712044, muriloluizbrito-81@ipmmi.org.br, (31) 99776-7434, status: receptor", uc.pesquisaUsuarioPorId("84473712044"));
-		uc.lerReceptores("arquivos_sistema/atualizaReceptores.csv");
-		assertEquals("Murilo Luiz Brito/84473712044, muriloluiz@ipmmi.org.br, (31) 99770-7474, status: receptor", uc.pesquisaUsuarioPorId("84473712044"));
-		
+	void testAlteraDadosDoador() {
 		assertThrows(IllegalArgumentException.class, ()-> uc.alteraDadosDoador(null,"","",""));
 		assertThrows(IllegalArgumentException.class, ()-> uc.alteraDadosDoador("","","",""));
 		assertThrows(IllegalArgumentException.class, ()-> uc.alteraDadosDoador("000000000000000","","",""));
+		
 		//nome == null || nome == ""
 		assertEquals("Elizabeth Ashe/70513372911, elizabethcalamity@mail.com, (83) 2918-0211, status: doador", 
 				uc.alteraDadosDoador("70513372911", "", "elizabethcalamity@mail.com", "(83) 2918-0211"));
@@ -145,6 +137,29 @@ class UsuarioControllerTeste {
 				uc.alteraDadosDoador("70513372911", "Elizabeth Ashe", null, "(83) 92918-0211"));
 	}
 	
+	@Test
+	void testAlteraDadosReceptor() {
+		assertEquals("Murilo Luiz Brito/84473712044, muriloluizbrito-81@ipmmi.org.br, (31) 99776-7434, status: receptor", uc.pesquisaUsuarioPorId("84473712044"));
+		uc.lerReceptores("arquivos_sistema/atualizaReceptores.csv");
+		assertEquals("Murilo Luiz Brito/84473712044, muriloluiz@ipmmi.org.br, (31) 99770-7474, status: receptor", uc.pesquisaUsuarioPorId("84473712044"));
+		
+		assertThrows(IllegalArgumentException.class, ()-> uc.alteraDadosReceptor("0000000000", "Murilo Luiz", "muriloluiz@ipmi.org.br", "(31) 9770-7474"));
+		// nome == null || nome == ""
+		assertEquals("Murilo Luiz Brito/84473712044, muriloluiz@ipmi.org.br, (31) 9770-7474, status: receptor", 
+					uc.alteraDadosReceptor("84473712044", "  ", "muriloluiz@ipmi.org.br", "(31) 9770-7474"));
+		assertEquals("Murilo Luiz Brito/84473712044, muriloluiz@ipmmi.org.br, (31) 99770-7474, status: receptor", 
+					uc.alteraDadosReceptor("84473712044", null, "muriloluiz@ipmmi.org.br", "(31) 99770-7474"));
+		// celular == null  || celular == ""
+		assertEquals("Murilo Luiz/84473712044, muriloluiz@mi.org.br, (31) 99770-7474, status: receptor", 
+					uc.alteraDadosReceptor("84473712044", "Murilo Luiz", "muriloluiz@mi.org.br", "    "));
+		assertEquals("Murilo Luiz Brito/84473712044, muriloluiz@ipmmi.org.br, (31) 99770-7474, status: receptor", 
+					uc.alteraDadosReceptor("84473712044", "Murilo Luiz Brito", "muriloluiz@ipmmi.org.br", null));
+		// e == null  || email == ""
+		assertEquals("Murilo Luiz/84473712044, muriloluiz@ipmmi.org.br, (31) 9770-7474, status: receptor", 
+					uc.alteraDadosReceptor("84473712044", "Murilo Luiz", null, "(31) 9770-7474"));
+		assertEquals("Murilo Luiz Brito/84473712044, muriloluiz@ipmmi.org.br, (31) 99770-7474, status: receptor", 
+					uc.alteraDadosReceptor("84473712044", "Murilo Luiz Brito", "      ", "(31) 99770-7474"));
+	}
 	
 	@Rule
 	public ExpectedException exceptionRule = ExpectedException.none();
@@ -168,8 +183,17 @@ class UsuarioControllerTeste {
 	void testAdicionaDescritor() {
 		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaDescritor("   "));
 		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaDescritor(null));
-		uc.adicionaDescritor("cadeira de rodas");
-		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaDescritor("cadeira de RoDas"));
+		uc.adicionaDescritor("Livro");
+		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaDescritor("liVrO"));
+	}
+	
+	@Test
+	void testAdicionaItemNecessario() {
+		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaItemNecessario(null, "cAdEiRa de RoDaS", 7, "roda grande,80kg,conforto"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaItemNecessario("  ", "cAdEiRa de RoDaS", 7, "roda grande,80kg,conforto"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaItemNecessario("70513372911", "cAdEiRa de RoDaS", 7, "roda grande,80kg,conforto"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaItemNecessario("1111111111111111", "cAdEiRa de RoDaS", 7, "roda grande,80kg,conforto"));
+		assertEquals(3, uc.adicionaItemNecessario("84473712044", "cAdEiRa de RoDaS", 7, "roda grande,80kg,conforto"));
 	}
 	
 	@Test
@@ -178,13 +202,15 @@ class UsuarioControllerTeste {
 		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaItemParaDoacao("    ", "camiseta", 5, "outfit,algodao"));
 		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaItemParaDoacao("50270271338", "camiseta", 5, "outfit,algodao"));
 		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaItemParaDoacao("88770280096", "camiseta", 5, "outfit,algodao"));
-		assertEquals(3, uc.adicionaItemParaDoacao("70513372911", "camiseta", 5, "outfit,algodao"));
+		assertEquals(1, uc.adicionaItemParaDoacao("70513372911", "camiseta", 5, "outfit,algodao"));
 	}
 	
 	@BeforeEach
-	void adicionaItemParaDoacao() {
+	void adicionaItem() {
 		uc.adicionaItemParaDoacao("70513372911", "camiseta", 5, "outfit,algodao");
 		uc.adicionaItemParaDoacao("70513372911", "travesseiro", 10, "travesseiro de pena");
+		uc.adicionaItemNecessario("84473712044", "cAdEiRa de RoDaS", 7, "roda grande,80kg,conforto");
+		uc.adicionaItemNecessario("24875800037", "Sabonete", 8, "Higiene");
 	}
 	
 	@Test
@@ -195,13 +221,71 @@ class UsuarioControllerTeste {
 	}
 	
 	@Test
-	void testAtualizaItem() {
+	void testAtualizaItemParaDoacao() {
 		assertThrows(IllegalArgumentException.class, ()-> uc.atualizaItemParaDoacao(1, "", 4, "algodao"));
 		assertThrows(IllegalArgumentException.class, ()-> uc.atualizaItemParaDoacao(1, null, 4, "algodao"));
-		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaItemParaDoacao("70513372911", "camiseta", -1, "algodao"));
-		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaItemParaDoacao("70513372911", "camiseta", 0, "algodao"));
-		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaItemParaDoacao("58791093499", "camiseta", 0, "algodao"));
-		//assertThrows(expectedType, executable)
+		assertThrows(IllegalArgumentException.class, ()-> uc.atualizaItemParaDoacao(-1, "70513372911", 4, "algodao"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.atualizaItemParaDoacao(0, "70513372911", 4, "algodao"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.atualizaItemParaDoacao(1, "000000000", 4, "algodao"));
+		assertEquals("1 - camiseta, tags: [algodao], quantidade: 6", uc.atualizaItemParaDoacao(1, "70513372911", 6, "algodao"));
+		assertEquals("1 - camiseta, tags: [algodao,  azul], quantidade: 6", uc.atualizaItemParaDoacao(1, "70513372911", 0, "algodao, azul"));
+		assertEquals("1 - camiseta, tags: [algodao], quantidade: 6", uc.atualizaItemParaDoacao(1, "70513372911", -8, "algodao"));
 	}
-
+	
+	@Test
+	void testAtualizaItemNecessario() {
+		assertEquals("3 - cadeira de rodas, tags: [roda grande], quantidade: 7", uc.atualizaItemNecessario(3, "84473712044", 7, "roda grande"));
+	}
+	
+	@Test
+	void testRemoveItemParaDoacao() {
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(0, "70513372911"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(-9, "70513372911"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(1, "    "));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(1, null));
+		
+		assertEquals("1 - camiseta, tags: [outfit, algodao], quantidade: 5", uc.exibeItem(1, "70513372911"));
+		uc.removeItemParaDoacao(1, "70513372911");
+		assertThrows(IllegalArgumentException.class, ()-> uc.exibeItem(1, "70513372911"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(1, "00"));
+	}
+	
+	@Test
+	void testeListaDescritorDeItensParaDoacao() {
+		assertEquals("7 - cadeira de rodas | 5 - camiseta | 8 - sabonete | 10 - travesseiro", uc.listaDescritorDeItensParaDoacao());
+	}
+	
+	@Test
+	void testeListaItensParaDoacao() {
+		assertEquals("2 - travesseiro, tags: [travesseiro de pena], quantidade: 10, doador: Elizabeth Ashe/70513372911 | "
+				+ "1 - camiseta, tags: [outfit, algodao], quantidade: 5, doador: Elizabeth Ashe/70513372911", uc.listaItensParaDoacao());
+	}
+	
+	@Test
+	void testePesquisaItemParaDoacaoPorDescricao() {
+		assertThrows(IllegalArgumentException.class, ()-> uc.pesquisaItemParaDoacaoPorDescricao(""));
+		assertThrows(IllegalArgumentException.class, ()-> uc.pesquisaItemParaDoacaoPorDescricao(null));
+		uc.adicionaItemParaDoacao("08704413000240", "camiseta", 8, "camisa bonita");
+		assertEquals("1 - camiseta, tags: [outfit, algodao], quantidade: 5 | "
+				+ "5 - camiseta, tags: [camisa bonita], quantidade: 8", uc.pesquisaItemParaDoacaoPorDescricao("camiseta"));
+	}
+	
+	@Test
+	void testeListaItensNecessarios() {
+		assertEquals("3 - cadeira de rodas, tags: [roda grande, 80kg, conforto], quantidade: 7, Receptor: Murilo Luiz Brito/84473712044 | "
+				+ "4 - sabonete, tags: [Higiene], quantidade: 8, Receptor: Sara Jennifer Vieira/24875800037", uc.listaItensNecessarios());
+	}
+	
+	@Test
+	void testeRemoveItemNecessario() {
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(0, "84473712044"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(-9, "84473712044"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(1, "    "));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(1, null));
+		assertEquals("3 - cadeira de rodas, tags: [roda grande, 80kg, conforto], quantidade: 7", uc.exibeItem(3, "84473712044"));
+		uc.removeItemNecessario("84473712044", 3);
+		assertThrows(IllegalArgumentException.class, ()-> uc.exibeItem(3, "84473712044"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemNecessario("000", 4));
+	}
+	
 }

@@ -245,9 +245,9 @@ public class Usuario {
 	 * 
 	 * @throws Exception lanca excessao quando o item nao existe.
 	 */
-	public String removeItem(int id) throws Exception {
+	public String removeItem(int id) {
 		if (this.itens.isEmpty()) {
-			throw new Exception("O Usuario nao possui itens cadastrados.");
+			throw new IllegalArgumentException("O Usuario nao possui itens cadastrados.");
 		}
 		
 		for (String descricao : this.itens.keySet()) {
@@ -259,7 +259,7 @@ public class Usuario {
 				}
 			}
 		}
-		throw new Exception("Item nao encontrado: " + id + ".");
+		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 	}
 
 	/**
@@ -278,7 +278,6 @@ public class Usuario {
 			}
 		}
 		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
-
 	}
 
 	/**
