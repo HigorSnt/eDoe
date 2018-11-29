@@ -40,7 +40,7 @@ expectError "Entrada invalida: quantidade deve ser maior que zero." adicionaItem
 expectError "Entrada invalida: quantidade deve ser maior que zero." adicionaItemParaDoacao idDoador=${id1} descricaoItem="travesseiro" quantidade=-1  tags=""
 expectError "Entrada invalida: id do usuario nao pode ser vazio ou nulo." adicionaItemParaDoacao idDoador= descricaoItem="travesseiro" quantidade=2 tags=""
 expectError "Usuario nao encontrado: 12345678910." adicionaItemParaDoacao idDoador=12345678910 descricaoItem="travesseiro" quantidade=2 tags="outfit,hollister"
-
+ 
 ## Exibindo itens ##
 
 expect ${idItem1}" - cadeira de rodas, tags: [roda grande, cadeira], quantidade: 2" exibeItem id=${idItem1} idDoador=${id9}
