@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import aux.DescricaoComparator;
@@ -26,34 +27,20 @@ public class UsuarioController {
 	private final String ERROID = "Entrada invalida: id do usuario nao pode ser vazio ou nulo.";
 	private final String ERROIDDOADOR = "Entrada invalida: id do usuario nao pode ser vazio ou nulo.";
 	private final String ERRODESCRITOR = "Entrada invalida: descricao nao pode ser vazia ou nula.";
-	private final String TEXTODEPESQUISA = "Entrada invalida: texto de pesquisa nao pode ser vazio ou nulo.";
 
 	private final String ERROVALORQTD = "Entrada invalida: quantidade deve ser maior que zero.";
-	private final String ERROVALORIDITEM = "Entrada invalida: id do item nao pode ser negativo.";
-	private final String ERROTAGS = "Entrada invalida: tags nao pode ser vazia ou nula.";
 	private final String ERROTEXTODEPESQUISA = "Entrada invalida: texto da pesquisa nao pode ser vazio ou nulo.";
 	private final String ERRODESCRICAOJAEXISTENTE = "Descritor de Item ja existente: ";
+	
 	private Map<String, Usuario> usuarios;
 	private Validador validador;
-	private HashMap<String, Integer> descricoes;
+	private Map<String, Integer> descricoes;
 	private int cont;
-
-	// Expected <5 - cadeira de alimentacao | 15 - cadeira de praia | 2 - cadeira de
-	// rodas | 4 - cadeira reclinavel | 3 - calca jeans | 25 - camiseta | 15 -
-	// cobertor | 5 - colchao | 2 - computador | 0 - curso de programacao | 0 -
-	// escova de dente | 5 - jaqueta de couro | 0 - playstation 4 | 0 - televisao |
-	// 10 - travesseiro>, but was
-	// <5 - colchao | 2 - | 2 - null | 15 - cadeira de praia | 3 - calca jeans | 0 -
-	// Playstation 4 | 5 - jaqueta de couro | 0 - televisao | 0 - curso de
-	// programacao | 0 - Jaqueta de Couro | 0 - Escova De Dente | 2 - computador |
-	// 10 - cobertor | 0 - Cobertor | 5 - cadeira de alimentacao | 7 - cadeira de
-	// rodas | 25 - camiseta | 9 - travesseiro | 4 - cadeira reclinavel | 0 -
-	// Colchao>
-
+	
 	public UsuarioController() {
 		this.usuarios = new LinkedHashMap<String, Usuario>();
 		this.validador = new Validador();
-		this.descricoes = new HashMap<>();
+		this.descricoes = new TreeMap<>();
 		this.cont = 0;
 	}
 
@@ -263,6 +250,7 @@ public class UsuarioController {
 
 	public void adicionaDescritor(String descricao) {
 		this.validador.validaDado(descricao, this.ERRODESCRITOR);
+		
 		descricao = descricao.toLowerCase();
 		if (this.descricoes.containsKey(descricao)) {
 			throw new IllegalArgumentException(this.ERRODESCRICAOJAEXISTENTE + descricao + ".");
@@ -271,17 +259,16 @@ public class UsuarioController {
 	}
 
 	public int adicionaItemParaDoacao(String idDoador, String descricaoItem, int quantidade, String tags) {
-		this.validador.validaDado(idDoador, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
-		if (idDoador != null && !this.usuarios.containsKey(idDoador)) {
+		this.validador.validaDado(idDoador, this.ERROIDDOADOR);
+		this.validador.validaDado(descricaoItem, this.ERRODESCRITOR);
+		this.validador.validaValorPositivo(quantidade, this.ERROVALORQTD);
+		
+		if (!this.usuarios.containsKey(idDoador)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
 		}
 
 		this.cont++;
-		if (this.descricoes.containsKey(descricaoItem)) {
-			this.descricoes.put(descricaoItem, (this.descricoes.get(descricaoItem) + quantidade));
-		} else {
-			this.descricoes.put(descricaoItem, quantidade);
-		}
+		this.descricoes.put(descricaoItem.toLowerCase(), quantidade);
 		return this.usuarios.get(idDoador).adicionaItemParaDoacao(descricaoItem, quantidade, tags, this.cont);
 	}
 
@@ -296,9 +283,16 @@ public class UsuarioController {
 	public String atualizaItemParaDoacao(int id, String idDoador, int quantidade, String tags) {
 		this.validador.validaDado(idDoador, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
 		this.validador.validaValorPositivo(id, "Entrada invalida: id do item nao pode ser negativo.");
-		if (idDoador != null && !this.usuarios.containsKey(idDoador)) {
+		
+		if (!this.usuarios.containsKey(idDoador)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
 		}
+		
+		if (quantidade > 0) {
+			String desc = this.usuarios.get(idDoador).getDescricaoItem(id);
+			this.descricoes.put(desc,quantidade);
+		}
+		
 		return this.usuarios.get(idDoador).atualizaItemParaDoacao(id, quantidade, tags);
 	}
 

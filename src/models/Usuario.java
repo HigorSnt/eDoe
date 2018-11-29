@@ -15,12 +15,7 @@ public class Usuario {
 	private final String ERROCLASSE = "Entrada invalida: classe nao pode ser vazia ou nula.";
 	private final String ERROOPCAOCLASSE = "Entrada invalida: opcao de classe invalida.";
 	private final String ERROID = "Entrada invalida: id do usuario nao pode ser vazio ou nulo.";
-	private final String ERROIDDOADOR = "Entrada invalida: id do usuario nao pode ser vazio ou nulo.";
-	private final String ERRODESCRITOR = "Entrada invalida: descricao nao pode ser vazia ou nula.";
-	private final String ERROVALORQTD = "Entrada invalida: quantidade deve ser maior que zero.";
-	private final String ERROVALORIDITEM = "Entrada invalida: id do item nao pode ser negativo.";
-	private final String ERROTAGS = "Entrada invalida: tags nao pode ser vazia ou nula.";
-	private final String ERROTEXTODEPESQUISA = "Entrada invalida: texto da pesquisa nao pode ser vazio ou nulo.";
+	
 	private String id;
 	private String nome;
 	private String celular;
@@ -208,7 +203,6 @@ public class Usuario {
 	}
 
 	public void removeItemParaDoacao(int id) throws Exception {
-		boolean achou = false;
 		if (this.itens.isEmpty()) {
 			throw new Exception("O Usuario nao possui itens cadastrados.");
 		}
@@ -217,13 +211,11 @@ public class Usuario {
 			for (Item item : this.itens.get(descricao)) {
 				if (item.getId() == id) {
 					this.itens.get(descricao).remove(item);
-					achou = true;
+					return;
 				}
 			}
 		}
-		if (!achou) {
-			throw new Exception("Item nao encontrado: " + id + ".");
-		}
+		throw new Exception("Item nao encontrado: " + id + ".");
 	}
 
 	public String exibeItem(int id) {
@@ -258,5 +250,16 @@ public class Usuario {
 		}
 
 		return cont;
+	}
+
+	public String getDescricaoItem(int id){
+		for (List<Item> valor : this.itens.values()) {
+			for (Item item : valor) {
+				if (item.getId() == id) {
+					return item.getDescricao();
+				}
+			}
+		}
+		throw new IllegalArgumentException();
 	}
 }
