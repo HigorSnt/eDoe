@@ -193,7 +193,7 @@ class UsuarioControllerTeste {
 		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaItemNecessario("  ", "cAdEiRa de RoDaS", 7, "roda grande,80kg,conforto"));
 		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaItemNecessario("70513372911", "cAdEiRa de RoDaS", 7, "roda grande,80kg,conforto"));
 		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaItemNecessario("1111111111111111", "cAdEiRa de RoDaS", 7, "roda grande,80kg,conforto"));
-		assertEquals(3, uc.adicionaItemNecessario("84473712044", "cAdEiRa de RoDaS", 7, "roda grande,80kg,conforto"));
+		assertEquals(4, uc.adicionaItemNecessario("84473712044", "cAdEiRa de RoDaS", 7, "roda grande,80kg,conforto"));
 	}
 	
 	@Test
@@ -202,11 +202,12 @@ class UsuarioControllerTeste {
 		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaItemParaDoacao("    ", "camiseta", 5, "outfit,algodao"));
 		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaItemParaDoacao("50270271338", "camiseta", 5, "outfit,algodao"));
 		assertThrows(IllegalArgumentException.class, ()-> uc.adicionaItemParaDoacao("88770280096", "camiseta", 5, "outfit,algodao"));
-		assertEquals(1, uc.adicionaItemParaDoacao("70513372911", "camiseta", 5, "outfit,algodao"));
+		assertEquals(2, uc.adicionaItemParaDoacao("70513372911", "camiseta", 5, "outfit,algodao"));
 	}
 	
 	@BeforeEach
 	void adicionaItem() {
+		uc.adicionaItemNecessario("51567490000143", "travesseiro", 2, "travesseiro de pena,conforto,dormir");
 		uc.adicionaItemParaDoacao("70513372911", "camiseta", 5, "outfit,algodao");
 		uc.adicionaItemParaDoacao("70513372911", "travesseiro", 10, "travesseiro de pena");
 		uc.adicionaItemNecessario("84473712044", "cAdEiRa de RoDaS", 7, "roda grande,80kg,conforto");
@@ -216,25 +217,25 @@ class UsuarioControllerTeste {
 	@Test
 	void testExibeItem() {
 		assertThrows(IllegalArgumentException.class, ()-> uc.exibeItem(1, "58791093499"));
-		assertEquals("1 - camiseta, tags: [outfit, algodao], quantidade: 5", uc.exibeItem(1, "70513372911"));
-		assertEquals("2 - travesseiro, tags: [travesseiro de pena], quantidade: 10", uc.exibeItem(2, "70513372911"));
+		assertEquals("2 - camiseta, tags: [outfit, algodao], quantidade: 5", uc.exibeItem(2, "70513372911"));
+		assertEquals("3 - travesseiro, tags: [travesseiro de pena], quantidade: 10", uc.exibeItem(3, "70513372911"));
 	}
 	
 	@Test
 	void testAtualizaItemParaDoacao() {
-		assertThrows(IllegalArgumentException.class, ()-> uc.atualizaItemParaDoacao(1, "", 4, "algodao"));
-		assertThrows(IllegalArgumentException.class, ()-> uc.atualizaItemParaDoacao(1, null, 4, "algodao"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.atualizaItemParaDoacao(2, "", 4, "algodao"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.atualizaItemParaDoacao(2, null, 4, "algodao"));
 		assertThrows(IllegalArgumentException.class, ()-> uc.atualizaItemParaDoacao(-1, "70513372911", 4, "algodao"));
 		assertThrows(IllegalArgumentException.class, ()-> uc.atualizaItemParaDoacao(0, "70513372911", 4, "algodao"));
-		assertThrows(IllegalArgumentException.class, ()-> uc.atualizaItemParaDoacao(1, "000000000", 4, "algodao"));
-		assertEquals("1 - camiseta, tags: [algodao], quantidade: 6", uc.atualizaItemParaDoacao(1, "70513372911", 6, "algodao"));
-		assertEquals("1 - camiseta, tags: [algodao,  azul], quantidade: 6", uc.atualizaItemParaDoacao(1, "70513372911", 0, "algodao, azul"));
-		assertEquals("1 - camiseta, tags: [algodao], quantidade: 6", uc.atualizaItemParaDoacao(1, "70513372911", -8, "algodao"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.atualizaItemParaDoacao(2, "000000000", 4, "algodao"));
+		assertEquals("2 - camiseta, tags: [algodao], quantidade: 6", uc.atualizaItemParaDoacao(2, "70513372911", 6, "algodao"));
+		assertEquals("2 - camiseta, tags: [algodao,  azul], quantidade: 6", uc.atualizaItemParaDoacao(2, "70513372911", 0, "algodao, azul"));
+		assertEquals("2 - camiseta, tags: [algodao], quantidade: 6", uc.atualizaItemParaDoacao(2, "70513372911", -8, "algodao"));
 	}
 	
 	@Test
 	void testAtualizaItemNecessario() {
-		assertEquals("3 - cadeira de rodas, tags: [roda grande], quantidade: 7", uc.atualizaItemNecessario(3, "84473712044", 7, "roda grande"));
+		assertEquals("4 - cadeira de rodas, tags: [roda grande], quantidade: 7", uc.atualizaItemNecessario(4, "84473712044", 7, "roda grande"));
 	}
 	
 	@Test
@@ -244,10 +245,10 @@ class UsuarioControllerTeste {
 		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(1, "    "));
 		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(1, null));
 		
-		assertEquals("1 - camiseta, tags: [outfit, algodao], quantidade: 5", uc.exibeItem(1, "70513372911"));
-		uc.removeItemParaDoacao(1, "70513372911");
-		assertThrows(IllegalArgumentException.class, ()-> uc.exibeItem(1, "70513372911"));
-		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(1, "00"));
+		assertEquals("2 - camiseta, tags: [outfit, algodao], quantidade: 5", uc.exibeItem(2, "70513372911"));
+		uc.removeItemParaDoacao(2, "70513372911");
+		assertThrows(IllegalArgumentException.class, ()-> uc.exibeItem(2, "70513372911"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(2, "00"));
 	}
 	
 	@Test
@@ -257,8 +258,13 @@ class UsuarioControllerTeste {
 	
 	@Test
 	void testeListaItensParaDoacao() {
-		assertEquals("2 - travesseiro, tags: [travesseiro de pena], quantidade: 10, doador: Elizabeth Ashe/70513372911 | "
-				+ "1 - camiseta, tags: [outfit, algodao], quantidade: 5, doador: Elizabeth Ashe/70513372911", uc.listaItensParaDoacao());
+		uc.adicionaItemParaDoacao("08704413000240", "cobertor", 10, "lencol,conforto");
+		uc.adicionaItemParaDoacao("08704413000240", "camiseta", 4, "camiseta M");
+		//uc.adicionaItemParaDoacao("08704413000240", "cobertor", 10, "lencol,conforto");
+		assertEquals("6 - cobertor, tags: [lencol, conforto], quantidade: 10, doador: Paroquia de Nossa Senhora da Conceicao/08704413000240 | "
+				+ "3 - travesseiro, tags: [travesseiro de pena], quantidade: 10, doador: Elizabeth Ashe/70513372911 | "
+				+ "2 - camiseta, tags: [outfit, algodao], quantidade: 5, doador: Elizabeth Ashe/70513372911 | "
+				+ "7 - camiseta, tags: [camiseta M], quantidade: 4, doador: Paroquia de Nossa Senhora da Conceicao/08704413000240", uc.listaItensParaDoacao());
 	}
 	
 	@Test
@@ -266,14 +272,16 @@ class UsuarioControllerTeste {
 		assertThrows(IllegalArgumentException.class, ()-> uc.pesquisaItemParaDoacaoPorDescricao(""));
 		assertThrows(IllegalArgumentException.class, ()-> uc.pesquisaItemParaDoacaoPorDescricao(null));
 		uc.adicionaItemParaDoacao("08704413000240", "camiseta", 8, "camisa bonita");
-		assertEquals("1 - camiseta, tags: [outfit, algodao], quantidade: 5 | "
-				+ "5 - camiseta, tags: [camisa bonita], quantidade: 8", uc.pesquisaItemParaDoacaoPorDescricao("camiseta"));
+		assertEquals("2 - camiseta, tags: [outfit, algodao], quantidade: 5 | "
+				+ "6 - camiseta, tags: [camisa bonita], quantidade: 8", uc.pesquisaItemParaDoacaoPorDescricao("camiseta"));
 	}
 	
 	@Test
 	void testeListaItensNecessarios() {
-		assertEquals("3 - cadeira de rodas, tags: [roda grande, 80kg, conforto], quantidade: 7, Receptor: Murilo Luiz Brito/84473712044 | "
-				+ "4 - sabonete, tags: [Higiene], quantidade: 8, Receptor: Sara Jennifer Vieira/24875800037", uc.listaItensNecessarios());
+		uc.adicionaItemNecessario("51567490000143", "travesseiro", 2, "travesseiro de pena,conforto,dormir");
+		assertEquals("1 - travesseiro, tags: [travesseiro de pena, conforto, dormir], quantidade: 2, Receptor: Rafaela Beatriz/51567490000143 | "
+				+ "4 - cadeira de rodas, tags: [roda grande, 80kg, conforto], quantidade: 7, Receptor: Murilo Luiz Brito/84473712044 | "
+				+ "5 - sabonete, tags: [Higiene], quantidade: 8, Receptor: Sara Jennifer Vieira/24875800037", uc.listaItensNecessarios());
 	}
 	
 	@Test
@@ -282,10 +290,10 @@ class UsuarioControllerTeste {
 		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(-9, "84473712044"));
 		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(1, "    "));
 		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(1, null));
-		assertEquals("3 - cadeira de rodas, tags: [roda grande, 80kg, conforto], quantidade: 7", uc.exibeItem(3, "84473712044"));
-		uc.removeItemNecessario("84473712044", 3);
-		assertThrows(IllegalArgumentException.class, ()-> uc.exibeItem(3, "84473712044"));
-		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemNecessario("000", 4));
+		assertEquals("4 - cadeira de rodas, tags: [roda grande, 80kg, conforto], quantidade: 7", uc.exibeItem(4, "84473712044"));
+		uc.removeItemNecessario("84473712044", 4);
+		assertThrows(IllegalArgumentException.class, ()-> uc.exibeItem(4, "84473712044"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemNecessario("000", 45));
 	}
 	
 }

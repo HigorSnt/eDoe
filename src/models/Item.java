@@ -30,11 +30,10 @@ public class Item {
 	 * Construtor de item, inicializa a lista e adciona todas as tags, bem como
 	 * inicializa os outros atributos.
 	 * 
-	 * @param idPessoa
-	 * @param descricao
-	 * @param quantidade
-	 * @param tags
-	 * @param id
+	 * @param descricao e a descricao do item
+	 * @param quantidade e a quantidade de itens
+	 * @param tags e um resumo do objeto
+	 * @param id e o id unico do item
 	 */
 	public Item(String descricao, int quantidade, String[] tags, int id) {
 		this.validador.validaDado(descricao, ERRODESCRITOR);
@@ -59,10 +58,6 @@ public class Item {
 		return this.id + " - " + this.descricao + ", tags: " + this.converteTagsEmString() + ", quantidade: " + this.quantidade; 
 	}
 	
-	public String getEtiqueta() {
-		return etiqueta;
-	}
-	
 	public int getId() {
 		return id;
 	}
@@ -74,7 +69,7 @@ public class Item {
 	/**
 	 * altera a quantidade de itens disponiveis.
 	 * 
-	 * @param novaQuantidade
+	 * @param novaQuantidade é o novo valor que quantidade assumirá.
 	 */
 	public void setQuantidade(int novaQuantidade) {
 		this.validador.validaValorPositivo(novaQuantidade, this.ERROVALOR);
@@ -86,7 +81,7 @@ public class Item {
 	 * adiciona as tags passadas como parametro na lista de tags que e contida no
 	 * objeto.
 	 * 
-	 * @param tags
+	 * @param tags é um resumo do objeto
 	 */
 	public void setTags(String[] tags) {
 		this.tags = new ArrayList<>();
@@ -108,8 +103,8 @@ public class Item {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
-		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
+		result = prime * result + descricao.hashCode();
+		result = prime * result + tags.hashCode();
 		return result;
 	}
 
@@ -122,15 +117,9 @@ public class Item {
 		if (getClass() != obj.getClass())
 			return false;
 		Item other = (Item) obj;
-		if (descricao == null) {
-			if (other.descricao != null)
-				return false;
-		} else if (!descricao.equals(other.descricao))
+		if (!descricao.equals(other.descricao))
 			return false;
-		if (tags == null) {
-			if (other.tags != null)
-				return false;
-		} else if (!tags.equals(other.tags))
+		if (!tags.equals(other.tags))
 			return false;
 		return true;
 	}

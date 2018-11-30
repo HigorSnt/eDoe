@@ -274,8 +274,6 @@ public class Usuario {
 	 * @param id id do item.
 	 * 
 	 * @return retorna a descricao e quantidade do item.
-	 * 
-	 * @throws Exception lanca excessao quando o item nao existe.
 	 */
 	public String removeItem(int id) {
 		if (this.itens.isEmpty()) {

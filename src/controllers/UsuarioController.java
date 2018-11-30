@@ -248,7 +248,7 @@ public class UsuarioController {
 	}
 
 	/**
-	 * @param descricao
+	 * @param descricao descricao dos itens
 	 */
 	public void adicionaDescritor(String descricao) {
 		this.validador.validaDado(descricao, this.ERRODESCRITOR);
@@ -404,8 +404,6 @@ public class UsuarioController {
 	 * 
 	 * @param id id do item.
 	 * @param idDoador id do doador.
-	 * 
-	 * @throws Exception caso o item nao exista.
 	 */
 	public void removeItemParaDoacao(int id, String idDoador) {
 		this.validador.validaDado(idDoador, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
@@ -512,8 +510,6 @@ public class UsuarioController {
 	 * 
 	 * @param idReceptor id do receptor.
 	 * @param idItem id do item.
-	 * 
-	 * @throws Exception caso o item nao exista.
 	 */
 	public void removeItemNecessario(String idReceptor, int idItem) {
 		this.validador.validaDado(idReceptor, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
