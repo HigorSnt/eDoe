@@ -1,6 +1,6 @@
 # eDoe
 <p align="center">
-  <img src="edoe.png"/></p>
+  <img src="eDoe.png"/></p>
 
   
 ## Projeto da Disciplina de Laboratório de Programação II
