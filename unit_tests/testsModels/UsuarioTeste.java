@@ -47,7 +47,7 @@ class UsuarioTeste {
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario("70513372911", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
 				null,"PESSOA_FISICA", false));
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario("70513372911", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
-				"(83) 92918-0211", null, false));
+			"(83) 92918-0211", null, false));
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario("70513372911", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
 				"(83) 92918-0211", "       ", false));
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario("70513372911", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 

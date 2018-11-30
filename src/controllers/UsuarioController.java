@@ -65,6 +65,7 @@ public class UsuarioController {
 		this.validador.validaClasse(classe, this.ERROOPCAOCLASSE);
 
 		Usuario user = new Usuario(id, nome, email, celular, classe, false);
+		
 		if (this.usuarios.containsKey(id)) {
 			throw new IllegalArgumentException("Usuario ja existente: " + id + ".");
 		}

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import aux.Validador;
+import enums.Classe;
 
 public class Usuario {
 
@@ -20,7 +21,7 @@ public class Usuario {
 	private String nome;
 	private String celular;
 	private String email;
-	private String classe;
+	private Classe classe;
 	private boolean ehReceptor;
 	private Validador validator = new Validador();
 	private Map<String, List<Item>> itens;
@@ -48,7 +49,7 @@ public class Usuario {
 		this.nome = nome;
 		this.celular = celular;
 		this.email = email;
-		this.classe = classe;
+		this.classe = Classe.valueOf(classe.toUpperCase());
 		this.ehReceptor = ehReceptor;
 	}
 
