@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import enums.Classe;
 import models.Item;
+import models.ItemAvaliado;
 import models.Usuario;
 import util.DescricaoComparator;
 import util.IdComparator;
@@ -412,6 +413,29 @@ public class UsuarioController {
 		}
 
 		return saida.substring(0, saida.length() - 3);
+	}
+	
+	public String match(String idReceptor, int idItemNecessario) {
+		Map<Integer, Usuario> ligaItemAoUsuario = new HashMap<>();
+		Item itemNecessario = this.usuarios.get(idReceptor).pegaItem(idItemNecessario);
+		List<ItemAvaliado> itensDoMatch= new ArrayList<>();
+		for (String id: this.usuarios.keySet()) {
+			List<Item> itens = this.usuarios.get(id).pegaTodosOsItensComDescricao(itemNecessario.getDescricao());			
+			for (Item item: itens) {
+				itensDoMatch.add(new ItemAvaliado(item, itemNecessario));
+				ligaItemAoUsuario.put(item.getId(), this.usuarios.get(id));
+			}
+		}
+		
+		Collections.sort(itensDoMatch);
+		String saida = "";
+		for (ItemAvaliado item: itensDoMatch) {
+			saida += item.toString() + ligaItemAoUsuario.get(item.getId()) + " | ";
+		}
+		
+		return saida.substring(0, saida.length() - 3);
+		
+		
 	}
 
 	/**

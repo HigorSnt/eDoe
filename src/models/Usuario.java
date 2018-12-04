@@ -16,7 +16,7 @@ public class Usuario {
 	private final String ERROCLASSE = "Entrada invalida: classe nao pode ser vazia ou nula.";
 	private final String ERROOPCAOCLASSE = "Entrada invalida: opcao de classe invalida.";
 	private final String ERROID = "Entrada invalida: id do usuario nao pode ser vazio ou nulo.";
-	
+
 	private String id;
 	private String nome;
 	private String celular;
@@ -38,7 +38,7 @@ public class Usuario {
 	 */
 	public Usuario(String id, String nome, String email, String celular, Classe classe, boolean ehReceptor) {
 		this.validador.validaCadastro(id, nome, email, celular);
-		
+
 		this.itens = new LinkedHashMap<>();
 		this.id = id;
 		this.nome = nome;
@@ -98,8 +98,8 @@ public class Usuario {
 	 *         STATUS: xxxxxx
 	 */
 	public String toString() {
-		return this.getNome() + "/" + this.getId() + ", " + this.getEmail() + ", " + this.getCelular() + 
-				(this.receptor ? ", status: receptor" : ", status: doador");
+		return this.getNome() + "/" + this.getId() + ", " + this.getEmail() + ", " + this.getCelular()
+				+ (this.receptor ? ", status: receptor" : ", status: doador");
 	}
 
 	/**
@@ -150,14 +150,14 @@ public class Usuario {
 			return false;
 		return true;
 	}
-	
+
 	/**
 	 * Adiciona item para descricao.
 	 * 
 	 * @param descricaoItem descricao do item.
-	 * @param quantidade quantidade do item.
-	 * @param tags tags do item.
-	 * @param contador contador que sera o id.
+	 * @param quantidade    quantidade do item.
+	 * @param tags          tags do item.
+	 * @param contador      contador que sera o id.
 	 * 
 	 * @return retorna o id do item.
 	 */
@@ -226,7 +226,7 @@ public class Usuario {
 	 * @return retorna a representacao do usuario.
 	 */
 	public String representacaoParaListagemDeDoacao() {
-		if(!this.isReceptor()) {
+		if (!this.isReceptor()) {
 			return "doador: " + this.getNome() + "/" + this.getId();
 		}
 		return "Receptor: " + this.getNome() + "/" + this.getId();
@@ -235,9 +235,9 @@ public class Usuario {
 	/**
 	 * Atualiza um determinado item.
 	 * 
-	 * @param id id do item.
+	 * @param id         id do item.
 	 * @param quantidade quantidade do item.
-	 * @param tags tags do item.
+	 * @param tags       tags do item.
 	 * 
 	 * @return retorna a representacao do item.
 	 */
@@ -259,6 +259,17 @@ public class Usuario {
 		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 	}
 
+	public Item pegaItem(int id) {
+		for (String descricao : this.itens.keySet()) {
+			for (Item item : this.itens.get(descricao)) {
+				if (item.getId() == id) {
+					return item;
+				}
+			}
+		}
+		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
+	}
+
 	/**
 	 * Remove determinado item.
 	 * 
@@ -270,7 +281,7 @@ public class Usuario {
 		if (this.itens.isEmpty()) {
 			throw new IllegalArgumentException("O Usuario nao possui itens cadastrados.");
 		}
-		
+
 		for (String descricao : this.itens.keySet()) {
 			for (Item item : this.itens.get(descricao)) {
 				if (item.getId() == id) {
@@ -280,7 +291,7 @@ public class Usuario {
 				}
 			}
 		}
-		
+
 		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 	}
 
@@ -309,7 +320,7 @@ public class Usuario {
 	 * 
 	 * @return retorna descricao do item.
 	 */
-	public String getDescricaoItem(int id){
+	public String getDescricaoItem(int id) {
 		for (List<Item> valor : this.itens.values()) {
 			for (Item item : valor) {
 				if (item.getId() == id) {
@@ -318,5 +329,9 @@ public class Usuario {
 			}
 		}
 		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
+	}
+
+	public List<Item> pegaTodosOsItensComDescricao(String descricao) {
+		return this.itens.get(descricao);
 	}
 }

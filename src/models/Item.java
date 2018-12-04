@@ -120,5 +120,9 @@ public class Item {
 		return true;
 	}
 
+	public List<String> getTags() {
+		return this.tags;
+	}
+
 
 }
