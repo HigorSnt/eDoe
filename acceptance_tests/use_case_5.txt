@@ -12,7 +12,7 @@ idItem21=adicionaItemParaDoacao idDoador=${id8} descricaoItem="camiseta" quantid
 
 ## Identificando matches ##
 
-stackTrace expect ${idItem2}" - colchao, tags: [colchao kingsize, conforto, dormir], quantidade: 5, doador: Elizabeth Ashe/70513372911\
+expect ${idItem2}" - colchao, tags: [colchao kingsize, conforto, dormir], quantidade: 5, doador: Elizabeth Ashe/70513372911\
  | "${idItem13}" - colchao, tags: [dormir, conforto], quantidade: 7, doador: Satya Vaswani/59238650111\
  | "${idItem14}" - colchao, tags: [colchao kingsize, dormir], quantidade: 3, doador: Lucas Fernandes/13507190272" match idReceptor="84473712044" idItemNecessario=${itemNecId11}
 

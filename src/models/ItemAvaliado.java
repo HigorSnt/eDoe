@@ -2,7 +2,7 @@ package models;
 
 import java.util.List;
 
-public class ItemAvaliado implements Comparable<ItemAvaliado>{
+public class ItemAvaliado implements Comparable<ItemAvaliado> {
 
 	private Item itemAvaliado;
 	private Item itemNecessario;
@@ -13,6 +13,10 @@ public class ItemAvaliado implements Comparable<ItemAvaliado>{
 		this.itemNecessario = itemNecessario;
 		this.pontuacao = this.calculaPontuacao();
 
+	}
+
+	public String toString() {
+		return this.itemAvaliado.toString();
 	}
 
 	private int calculaPontuacao() {
@@ -38,12 +42,18 @@ public class ItemAvaliado implements Comparable<ItemAvaliado>{
 	public int getId() {
 		return this.itemAvaliado.getId();
 	}
-	
+
 	public int getPontuacao() {
 		return this.pontuacao;
 	}
+
 	@Override
 	public int compareTo(ItemAvaliado o) {
-		return this.pontuacao - o.getPontuacao();
+		if (this.pontuacao - o.getPontuacao() == 0) {
+			return o.getId() - this.itemAvaliado.getId();
+		}else {
+			return o.getPontuacao() - this.pontuacao;
+		}
+		//return this.pontuacao - o.getPontuacao();
 	}
 }

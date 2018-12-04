@@ -332,6 +332,9 @@ public class Usuario {
 	}
 
 	public List<Item> pegaTodosOsItensComDescricao(String descricao) {
-		return this.itens.get(descricao);
+		if (this.itens.containsKey(descricao)) {
+			return this.itens.get(descricao);
+		} else
+			return new ArrayList<>();
 	}
 }

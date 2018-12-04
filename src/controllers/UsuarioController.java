@@ -420,7 +420,13 @@ public class UsuarioController {
 		Item itemNecessario = this.usuarios.get(idReceptor).pegaItem(idItemNecessario);
 		List<ItemAvaliado> itensDoMatch= new ArrayList<>();
 		for (String id: this.usuarios.keySet()) {
+			if (this.usuarios.get(id).isReceptor()) {
+				continue;
+			}
 			List<Item> itens = this.usuarios.get(id).pegaTodosOsItensComDescricao(itemNecessario.getDescricao());			
+			if (itens.size() == 0) {
+				continue;
+			}
 			for (Item item: itens) {
 				itensDoMatch.add(new ItemAvaliado(item, itemNecessario));
 				ligaItemAoUsuario.put(item.getId(), this.usuarios.get(id));
@@ -430,7 +436,7 @@ public class UsuarioController {
 		Collections.sort(itensDoMatch);
 		String saida = "";
 		for (ItemAvaliado item: itensDoMatch) {
-			saida += item.toString() + ligaItemAoUsuario.get(item.getId()) + " | ";
+			saida += item.toString() + ", " + ligaItemAoUsuario.get(item.getId()).representacaoParaListagemDeDoacao() + " | ";
 		}
 		
 		return saida.substring(0, saida.length() - 3);
