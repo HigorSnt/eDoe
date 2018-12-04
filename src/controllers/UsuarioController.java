@@ -12,12 +12,12 @@ import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-import aux.DescricaoComparator;
-import aux.IdComparator;
-import aux.QuantidadeComparator;
-import aux.Validador;
 import models.Item;
 import models.Usuario;
+import util.DescricaoComparator;
+import util.IdComparator;
+import util.QuantidadeComparator;
+import util.Validador;
 
 public class UsuarioController {
 	private final String ERRONOME = "Entrada invalida: nome nao pode ser vazio ou nulo.";
@@ -515,9 +515,11 @@ public class UsuarioController {
 	public void removeItemNecessario(String idReceptor, int idItem) {
 		this.validador.validaDado(idReceptor, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
 		this.validador.validaValorPositivo(idItem, "Entrada invalida: id do item nao pode ser negativo.");
+		
 		if (!this.usuarios.containsKey(idReceptor)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idReceptor + ".");
 		}
+		
 		String[] desc = this.usuarios.get(idReceptor).removeItem(idItem).split(",");
 		this.descricoes.put(desc[0], this.descricoes.get(desc[0]) - Integer.parseInt(desc[1]));
 	}

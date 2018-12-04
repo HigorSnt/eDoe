@@ -5,8 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import aux.Validador;
 import enums.Classe;
+import util.Validador;
 
 public class Usuario {
 
@@ -43,8 +43,8 @@ public class Usuario {
 		this.validator.validaDado(email, this.ERROEMAIL);
 		this.validator.validaDado(classe, this.ERROCLASSE);
 		this.validator.validaClasse(classe, this.ERROOPCAOCLASSE);
+		
 		this.itens = new LinkedHashMap<>();
-
 		this.id = id;
 		this.nome = nome;
 		this.celular = celular;
@@ -167,30 +167,30 @@ public class Usuario {
 	 * @param descricaoItem descricao do item.
 	 * @param quantidade quantidade do item.
 	 * @param tags tags do item.
-	 * @param cont contador que sera o id.
+	 * @param contador contador que sera o id.
 	 * 
 	 * @return retorna o id do item.
 	 */
-	public int adicionaItemParaDoacao(String descricaoItem, int quantidade, String tags, int cont) {
-		Item aSerAdcionado = new Item(descricaoItem, quantidade, tags.split(","), cont);
+	public int adicionaItemParaDoacao(String descricaoItem, int quantidade, String tags, int contador) {
+		Item aSerAdicionado = new Item(descricaoItem, quantidade, tags.split(","), contador);
 		if (this.itens.containsKey(descricaoItem)) {
 			boolean achouItemIgual = false;
 			for (Item i : this.itens.get(descricaoItem)) {
-				if (i.equals(aSerAdcionado)) {
+				if (i.equals(aSerAdicionado)) {
 					i.setQuantidade(quantidade);
 					achouItemIgual = true;
 					return i.getId();
 				}
 			}
 			if (!achouItemIgual) {
-				this.itens.get(descricaoItem).add(aSerAdcionado);
+				this.itens.get(descricaoItem).add(aSerAdicionado);
 			}
 		} else {
 			this.itens.put(descricaoItem, new ArrayList<>());
-			this.itens.get(descricaoItem).add(new Item(descricaoItem, quantidade, tags.split(","), cont));
+			this.itens.get(descricaoItem).add(aSerAdicionado);
 		}
 
-		return cont;
+		return contador;
 	}
 
 	/**
@@ -290,6 +290,7 @@ public class Usuario {
 				}
 			}
 		}
+		
 		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 	}
 

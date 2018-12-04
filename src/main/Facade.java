@@ -1,4 +1,4 @@
-package eDoe;
+package main;
 
 import controllers.UsuarioController;
 import easyaccept.EasyAccept;
@@ -8,7 +8,7 @@ public class Facade {
 	private UsuarioController cg = new UsuarioController();
 
 	public static void main(String[] args) {
-		args = new String[] {"eDoe.Facade", "acceptance_tests/use_case_1.txt", 
+		args = new String[] {"main.Facade", "acceptance_tests/use_case_1.txt", 
 				"acceptance_tests/use_case_2.txt",
 				"acceptance_tests/use_case_3.txt", "acceptance_tests/use_case_4.txt"};
 		EasyAccept.main(args);

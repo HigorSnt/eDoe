@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import aux.Validador;
+import util.Validador;
 
 /**
  * Classe que tem como propósito ser uma entidade abstrata que representa um
@@ -18,10 +18,10 @@ public class Item {
 	private final String ERRODESCRITOR = "Entrada invalida: descricao nao pode ser vazia ou nula.";
 	private final String ERROVALOR = "Entrada invalida: quantidade deve ser maior que zero.";
 
-	protected String descricao;
-	protected List<String> tags;
-	protected int quantidade;
-	protected int id;
+	private String descricao;
+	private List<String> tags;
+	private int quantidade;
+	private int id;
 	private String data;
 	private String etiqueta;
 	private Validador validador = new Validador();
