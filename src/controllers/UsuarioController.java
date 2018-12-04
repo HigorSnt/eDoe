@@ -12,6 +12,7 @@ import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import enums.Classe;
 import models.Item;
 import models.Usuario;
 import util.DescricaoComparator;
@@ -20,18 +21,6 @@ import util.QuantidadeComparator;
 import util.Validador;
 
 public class UsuarioController {
-	private final String ERRONOME = "Entrada invalida: nome nao pode ser vazio ou nulo.";
-	private final String ERROEMAIL = "Entrada invalida: email nao pode ser vazio ou nulo.";
-	private final String ERROCELULAR = "Entrada invalida: celular nao pode ser vazio ou nulo.";
-	private final String ERROCLASSE = "Entrada invalida: classe nao pode ser vazia ou nula.";
-	private final String ERROOPCAOCLASSE = "Entrada invalida: opcao de classe invalida.";
-	private final String ERROID = "Entrada invalida: id do usuario nao pode ser vazio ou nulo.";
-	private final String ERROIDDOADOR = "Entrada invalida: id do usuario nao pode ser vazio ou nulo.";
-	private final String ERRODESCRITOR = "Entrada invalida: descricao nao pode ser vazia ou nula.";
-
-	private final String ERROVALORQTD = "Entrada invalida: quantidade deve ser maior que zero.";
-	private final String ERROTEXTODEPESQUISA = "Entrada invalida: texto da pesquisa nao pode ser vazio ou nulo.";
-	private final String ERRODESCRICAOJAEXISTENTE = "Descritor de Item ja existente: ";
 	
 	private Map<String, Usuario> usuarios;
 	private Validador validador;
@@ -57,14 +46,10 @@ public class UsuarioController {
 	 * @return o ID do usuario.
 	 */
 	public String adicionaDoador(String id, String nome, String email, String celular, String classe) {
-		this.validador.validaDado(nome, this.ERRONOME);
-		this.validador.validaDado(id, this.ERROID);
-		this.validador.validaDado(celular, this.ERROCELULAR);
-		this.validador.validaDado(email, this.ERROEMAIL);
-		this.validador.validaDado(classe, this.ERROCLASSE);
-		this.validador.validaClasse(classe, this.ERROOPCAOCLASSE);
+		this.validador.validaCadastro(id, nome, email, celular);
+		Classe.verificaClasse(classe);
 
-		Usuario user = new Usuario(id, nome, email, celular, classe, false);
+		Usuario user = new Usuario(id, nome, email, celular, Classe.valueOf(classe), false);
 		
 		if (this.usuarios.containsKey(id)) {
 			throw new IllegalArgumentException("Usuario ja existente: " + id + ".");
@@ -86,14 +71,10 @@ public class UsuarioController {
 	 * @return o ID do usuario.
 	 */
 	public String adicionaReceptor(String id, String nome, String email, String celular, String classe) {
-		this.validador.validaDado(nome, this.ERRONOME);
-		this.validador.validaDado(id, this.ERROID);
-		this.validador.validaDado(celular, this.ERROCELULAR);
-		this.validador.validaDado(email, this.ERROEMAIL);
-		this.validador.validaDado(classe, this.ERROCLASSE);
-		this.validador.validaClasse(classe, this.ERROOPCAOCLASSE);
-
-		Usuario user = new Usuario(id, nome, email, celular, classe, true);
+		this.validador.validaCadastro(id, nome, email, celular);
+		Classe.verificaClasse(classe);
+		
+		Usuario user = new Usuario(id, nome, email, celular, Classe.valueOf(classe), true);
 		if (!(this.usuarios.containsKey(id))) {
 			this.usuarios.put(id, user);
 			return id;
@@ -125,6 +106,7 @@ public class UsuarioController {
 					this.adicionaReceptor(id, nome, email, celular, classe);
 				}
 			}
+			sc.close();
 		} catch (FileNotFoundException e) {
 			System.err.println("Erro na leitura: caminho (" + caminho + ") não encontrado.");
 		}
@@ -139,7 +121,7 @@ public class UsuarioController {
 	 *         STATUS: xxxxxx
 	 */
 	public String pesquisaUsuarioPorId(String id) {
-		this.validador.validaDado(id, this.ERROID);
+		this.validador.validaId(id);
 
 		if (this.usuarios.containsKey(id)) {
 			return this.usuarios.get(id).toString();
@@ -159,7 +141,7 @@ public class UsuarioController {
 	 * @return retorna o toString do usuario com os novos dados.
 	 */
 	public String alteraDadosReceptor(String id, String nome, String email, String celular) {
-		this.validador.validaDado(id, this.ERROID);
+		this.validador.validaId(id);
 
 		if (!this.usuarios.containsKey(id)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + id + ".");
@@ -186,7 +168,8 @@ public class UsuarioController {
 	 *         STATUS: xxxxxx
 	 */
 	public String pesquisaUsuarioPorNome(String nome) {
-		this.validador.validaDado(nome, this.ERRONOME);
+		this.validador.validaNome(nome);
+		
 		boolean flag = false;
 		List<Usuario> lista = new ArrayList<>();
 
@@ -215,7 +198,7 @@ public class UsuarioController {
 	 * @return retorna o toString do usuario com os novos dados.
 	 */
 	public String alteraDadosDoador(String id, String nome, String email, String celular) {
-		this.validador.validaDado(id, this.ERROID);
+		this.validador.validaId(id);
 
 		if (!this.usuarios.containsKey(id)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + id + ".");
@@ -239,7 +222,7 @@ public class UsuarioController {
 	 * @param id identificacao do usuario.
 	 */
 	public void removeUsuario(String id) {
-		this.validador.validaDado(id, this.ERROID);
+		this.validador.validaId(id);
 
 		if (this.usuarios.containsKey(id)) {
 			this.usuarios.remove(id);
@@ -252,11 +235,11 @@ public class UsuarioController {
 	 * @param descricao descricao dos itens
 	 */
 	public void adicionaDescritor(String descricao) {
-		this.validador.validaDado(descricao, this.ERRODESCRITOR);
+		this.validador.validaDescritor(descricao);
 		
 		descricao = descricao.toLowerCase();
 		if (this.descricoes.containsKey(descricao)) {
-			throw new IllegalArgumentException(this.ERRODESCRICAOJAEXISTENTE + descricao + ".");
+			throw new IllegalArgumentException("Descritor de Item ja existente: " + descricao + ".");
 		}
 		this.descricoes.put(descricao, 0);
 	}
@@ -272,12 +255,12 @@ public class UsuarioController {
 	 * @return retorna o Id do item.
 	 */
 	public int adicionaItemParaDoacao(String idDoador, String descricaoItem, int quantidade, String tags) {
-		this.validador.validaDado(idDoador, this.ERROIDDOADOR);		
+		this.validador.validaId(idDoador);		
 		if (!this.usuarios.containsKey(idDoador)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
 		}
 		
-		if(!this.usuarios.get(idDoador).isEhReceptor()) {
+		if(!this.usuarios.get(idDoador).isReceptor()) {
 			return this.adicionaItem(idDoador, descricaoItem, quantidade, tags);
 		}else {
 			throw new IllegalArgumentException("Entrada invalida: usuario nao e doador.");
@@ -296,11 +279,11 @@ public class UsuarioController {
 	 * @return retorna id do item.
 	 */
 	public int adicionaItemNecessario(String idReceptor, String descricaoItem, int quantidade, String tags) {
-		this.validador.validaDado(idReceptor, this.ERROIDDOADOR);		
+		this.validador.validaId(idReceptor);		
 		if (!this.usuarios.containsKey(idReceptor)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idReceptor + ".");
 		}
-				if(this.usuarios.get(idReceptor).isEhReceptor()) {
+				if(this.usuarios.get(idReceptor).isReceptor()) {
 			return this.adicionaItem(idReceptor, descricaoItem, quantidade, tags);
 		}else {
 			throw new IllegalArgumentException("Entrada invalida: usuario nao e receptor.");
@@ -320,8 +303,8 @@ public class UsuarioController {
 	 * 
 	 */
 	private int adicionaItem(String id, String descricaoItem, int quantidade, String tags) {
-		this.validador.validaDado(descricaoItem, this.ERRODESCRITOR);
-		this.validador.validaValorPositivo(quantidade, this.ERROVALORQTD);
+		this.validador.validaDescritor(descricaoItem);
+		this.validador.validaQuantidade(quantidade);
 
 		this.cont++;
 		descricaoItem = descricaoItem.toLowerCase();
@@ -385,8 +368,8 @@ public class UsuarioController {
 	 * @return retorna a representacao do item.
 	 */
 	private String atualizaItem(int id, String idUsuario, int quantidade, String tags) {
-		this.validador.validaDado(idUsuario, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
-		this.validador.validaValorPositivo(id, "Entrada invalida: id do item nao pode ser negativo.");
+		this.validador.validaId(idUsuario);
+		this.validador.validaIdItem(id);
 		
 		if (!this.usuarios.containsKey(idUsuario)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idUsuario + ".");
@@ -407,8 +390,8 @@ public class UsuarioController {
 	 * @param idDoador id do doador.
 	 */
 	public void removeItemParaDoacao(int id, String idDoador) {
-		this.validador.validaDado(idDoador, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
-		this.validador.validaValorPositivo(id, "Entrada invalida: id do item nao pode ser negativo.");
+		this.validador.validaId(idDoador);
+		this.validador.validaIdItem(id);
 		
 		if (!this.usuarios.containsKey(idDoador)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
@@ -439,7 +422,7 @@ public class UsuarioController {
 		List<Item> itens = new ArrayList<>();
 
 		for (String id : this.usuarios.keySet()) {
-			if (!this.usuarios.get(id).isEhReceptor()) {
+			if (!this.usuarios.get(id).isReceptor()) {
 				List<Item> itensDeUsuario = this.usuarios.get(id).pegaTodosOsItens();
 				for (Item item : itensDeUsuario) {
 					ligaItemAoUsuario.put(item.getId(), this.usuarios.get(id));
@@ -466,7 +449,7 @@ public class UsuarioController {
 	 * @return retorna todos itens com determinada descricao.
 	 */
 	public String pesquisaItemParaDoacaoPorDescricao(String descricao) {
-		this.validador.validaDado(descricao, this.ERROTEXTODEPESQUISA);
+		this.validador.validaPesquisa(descricao);
 		List<Item> itensComDescricao = new ArrayList<>();
 		String saida = "";
 		for (String id : this.usuarios.keySet()) {
@@ -488,7 +471,7 @@ public class UsuarioController {
 		List<Item> itens = new ArrayList<>();
 
 		for (String id : this.usuarios.keySet()) {
-			if(this.usuarios.get(id).isEhReceptor()) {
+			if(this.usuarios.get(id).isReceptor()) {
 				List<Item> itensDeUsuario = this.usuarios.get(id).pegaTodosOsItens();
 				for (Item item : itensDeUsuario) {
 					ligaItemAoUsuario.put(item.getId(), this.usuarios.get(id));
@@ -513,8 +496,8 @@ public class UsuarioController {
 	 * @param idItem id do item.
 	 */
 	public void removeItemNecessario(String idReceptor, int idItem) {
-		this.validador.validaDado(idReceptor, "Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
-		this.validador.validaValorPositivo(idItem, "Entrada invalida: id do item nao pode ser negativo.");
+		this.validador.validaId(idReceptor);
+		this.validador.validaIdItem(idItem);
 		
 		if (!this.usuarios.containsKey(idReceptor)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idReceptor + ".");

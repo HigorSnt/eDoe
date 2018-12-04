@@ -22,8 +22,8 @@ public class Usuario {
 	private String celular;
 	private String email;
 	private Classe classe;
-	private boolean ehReceptor;
-	private Validador validator = new Validador();
+	private boolean receptor;
+	private Validador validador = new Validador();
 	private Map<String, List<Item>> itens;
 
 	/**
@@ -36,21 +36,16 @@ public class Usuario {
 	 * @param classe     classe do usuario a ser cadastrado.
 	 * @param ehReceptor booleano que informa se o usuario e receptor ou doador.
 	 */
-	public Usuario(String id, String nome, String email, String celular, String classe, boolean ehReceptor) {
-		this.validator.validaDado(nome, this.ERRONOME);
-		this.validator.validaDado(id, this.ERROID);
-		this.validator.validaDado(celular, this.ERROCELULAR);
-		this.validator.validaDado(email, this.ERROEMAIL);
-		this.validator.validaDado(classe, this.ERROCLASSE);
-		this.validator.validaClasse(classe, this.ERROOPCAOCLASSE);
+	public Usuario(String id, String nome, String email, String celular, Classe classe, boolean ehReceptor) {
+		this.validador.validaCadastro(id, nome, email, celular);
 		
 		this.itens = new LinkedHashMap<>();
 		this.id = id;
 		this.nome = nome;
 		this.celular = celular;
 		this.email = email;
-		this.classe = Classe.valueOf(classe.toUpperCase());
-		this.ehReceptor = ehReceptor;
+		this.classe = classe;
+		this.receptor = ehReceptor;
 	}
 
 	/**
@@ -62,8 +57,8 @@ public class Usuario {
 		return nome;
 	}
 
-	public boolean isEhReceptor() {
-		return ehReceptor;
+	public boolean isReceptor() {
+		return receptor;
 	}
 
 	/**
@@ -72,7 +67,7 @@ public class Usuario {
 	 * @param nome nome do usuario.
 	 */
 	public void setNome(String nome) {
-		this.validator.validaDado(nome, this.ERRONOME);
+		this.validador.validaNome(nome);
 		this.nome = nome;
 	}
 
@@ -82,7 +77,7 @@ public class Usuario {
 	 * @param celular celular do usuario.
 	 */
 	public void setCelular(String celular) {
-		this.validator.validaDado(celular, this.ERROCELULAR);
+		this.validador.validaCelular(celular);
 		this.celular = celular;
 	}
 
@@ -92,7 +87,7 @@ public class Usuario {
 	 * @param email email do usuario.
 	 */
 	public void setEmail(String email) {
-		this.validator.validaDado(email, this.ERROEMAIL);
+		this.validador.validaEmail(email);
 		this.email = email;
 	}
 
@@ -103,13 +98,8 @@ public class Usuario {
 	 *         STATUS: xxxxxx
 	 */
 	public String toString() {
-		String status;
-		if (ehReceptor) {
-			status = ", status: receptor";
-		} else {
-			status = ", status: doador";
-		}
-		return this.getNome() + "/" + this.getId() + ", " + this.getEmail() + ", " + this.getCelular() + status;
+		return this.getNome() + "/" + this.getId() + ", " + this.getEmail() + ", " + this.getCelular() + 
+				(this.receptor ? ", status: receptor" : ", status: doador");
 	}
 
 	/**
@@ -236,7 +226,7 @@ public class Usuario {
 	 * @return retorna a representacao do usuario.
 	 */
 	public String representacaoParaListagemDeDoacao() {
-		if(!this.isEhReceptor()) {
+		if(!this.isReceptor()) {
 			return "doador: " + this.getNome() + "/" + this.getId();
 		}
 		return "Receptor: " + this.getNome() + "/" + this.getId();

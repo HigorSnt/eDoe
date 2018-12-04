@@ -14,16 +14,12 @@ import util.Validador;
  *
  */
 public class Item {
-	
-	private final String ERRODESCRITOR = "Entrada invalida: descricao nao pode ser vazia ou nula.";
-	private final String ERROVALOR = "Entrada invalida: quantidade deve ser maior que zero.";
 
 	private String descricao;
 	private List<String> tags;
 	private int quantidade;
 	private int id;
 	private String data;
-	private String etiqueta;
 	private Validador validador = new Validador();
 
 	/**
@@ -36,8 +32,8 @@ public class Item {
 	 * @param id e o id unico do item
 	 */
 	public Item(String descricao, int quantidade, String[] tags, int id) {
-		this.validador.validaDado(descricao, ERRODESCRITOR);
-		this.validador.validaValorPositivo(quantidade, this.ERROVALOR);
+		this.validador.validaDescritor(descricao);
+		this.validador.validaQuantidade(quantidade);
 		
 		this.descricao = descricao;
 		this.quantidade = quantidade;
@@ -72,7 +68,7 @@ public class Item {
 	 * @param novaQuantidade é o novo valor que quantidade assumirá.
 	 */
 	public void setQuantidade(int novaQuantidade) {
-		this.validador.validaValorPositivo(novaQuantidade, this.ERROVALOR);
+		this.validador.validaQuantidade(novaQuantidade);
 		
 		this.quantidade = novaQuantidade;
 	}

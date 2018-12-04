@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import enums.Classe;
 import models.Item;
 import models.Usuario;
 
@@ -31,7 +32,7 @@ class UsuarioTeste {
 	@Test
 	void testConstrutor() {
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario(null, "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
-				"(83) 92918-0211","PESSOA_FISICA", false));
+				"(83) 92918-0211",Classe.valueOf("PESSOA_FISICA"), false));
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario("      ", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
 				"(83) 92918-0211","PESSOA_FISICA", false));
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario("70513372911", null, "elizabethcalamity@deadlock.com", 
@@ -53,7 +54,7 @@ class UsuarioTeste {
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario("70513372911", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
 				"(83) 92918-0211", "PADARIA", false));
 		
-		assertFalse(us2.isEhReceptor());
+		assertFalse(us2.isReceptor());
 		assertEquals("Paroquia de Nossa Senhora da Conceicao", us2.getNome());
 		assertEquals("Elizabeth Ashe/70513372911, elizabethcalamity@deadlock.com, (83) 92918-0211, status: doador", us1.toString());
 		assertEquals("Elizabeth Ashe/70513372911, elizabethcalamity@deadlock.com, (83) 92918-0211, status: receptor", us3.toString());
