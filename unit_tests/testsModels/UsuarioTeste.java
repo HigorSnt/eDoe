@@ -22,37 +22,33 @@ class UsuarioTeste {
 	@BeforeEach
 	void cadastraUsuario() {
 		us1 = new Usuario ("70513372911", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
-				"(83) 92918-0211","PESSOA_FISICA", false);
+				"(83) 92918-0211", Classe.valueOf("PESSOA_FISICA"), false);
 		us2 = new Usuario ("08704413000240", "Paroquia de Nossa Senhora da Conceicao", 
-				"paroquia.da.conceicao@gmail.com", "(83) 3321-3140", "IGREJA", false);
+				"paroquia.da.conceicao@gmail.com", "(83) 3321-3140", Classe.valueOf("IGREJA") , false);
 		us3 = new Usuario ("70513372911", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
-				"(83) 92918-0211","PESSOA_FISICA", true);
+				"(83) 92918-0211", Classe.valueOf("PESSOA_FISICA"), true);
 	}
 
 	@Test
 	void testConstrutor() {
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario(null, "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
-				"(83) 92918-0211",Classe.valueOf("PESSOA_FISICA"), false));
+				"(83) 92918-0211", Classe.valueOf("PESSOA_FISICA"), false));
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario("      ", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
-				"(83) 92918-0211","PESSOA_FISICA", false));
+				"(83) 92918-0211", Classe.valueOf("PESSOA_FISICA"), false));
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario("70513372911", null, "elizabethcalamity@deadlock.com", 
-				"(83) 92918-0211","PESSOA_FISICA", false));
+				"(83) 92918-0211", Classe.valueOf("PESSOA_FISICA"), false));
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario("70513372911", "", "elizabethcalamity@deadlock.com", 
-				"(83) 92918-0211","PESSOA_FISICA", false));
+				"(83) 92918-0211",  Classe.valueOf("PESSOA_FISICA"), false));
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario("70513372911", "Elizabeth Ashe", null, 
-				"(83) 92918-0211","PESSOA_FISICA", false));
+				"(83) 92918-0211", Classe.valueOf("PESSOA_FISICA"), false));
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario("70513372911", "Elizabeth Ashe", "", 
-				"(83) 92918-0211","PESSOA_FISICA", false));
+				"(83) 92918-0211", Classe.valueOf("PESSOA_FISICA"), false));
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario("70513372911", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
-				"        ","PESSOA_FISICA", false));
+				"        ", Classe.valueOf("PESSOA_FISICA"), false));
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario("70513372911", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
-				null,"PESSOA_FISICA", false));
+				null, Classe.valueOf("PESSOA_FISICA"), false));
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario("70513372911", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
-			"(83) 92918-0211", null, false));
-		assertThrows(IllegalArgumentException.class, ()-> new Usuario("70513372911", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
-				"(83) 92918-0211", "       ", false));
-		assertThrows(IllegalArgumentException.class, ()-> new Usuario("70513372911", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
-				"(83) 92918-0211", "PADARIA", false));
+				"(83) 92918-0211", Classe.valueOf("PADARIA"), false));
 		
 		assertFalse(us2.isReceptor());
 		assertEquals("Paroquia de Nossa Senhora da Conceicao", us2.getNome());
@@ -85,13 +81,13 @@ class UsuarioTeste {
 		assertFalse(us2.equals("TESTE"));
 		
 		Usuario u1 = new Usuario("08704413000240", "Paroquia de Nossa Senhora da Conceicao", 
-				"paroquia.da.conceicao@gmail.com", "(83) 99982-9231", "PESSOA_FISICA", false);
+				"paroquia.da.conceicao@gmail.com", "(83) 99982-9231", Classe.valueOf("PESSOA_FISICA"), false);
 		Usuario u2 = new Usuario("08704413000240", "Paroquia de Nossa Senhora da Conceicao", 
-				"paroquia.da.conceicao@hotmail.com", "(83) 3321-3140", "PESSOA_FISICA", false);
+				"paroquia.da.conceicao@hotmail.com", "(83) 3321-3140", Classe.valueOf("PESSOA_FISICA"), false);
 		Usuario u3 = new Usuario("08704413000240", "Igreja de Nossa Senhora da Conceicao", 
-				"paroquia.da.conceicao@gmail.com", "(83) 3321-3140", "PESSOA_FISICA", false);
+				"paroquia.da.conceicao@gmail.com", "(83) 3321-3140", Classe.valueOf("PESSOA_FISICA"), false);
 		Usuario u = new Usuario ("08704413000240", "Paroquia de Nossa Senhora da Conceicao", 
-				"paroquia.da.conceicao@gmail.com", "(83) 3321-3140", "IGREJA", false);
+				"paroquia.da.conceicao@gmail.com", "(83) 3321-3140", Classe.valueOf("IGREJA"), false);
 		
 		assertFalse(us2.equals(u1));
 		assertFalse(us2.equals(u2));
