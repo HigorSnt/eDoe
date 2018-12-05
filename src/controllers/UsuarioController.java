@@ -417,10 +417,24 @@ public class UsuarioController {
 		return saida.substring(0, saida.length() - 3);
 	}
 	
+	private void verificaUsuarioReceptor(String idReceptor) {
+		if (!this.usuarios.containsKey(idReceptor)) {
+			throw new IllegalArgumentException("Usuario nao encontrado: " + idReceptor + ".");
+		}
+		if (!this.usuarios.get(idReceptor).isReceptor()) {
+			throw new IllegalArgumentException("O Usuario deve ser um receptor: " + idReceptor + ".");
+		}
+	}
+	
 	public String match(String idReceptor, int idItemNecessario) {
+		this.validador.validaId(idReceptor);
+		this.validador.validaIdItem(idItemNecessario);
 		Map<Integer, Usuario> ligaItemAoUsuario = new HashMap<>();
+		this.verificaUsuarioReceptor(idReceptor);
 		Item itemNecessario = this.usuarios.get(idReceptor).pegaItem(idItemNecessario);
 		List<ItemAvaliado> itensDoMatch= new ArrayList<>();
+		
+		
 		for (String id: this.usuarios.keySet()) {
 			if (this.usuarios.get(id).isReceptor()) {
 				continue;
@@ -440,7 +454,9 @@ public class UsuarioController {
 		for (ItemAvaliado item: itensDoMatch) {
 			saida += item.toString() + ", " + ligaItemAoUsuario.get(item.getId()).representacaoParaListagemDeDoacao() + " | ";
 		}
-		
+		if (saida.equals("")) {
+			return saida;
+		}
 		return saida.substring(0, saida.length() - 3);
 		
 		

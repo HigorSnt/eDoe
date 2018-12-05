@@ -11,21 +11,19 @@ public class ItemAvaliado implements Comparable<ItemAvaliado> {
 	public ItemAvaliado(Item itemAvaliado, Item itemNecessario) {
 		this.itemAvaliado = itemAvaliado;
 		this.itemNecessario = itemNecessario;
-		this.pontuacao = this.calculaPontuacao();
+		this.pontuacao = this.calculaPontuacao(itemAvaliado.getTags(), this.itemNecessario.getTags());
 
 	}
 
 	public String toString() {
-		return this.itemAvaliado.toString();
+		return this.itemAvaliado.toString();// + "pontuacao: " + this.pontuacao;
 	}
 
-	private int calculaPontuacao() {
+	private int calculaPontuacao(List<String> tagsItemAvaliado, List<String> tagsItemNecessario) {
 		int pontuacao = 20;
-		List<String> tagsItemNecessario = this.itemNecessario.getTags();
-		List<String> tagsItemAvaliado = this.itemAvaliado.getTags();
 		for (int i = 0; i < tagsItemAvaliado.size(); i++) {
-			for (int j = 0; i < tagsItemNecessario.size(); i++) {
-				if (tagsItemAvaliado.get(i).toLowerCase() == tagsItemNecessario.get(j).toLowerCase()) {
+			for (int j = 0; j < tagsItemNecessario.size(); j++) {
+				if (tagsItemAvaliado.get(i).toLowerCase().equals(tagsItemNecessario.get(j).toLowerCase())) {
 					if (i == j) {
 						pontuacao += 10;
 					} else {
@@ -50,7 +48,7 @@ public class ItemAvaliado implements Comparable<ItemAvaliado> {
 	@Override
 	public int compareTo(ItemAvaliado o) {
 		if (this.pontuacao - o.getPontuacao() == 0) {
-			return o.getId() - this.itemAvaliado.getId();
+			return this.itemAvaliado.getId() - o.getId();
 		}else {
 			return o.getPontuacao() - this.pontuacao;
 		}

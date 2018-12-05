@@ -2,8 +2,6 @@ package main;
 
 import controllers.UsuarioController;
 import easyaccept.EasyAccept;
-//Expected <32 - jaqueta de couro, tags: [outfit, couro de boi, couro de bode], quantidade: 45, doador: Aramis Araujo/49847103331 | 5 - jaqueta de couro, tags: [outfit, couro de cobra], quantidade: 5, doador: Carlos Eduardo/12094912484 | 33 - jaqueta de couro, tags: [frio, estilo], quantidade: 21, doador: Claudio Campelo/58791093499>,
-// but was <33 - jaqueta de couro, tags: [frio, estilo], quantidade: 21, doador: Claudio Campelo/58791093499 | 32 - jaqueta de couro, tags: [outfit, couro de boi, couro de bode], quantidade: 45, doador: Aramis Araujo/49847103331 | 5 - jaqueta de couro, tags: [outfit, couro de cobra], quantidade: 5, doador: Carlos Eduardo/12094912484>
 
 public class Facade {
 	
