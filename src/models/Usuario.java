@@ -10,13 +10,6 @@ import util.Validador;
 
 public class Usuario {
 
-	private final String ERRONOME = "Entrada invalida: nome nao pode ser vazio ou nulo.";
-	private final String ERROEMAIL = "Entrada invalida: email nao pode ser vazio ou nulo.";
-	private final String ERROCELULAR = "Entrada invalida: celular nao pode ser vazio ou nulo.";
-	private final String ERROCLASSE = "Entrada invalida: classe nao pode ser vazia ou nula.";
-	private final String ERROOPCAOCLASSE = "Entrada invalida: opcao de classe invalida.";
-	private final String ERROID = "Entrada invalida: id do usuario nao pode ser vazio ou nulo.";
-
 	private String id;
 	private String nome;
 	private String celular;
@@ -34,9 +27,10 @@ public class Usuario {
 	 * @param email      email do usuario a ser cadastrado.
 	 * @param celular    celular do usuario a ser cadastrado.
 	 * @param classe     classe do usuario a ser cadastrado.
-	 * @param ehReceptor booleano que informa se o usuario e receptor ou doador.
+	 * @param receptor	 booleano que informa se o usuario e receptor ou doador.
+	 * 
 	 */
-	public Usuario(String id, String nome, String email, String celular, Classe classe, boolean ehReceptor) {
+	public Usuario(String id, String nome, String email, String celular, Classe classe, boolean receptor) {
 		this.validador.validaCadastro(id, nome, email, celular);
 
 		this.itens = new LinkedHashMap<>();
@@ -45,65 +39,44 @@ public class Usuario {
 		this.celular = celular;
 		this.email = email;
 		this.classe = classe;
-		this.receptor = ehReceptor;
+		this.receptor = receptor;
 	}
 
 	/**
-	 * retorna o nome do usuario.
+	 * Retorna o nome do usuario.
 	 * 
 	 * @return nome do usuario.
+	 * 
 	 */
 	public String getNome() {
 		return nome;
 	}
-
+	
+	/**
+	 * Altera o nome do usuario.
+	 * 
+	 * @param novoNome novo nome do usuario.
+	 * 
+	 */
+	public void setNome(String novoNome) {
+		this.validador.validaNome(novoNome);
+		
+		this.nome = novoNome;
+	}
+	
+	/**
+	 * Informa se o usuario e receptor (true) ou doador (false).
+	 * 
+	 * @return um booleano informando se e receptor ou doador.
+	 * 
+	 */
 	public boolean isReceptor() {
 		return receptor;
 	}
-
-	/**
-	 * Seta um novo nome para o usuario.
-	 * 
-	 * @param nome nome do usuario.
-	 */
-	public void setNome(String nome) {
-		this.validador.validaNome(nome);
-		this.nome = nome;
-	}
-
-	/**
-	 * Seta um novo celular para o usuario.
-	 * 
-	 * @param celular celular do usuario.
-	 */
-	public void setCelular(String celular) {
-		this.validador.validaCelular(celular);
-		this.celular = celular;
-	}
-
-	/**
-	 * Seta um novo email para o usuario.
-	 * 
-	 * @param email email do usuario.
-	 */
-	public void setEmail(String email) {
-		this.validador.validaEmail(email);
-		this.email = email;
-	}
-
-	/**
-	 * Retorna um String que corresponde ao usuario.
-	 * 
-	 * @return retorna uma string no formato: NOME/ID, EMAIL, CELULAR, CLASSE,
-	 *         STATUS: xxxxxx
-	 */
-	public String toString() {
-		return this.getNome() + "/" + this.getId() + ", " + this.getEmail() + ", " + this.getCelular()
-				+ (this.receptor ? ", status: receptor" : ", status: doador");
-	}
-
+	
 	/**
 	 * @return retorna id do usuario.
+	 * 
 	 */
 	public String getId() {
 		return this.id;
@@ -111,16 +84,51 @@ public class Usuario {
 
 	/**
 	 * @return retorna o celular do usuario.
+	 * 
 	 */
 	public String getCelular() {
 		return this.celular;
 	}
+	
+	/**
+	 * Altera o celular do usuario.
+	 * 
+	 * @param novoCelular novo celular do usuario.
+	 * 
+	 */
+	public void setCelular(String novoCelular) {
+		this.validador.validaCelular(novoCelular);
+		this.celular = novoCelular;
+	}
 
 	/**
 	 * @return retorna o email do usuario.
+	 * 
 	 */
 	public String getEmail() {
 		return this.email;
+	}
+
+	/**
+	 * Altera o email do usuario.
+	 * 
+	 * @param novoEmail novo email do usuario.
+	 * 
+	 */
+	public void setEmail(String novoEmail) {
+		this.validador.validaEmail(novoEmail);
+		this.email = novoEmail;
+	}
+
+	/**
+	 * Retorna um String que corresponde ao usuario.
+	 * 
+	 * @return retorna uma string no formato: NOME/ID, EMAIL, CELULAR, STATUS: xxxxxx
+	 */
+	@Override
+	public String toString() {
+		return this.getNome() + "/" + this.getId() + ", " + this.getEmail() + ", " + this.getCelular()
+				+ (this.receptor ? ", status: receptor" : ", status: doador");
 	}
 
 	@Override
