@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import enums.Classe;
 import models.Item;
+import models.ItemAvaliado;
 import models.Usuario;
 import util.DescricaoComparator;
 import util.IdComparator;
@@ -25,13 +26,13 @@ public class UsuarioController {
 	private Map<String, Usuario> usuarios;
 	private Validador validador;
 	private Map<String, Integer> descricoes;
-	private int cont;
+	private int geradorIdItens;
 	
 	public UsuarioController() {
 		this.usuarios = new LinkedHashMap<String, Usuario>();
 		this.validador = new Validador();
 		this.descricoes = new TreeMap<>();
-		this.cont = 0;
+		this.geradorIdItens = 0;
 	}
 
 	/**
@@ -44,18 +45,19 @@ public class UsuarioController {
 	 * @param classe  classe do usuario a ser cadastrado.
 	 * 
 	 * @return o ID do usuario.
+	 * 
 	 */
 	public String adicionaDoador(String id, String nome, String email, String celular, String classe) {
 		this.validador.validaCadastro(id, nome, email, celular);
 		Classe.verificaClasse(classe);
 
-		Usuario user = new Usuario(id, nome, email, celular, Classe.valueOf(classe), false);
+		Usuario usuario = new Usuario(id, nome, email, celular, Classe.valueOf(classe), false);
 		
 		if (this.usuarios.containsKey(id)) {
 			throw new IllegalArgumentException("Usuario ja existente: " + id + ".");
 		}
 
-		this.usuarios.put(id, user);
+		this.usuarios.put(id, usuario);
 		return id;
 	}
 
@@ -74,16 +76,16 @@ public class UsuarioController {
 		this.validador.validaCadastro(id, nome, email, celular);
 		Classe.verificaClasse(classe);
 		
-		Usuario user = new Usuario(id, nome, email, celular, Classe.valueOf(classe), true);
+		Usuario usuario = new Usuario(id, nome, email, celular, Classe.valueOf(classe), true);
 		if (!(this.usuarios.containsKey(id))) {
-			this.usuarios.put(id, user);
+			this.usuarios.put(id, usuario);
 			return id;
 		}
 		throw new IllegalArgumentException("Usuario ja existente: " + id + ".");
 	}
 
 	/**
-	 * Ler os receptores apatir do caminho do arquivos onde estao armazenados.
+	 * Ler os receptores a partir do caminho dos arquivos onde estao armazenados.
 	 * 
 	 * @param caminho caminho do arquivo.
 	 */
@@ -94,12 +96,14 @@ public class UsuarioController {
 			while (sc.hasNextLine()) {
 				String linha = sc.nextLine();
 				String array[] = new String[4];
+				
 				array = linha.split(",");
 				String id = array[0];
 				String nome = array[1];
 				String email = array[2];
 				String celular = array[3];
 				String classe = array[4];
+				
 				if (this.usuarios.containsKey(id)) {
 					this.alteraDadosReceptor(id, nome, email, celular);
 				} else {
@@ -113,12 +117,12 @@ public class UsuarioController {
 	}
 
 	/**
-	 * Imprime o toString do usario dado seu ID.
+	 * Imprime o toString de um usuario dado seu ID.
 	 * 
 	 * @param id identificacao do usuario.
 	 * 
 	 * @return retorna uma string no formato: NOME/ID, EMAIL, CELULAR, CLASSE,
-	 *         STATUS: xxxxxx
+	 *         STATUS: xxxxxx.
 	 */
 	public String pesquisaUsuarioPorId(String id) {
 		this.validador.validaId(id);
@@ -126,6 +130,7 @@ public class UsuarioController {
 		if (this.usuarios.containsKey(id)) {
 			return this.usuarios.get(id).toString();
 		}
+		
 		throw new IllegalArgumentException("Usuario nao encontrado: " + id + ".");
 	}
 
@@ -158,9 +163,9 @@ public class UsuarioController {
 
 		return this.usuarios.get(id).toString();
 	}
-
+	
 	/**
-	 * Imprime o toString do usario dado seu nome.
+	 * Imprime o toString de um usuario dado seu nome.
 	 * 
 	 * @param nome nome do usuario.
 	 * 
@@ -170,19 +175,17 @@ public class UsuarioController {
 	public String pesquisaUsuarioPorNome(String nome) {
 		this.validador.validaNome(nome);
 		
-		boolean flag = false;
 		List<Usuario> lista = new ArrayList<>();
+		
+		this.usuarios.values().forEach(u -> {
+			if (u.getNome().equals(nome))
+				lista.add(u);
+		});
 
-		for (String id : this.usuarios.keySet()) {
-			if (this.usuarios.get(id).getNome().equals(nome)) {
-				lista.add(this.usuarios.get(id));
-				flag = true;
-			}
-		}
-
-		if (flag) {
+		if (lista.size() > 0) {
 			return lista.stream().map(u -> u.toString()).collect(Collectors.joining(" | "));
 		}
+		
 		throw new IllegalArgumentException("Usuario nao encontrado: " + nome + ".");
 	}
 
@@ -217,7 +220,7 @@ public class UsuarioController {
 	}
 
 	/**
-	 * Remove um usuario apatir do seu ID
+	 * Remove um usuario a partir do seu ID.
 	 * 
 	 * @param id identificacao do usuario.
 	 */
@@ -306,10 +309,10 @@ public class UsuarioController {
 		this.validador.validaDescritor(descricaoItem);
 		this.validador.validaQuantidade(quantidade);
 
-		this.cont++;
+		this.geradorIdItens++;
 		descricaoItem = descricaoItem.toLowerCase();
 		this.descricoes.put(descricaoItem, quantidade);
-		return this.usuarios.get(id).adicionaItemParaDoacao(descricaoItem, quantidade, tags, this.cont);
+		return this.usuarios.get(id).adicionaItemParaDoacao(descricaoItem, quantidade, tags, this.geradorIdItens);
 	}
 
 	/**
@@ -412,6 +415,51 @@ public class UsuarioController {
 		}
 
 		return saida.substring(0, saida.length() - 3);
+	}
+	
+	private void verificaUsuarioReceptor(String idReceptor) {
+		if (!this.usuarios.containsKey(idReceptor)) {
+			throw new IllegalArgumentException("Usuario nao encontrado: " + idReceptor + ".");
+		}
+		if (!this.usuarios.get(idReceptor).isReceptor()) {
+			throw new IllegalArgumentException("O Usuario deve ser um receptor: " + idReceptor + ".");
+		}
+	}
+	
+	public String match(String idReceptor, int idItemNecessario) {
+		this.validador.validaId(idReceptor);
+		this.validador.validaIdItem(idItemNecessario);
+		Map<Integer, Usuario> ligaItemAoUsuario = new HashMap<>();
+		this.verificaUsuarioReceptor(idReceptor);
+		Item itemNecessario = this.usuarios.get(idReceptor).pegaItem(idItemNecessario);
+		List<ItemAvaliado> itensDoMatch= new ArrayList<>();
+		
+		
+		for (String id: this.usuarios.keySet()) {
+			if (this.usuarios.get(id).isReceptor()) {
+				continue;
+			}
+			List<Item> itens = this.usuarios.get(id).pegaTodosOsItensComDescricao(itemNecessario.getDescricao());			
+			if (itens.size() == 0) {
+				continue;
+			}
+			for (Item item: itens) {
+				itensDoMatch.add(new ItemAvaliado(item, itemNecessario));
+				ligaItemAoUsuario.put(item.getId(), this.usuarios.get(id));
+			}
+		}
+		
+		Collections.sort(itensDoMatch);
+		String saida = "";
+		for (ItemAvaliado item: itensDoMatch) {
+			saida += item.toString() + ", " + ligaItemAoUsuario.get(item.getId()).representacaoParaListagemDeDoacao() + " | ";
+		}
+		if (saida.equals("")) {
+			return saida;
+		}
+		return saida.substring(0, saida.length() - 3);
+		
+		
 	}
 
 	/**

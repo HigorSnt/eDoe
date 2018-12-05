@@ -10,22 +10,13 @@ public class Facade {
 	public static void main(String[] args) {
 		args = new String[] {"main.Facade", "acceptance_tests/use_case_1.txt", 
 				"acceptance_tests/use_case_2.txt",
-				"acceptance_tests/use_case_3.txt", "acceptance_tests/use_case_4.txt"};
+				"acceptance_tests/use_case_3.txt", "acceptance_tests/use_case_4.txt", "acceptance_tests/use_case_5.txt"};
 		EasyAccept.main(args);
 	}
-	
+	///us1
 	public String adicionaDoador (String id, String nome, String email, String celular, String classe) {
 		return this.cg.adicionaDoador(id, nome, email, celular, classe);
 	}
-	
-	public int adicionaItemNecessario(String idReceptor, String descricaoItem, int quantidade, String tags) {
-		return this.cg.adicionaItemNecessario(idReceptor, descricaoItem, quantidade, tags);
-	}
-	
-	public String atualizaItemNecessario(String idReceptor, int id, int quantidade, String tags) {
-		return this.cg.atualizaItemNecessario(id, idReceptor, quantidade, tags);
-	}
-	
 	
 	public void lerReceptores (String caminho) {
 		this.cg.lerReceptores(caminho);
@@ -33,10 +24,6 @@ public class Facade {
 	
 	public String pesquisaUsuarioPorId (String id) {
 		return this.cg.pesquisaUsuarioPorId(id);
-	}
-	
-	public String pesquisaItemParaDoacaoPorDescricao(String descricao) {
-		return this.cg.pesquisaItemParaDoacaoPorDescricao(descricao);
 	}
 	
 	public String pesquisaUsuarioPorNome (String nome) {
@@ -49,6 +36,22 @@ public class Facade {
 	
 	public void removeUsuario (String id) {
 		this.cg.removeUsuario(id);
+	}
+	/// fim da us1
+	
+	public int adicionaItemNecessario(String idReceptor, String descricaoItem, int quantidade, String tags) {
+		return this.cg.adicionaItemNecessario(idReceptor, descricaoItem, quantidade, tags);
+	}
+	
+	public String atualizaItemNecessario(String idReceptor, int id, int quantidade, String tags) {
+		return this.cg.atualizaItemNecessario(id, idReceptor, quantidade, tags);
+	}
+	public String match(String idReceptor, int idItemNecessario) {
+		return this.cg.match(idReceptor, idItemNecessario);
+	}
+	
+	public String pesquisaItemParaDoacaoPorDescricao(String descricao) {
+		return this.cg.pesquisaItemParaDoacaoPorDescricao(descricao);
 	}
 	
 	public void adicionaDescritor (String descricao) {
