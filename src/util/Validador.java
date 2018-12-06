@@ -119,5 +119,11 @@ public class Validador {
 			throw new IllegalArgumentException("Entrada invalida: quantidade deve ser maior que zero.");
 		}
 	}
+	
+	public void validaData(String data) {
+		if(data == null || data.equals("")) {
+			throw new IllegalArgumentException("Entrada invalida: data nao pode ser vazia ou nula.");
+		}
+	}
 
 }

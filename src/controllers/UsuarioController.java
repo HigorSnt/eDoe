@@ -9,7 +9,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import enums.Classe;
@@ -26,6 +28,7 @@ public class UsuarioController {
 	private Map<String, Usuario> usuarios;
 	private Validador validador;
 	private Map<String, Integer> descricoes;
+	private Map<Integer, String> histDoacoes;
 	private int geradorIdItens;
 	
 	public UsuarioController() {
@@ -33,6 +36,7 @@ public class UsuarioController {
 		this.validador = new Validador();
 		this.descricoes = new TreeMap<>();
 		this.geradorIdItens = 0;
+		this.histDoacoes = new TreeMap<>();
 	}
 
 	/**
@@ -553,6 +557,107 @@ public class UsuarioController {
 		
 		String[] desc = this.usuarios.get(idReceptor).removeItem(idItem).split(",");
 		this.descricoes.put(desc[0], this.descricoes.get(desc[0]) - Integer.parseInt(desc[1]));
+	}
+
+	/**
+	 * Realiza uma doacao.
+	 * @param idItemNec id do item necessario.
+	 * @param idItemDoado id do item doado.
+	 * @param data data da doacao.
+	 * @return retorna uma representacao da doacao no formado: DATA - DOADOR - ITEM - QUANTIDADE - RECEPTOR
+	 */
+	public String realizaDoacao(int idItemNec, int idItemDoado, String data) {
+		this.validador.validaIdItem(idItemNec);
+		this.validador.validaIdItem(idItemDoado);
+		this.validador.validaData(data);
+		
+		Item nec = null;
+		Usuario recep = null;
+		boolean flagN = false;
+		for(Usuario user : this.usuarios.values()) {
+			if(user.isReceptor()) {
+				try {
+					nec = user.pegaItem(idItemNec);
+					recep = user;
+					flagN = true;
+					break;
+				}catch (IllegalArgumentException e) {
+				}			
+			}
+		}
+		if(!flagN) {
+			throw new IllegalArgumentException("Item nao encontrado: " + idItemNec +".");
+		}
+		
+		Item doado = null;
+		Usuario doador = null;
+		boolean flagD = false;
+		for(Usuario user : this.usuarios.values()) {
+			if(!user.isReceptor()) {
+				try {
+					doado = user.pegaItem(idItemDoado);
+					doador = user;
+					flagD = true;
+					break;
+				}catch (IllegalArgumentException e) {
+				}		
+			}
+		}
+		String msg = "";
+		
+		if(!flagD) {
+			throw new IllegalArgumentException("Item nao encontrado: " + idItemDoado +".");
+		}
+		
+		if(!doado.getDescricao().equals(nec.getDescricao())) {
+			throw new IllegalArgumentException("Os itens nao tem descricoes iguais.");
+		}
+		if(doado.getQuantidade() > nec.getQuantidade()) {
+			doado.setQuantidade(doado.getQuantidade() - nec.getQuantidade());
+			this.removeItemNecessario(recep.getId(), idItemNec);
+			msg = data + " - doador: " + doador.getNome()+"/"+doador.getId()+", item: "+doado.getDescricao()+", quantidade: "+nec.getQuantidade()+", receptor: "+recep.getNome()+"/"+recep.getId();
+		}else if(nec.getQuantidade() > doado.getQuantidade()) {
+			nec.setQuantidade(nec.getQuantidade() - doado.getQuantidade());
+			this.removeItemParaDoacao(idItemDoado, doador.getId());
+			msg = data + " - doador: " + doador.getNome()+"/"+doador.getId()+", item: "+doado.getDescricao()+", quantidade: "+doado.getQuantidade()+", receptor: "+recep.getNome()+"/"+recep.getId();
+		}else {
+			this.removeItemNecessario(recep.getId(), idItemNec);
+			this.removeItemParaDoacao(idItemDoado, doador.getId());
+			msg = data + " - doador: " + doador.getNome()+"/"+doador.getId()+", item: "+doado.getDescricao()+", quantidade: "+nec.getQuantidade()+", receptor: "+recep.getNome()+"/"+recep.getId();
+		}
+		
+		String data2 = data.replace("/", "");
+		data2 = new StringBuilder(data2).reverse().toString();
+		int dataint = Integer.parseInt(data2);
+		
+		if(this.histDoacoes.containsKey(dataint)) {
+			String aux = this.histDoacoes.get(dataint);
+			String desc = aux.substring(aux.indexOf("item: ")+6, aux.indexOf("item: ")+9);
+			if(nec.getDescricao().compareTo(desc) > 1) {
+				this.histDoacoes.put(dataint+1, msg);
+			}else if(nec.getDescricao().compareTo(desc) < 1){
+				this.histDoacoes.put(dataint-1, msg);
+			}
+		}else{
+			this.histDoacoes.put(dataint, msg);
+		}
+		
+		return msg;
+		
+	}
+
+	/**
+	 * Lista o historico de doacoes.
+	 * @return todas doacoes feitas ate o momento.
+	 */
+	public String listaDoacoes() {
+		String msg = "";
+		for(String a : this.histDoacoes.values()) {
+			msg += a + " | ";
+		}
+		if (msg.length()>1) {
+			return msg.substring(0, msg.length()-3);
+		}return msg;
 	}
 
 }
