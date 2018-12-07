@@ -121,74 +121,34 @@ public class Usuario {
 	}
 
 	/**
-	 * Retorna um String que corresponde ao usuario.
-	 * 
-	 * @return retorna uma string no formato: NOME/ID, EMAIL, CELULAR, STATUS: xxxxxx
-	 */
-	@Override
-	public String toString() {
-		return this.getNome() + "/" + this.getId() + ", " + this.getEmail() + ", " + this.getCelular()
-				+ (this.receptor ? ", status: receptor" : ", status: doador");
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + celular.hashCode();
-		result = prime * result + email.hashCode();
-		result = prime * result + nome.hashCode();
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Usuario other = (Usuario) obj;
-		if (!celular.equals(other.celular))
-			return false;
-		if (!email.equals(other.email))
-			return false;
-		if (!nome.equals(other.nome))
-			return false;
-		return true;
-	}
-
-	/**
 	 * Adiciona item para descricao.
 	 * 
 	 * @param descricaoItem descricao do item.
 	 * @param quantidade    quantidade do item.
 	 * @param tags          tags do item.
-	 * @param contador      contador que sera o id.
+	 * @param idItem      	id que representa o item.
 	 * 
 	 * @return retorna o id do item.
+	 * 
 	 */
-	public int adicionaItemParaDoacao(String descricaoItem, int quantidade, String tags, int contador) {
-		Item aSerAdicionado = new Item(descricaoItem, quantidade, tags.split(","), contador);
+	public int adicionaItemParaDoacao(String descricaoItem, int quantidade, String tags, int idItem) {
+		Item novoItem = new Item(descricaoItem, quantidade, tags.split(","), idItem);
+		
 		if (this.itens.containsKey(descricaoItem)) {
-			boolean achouItemIgual = false;
 			for (Item i : this.itens.get(descricaoItem)) {
-				if (i.equals(aSerAdicionado)) {
+				if (i.equals(novoItem)) {
 					i.setQuantidade(quantidade);
-					achouItemIgual = true;
 					return i.getId();
 				}
 			}
-			if (!achouItemIgual) {
-				this.itens.get(descricaoItem).add(aSerAdicionado);
-			}
+			
+			this.itens.get(descricaoItem).add(novoItem);
 		} else {
 			this.itens.put(descricaoItem, new ArrayList<>());
-			this.itens.get(descricaoItem).add(aSerAdicionado);
+			this.itens.get(descricaoItem).add(novoItem);
 		}
 
-		return contador;
+		return idItem;
 	}
 
 	/**
@@ -219,25 +179,26 @@ public class Usuario {
 	}
 
 	/**
+	 * 
 	 * @return retorna uma lista com todos itens.
+	 * 
 	 */
 	public List<Item> pegaTodosOsItens() {
 		List<Item> itens = new ArrayList<>();
-		for (String descricao : this.itens.keySet()) {
-			itens.addAll(this.itens.get(descricao));
-		}
-
+		
+		this.itens.values().forEach(valor -> itens.addAll(valor));
+		
 		return itens;
 	}
 
 	/**
+	 * 
 	 * @return retorna a representacao do usuario.
+	 * 
 	 */
 	public String representacaoParaListagemDeDoacao() {
-		if (!this.isReceptor()) {
-			return "doador: " + this.getNome() + "/" + this.getId();
-		}
-		return "Receptor: " + this.getNome() + "/" + this.getId();
+		return (this.isReceptor()) ? ("Receptor: " + this.getNome() + "/" + this.getId()) :
+			("doador: " + this.getNome() + "/" + this.getId());
 	}
 
 	/**
@@ -248,6 +209,7 @@ public class Usuario {
 	 * @param tags       tags do item.
 	 * 
 	 * @return retorna a representacao do item.
+	 * 
 	 */
 	public String atualizaItem(int id, int quantidade, String tags) {
 		for (String descricao : this.itens.keySet()) {
@@ -284,6 +246,7 @@ public class Usuario {
 	 * @param id id do item.
 	 * 
 	 * @return retorna a descricao e quantidade do item.
+	 * 
 	 */
 	public String removeItem(int id) {
 		if (this.itens.isEmpty()) {
@@ -293,9 +256,9 @@ public class Usuario {
 		for (String descricao : this.itens.keySet()) {
 			for (Item item : this.itens.get(descricao)) {
 				if (item.getId() == id) {
-					int qtd = item.getQuantidade();
+					int quantidade = item.getQuantidade();
 					this.itens.get(descricao).remove(item);
-					return descricao + "," + qtd;
+					return descricao + "," + quantidade;
 				}
 			}
 		}
@@ -307,8 +270,11 @@ public class Usuario {
 	 * Exibe um item.
 	 * 
 	 * @param id id do item.
+	 * @return 
+	 * @return 
 	 * 
 	 * @return retorna representacao do item.
+	 * 
 	 */
 	public String exibeItem(int id) {
 		for (String descricao : this.itens.keySet()) {
@@ -318,6 +284,7 @@ public class Usuario {
 				}
 			}
 		}
+		
 		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 	}
 
@@ -327,6 +294,7 @@ public class Usuario {
 	 * @param id id do item.
 	 * 
 	 * @return retorna descricao do item.
+	 * 
 	 */
 	public String getDescricaoItem(int id) {
 		for (List<Item> valor : this.itens.values()) {
@@ -336,6 +304,7 @@ public class Usuario {
 				}
 			}
 		}
+		
 		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 	}
 
@@ -344,5 +313,45 @@ public class Usuario {
 			return this.itens.get(descricao);
 		} else
 			return new ArrayList<>();
+	}
+	
+	/**
+	 * Retorna um String que corresponde ao usuario.
+	 * 
+	 * @return retorna uma string no formato: NOME/ID, EMAIL, CELULAR, STATUS: xxxxxx.
+	 * 
+	 */
+	@Override
+	public String toString() {
+		return this.getNome() + "/" + this.getId() + ", " + this.getEmail() + ", " + this.getCelular()
+				+ (this.receptor ? ", status: receptor" : ", status: doador");
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + celular.hashCode();
+		result = prime * result + email.hashCode();
+		result = prime * result + nome.hashCode();
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		if (!celular.equals(other.celular))
+			return false;
+		if (!email.equals(other.email))
+			return false;
+		if (!nome.equals(other.nome))
+			return false;
+		return true;
 	}
 }

@@ -66,6 +66,7 @@ public class Item {
 	 * altera a quantidade de itens disponiveis.
 	 * 
 	 * @param novaQuantidade é o novo valor que quantidade assumirá.
+	 * 
 	 */
 	public void setQuantidade(int novaQuantidade) {
 		this.validador.validaQuantidade(novaQuantidade);

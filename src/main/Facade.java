@@ -8,12 +8,17 @@ public class Facade {
 	private UsuarioController cg = new UsuarioController();
 
 	public static void main(String[] args) {
-		args = new String[] {"main.Facade", "acceptance_tests/use_case_1.txt", 
+		args = new String[] {
+				"main.Facade", "acceptance_tests/use_case_1.txt", 
 				"acceptance_tests/use_case_2.txt",
-				"acceptance_tests/use_case_3.txt", "acceptance_tests/use_case_4.txt", "acceptance_tests/use_case_5.txt", "acceptance_tests/use_case_6.txt"};
+				"acceptance_tests/use_case_3.txt", 
+				"acceptance_tests/use_case_4.txt", 
+				"acceptance_tests/use_case_5.txt", 
+				"acceptance_tests/use_case_6.txt"
+				};
 		EasyAccept.main(args);
 	}
-	///us1
+	// já refatorado
 	public String adicionaDoador (String id, String nome, String email, String celular, String classe) {
 		return this.cg.adicionaDoador(id, nome, email, celular, classe);
 	}
@@ -37,22 +42,6 @@ public class Facade {
 	public void removeUsuario (String id) {
 		this.cg.removeUsuario(id);
 	}
-	/// fim da us1
-	
-	public int adicionaItemNecessario(String idReceptor, String descricaoItem, int quantidade, String tags) {
-		return this.cg.adicionaItemNecessario(idReceptor, descricaoItem, quantidade, tags);
-	}
-	
-	public String atualizaItemNecessario(String idReceptor, int id, int quantidade, String tags) {
-		return this.cg.atualizaItemNecessario(id, idReceptor, quantidade, tags);
-	}
-	public String match(String idReceptor, int idItemNecessario) {
-		return this.cg.match(idReceptor, idItemNecessario);
-	}
-	
-	public String pesquisaItemParaDoacaoPorDescricao(String descricao) {
-		return this.cg.pesquisaItemParaDoacaoPorDescricao(descricao);
-	}
 	
 	public void adicionaDescritor (String descricao) {
 		this.cg.adicionaDescritor(descricao);
@@ -70,7 +59,7 @@ public class Facade {
 		return this.cg.atualizaItemParaDoacao(id, idDoador, quantidade, tags);
 	}
 	
-	public void removeItemParaDoacao (int id, String idDoador) throws Exception {
+	public void removeItemParaDoacao (int id, String idDoador) {
 		this.cg.removeItemParaDoacao(id, idDoador);
 	}
 	
@@ -80,6 +69,21 @@ public class Facade {
 	
 	public String listaItensParaDoacao() {
 		return this.cg.listaItensParaDoacao();
+	}
+	
+	public String pesquisaItemParaDoacaoPorDescricao(String descricao) {
+		return this.cg.pesquisaItemParaDoacaoPorDescricao(descricao);
+	}
+	// até o acima, us3...
+	public int adicionaItemNecessario(String idReceptor, String descricaoItem, int quantidade, String tags) {
+		return this.cg.adicionaItemNecessario(idReceptor, descricaoItem, quantidade, tags);
+	}
+	
+	public String atualizaItemNecessario(String idReceptor, int id, int quantidade, String tags) {
+		return this.cg.atualizaItemNecessario(id, idReceptor, quantidade, tags);
+	}
+	public String match(String idReceptor, int idItemNecessario) {
+		return this.cg.match(idReceptor, idItemNecessario);
 	}
 	
 	public String listaItensNecessarios() {
