@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Map;
 import enums.Classe;
 import util.Validador;
 
-public class Usuario {
+public class Usuario implements Serializable {
 
 	private String id;
 	private String nome;
@@ -121,7 +122,7 @@ public class Usuario {
 	}
 
 	/**
-	 * Adiciona item para descricao.
+	 * Adiciona um item ao usuario.
 	 * 
 	 * @param descricaoItem descricao do item.
 	 * @param quantidade    quantidade do item.
@@ -131,7 +132,7 @@ public class Usuario {
 	 * @return retorna o id do item.
 	 * 
 	 */
-	public int adicionaItemParaDoacao(String descricaoItem, int quantidade, String tags, int idItem) {
+	public int adicionaItem (String descricaoItem, int quantidade, String tags, int idItem) {
 		Item novoItem = new Item(descricaoItem, quantidade, tags.split(","), idItem);
 		
 		if (this.itens.containsKey(descricaoItem)) {
@@ -157,7 +158,9 @@ public class Usuario {
 	 * @param descricao descricao procurada.
 	 * 
 	 * @return retorna todos itens com a descricao procurada.
+	 * 
 	 */
+	//FALTA REFATORAR@!!!!!
 	public List<Item> procuraItensComNome(String descricao) {
 		List<Item> itens = new ArrayList<>();
 
@@ -228,7 +231,15 @@ public class Usuario {
 
 		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 	}
-
+	
+	/**
+	 * Pega um item com determinado id.
+	 * 
+	 * @param id e o id do item.
+	 * 
+	 * @return retorna o Item que possui o id passado como parametro.
+	 * 
+	 */
 	public Item pegaItem(int id) {
 		for (String descricao : this.itens.keySet()) {
 			for (Item item : this.itens.get(descricao)) {
@@ -270,8 +281,6 @@ public class Usuario {
 	 * Exibe um item.
 	 * 
 	 * @param id id do item.
-	 * @return 
-	 * @return 
 	 * 
 	 * @return retorna representacao do item.
 	 * 
@@ -307,7 +316,14 @@ public class Usuario {
 		
 		throw new IllegalArgumentException("Item nao encontrado: " + id + ".");
 	}
-
+	
+	/**
+	 * Metodo para se obter todos os itens com determinada descricao.
+	 * 
+	 * @param descricao e a descricao de itens procurada.
+	 * 
+	 * @return uma lista com todos os itens que possui determinada descricao.
+	 */
 	public List<Item> pegaTodosOsItensComDescricao(String descricao) {
 		if (this.itens.containsKey(descricao)) {
 			return this.itens.get(descricao);

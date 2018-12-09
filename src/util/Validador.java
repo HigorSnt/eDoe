@@ -1,12 +1,14 @@
 package util;
 
+import java.io.Serializable;
+
 /**
  * Classe que realiza todas as validações de dados passados para o sistema.
  * 
  * @author Higor Santos de Brito Dantas.
  *
  */
-public class Validador {
+public class Validador implements Serializable {
 	
 	/**
 	 * Valida o nome de um usuario.

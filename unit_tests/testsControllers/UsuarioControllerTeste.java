@@ -11,11 +11,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.rules.ExpectedException;
 
-import controllers.UsuarioController;
+import controller.SistemaController;
 
 class UsuarioControllerTeste {
 	
-	private UsuarioController uc = new UsuarioController();
+	private SistemaController uc = new SistemaController();
 	
 	@BeforeEach
 	void cadastrandoUsuarios() {
@@ -240,15 +240,15 @@ class UsuarioControllerTeste {
 	
 	@Test
 	void testRemoveItemParaDoacao() {
-		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(0, "70513372911"));
-		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(-9, "70513372911"));
-		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(1, "    "));
-		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(1, null));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItem(0, "70513372911"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItem(-9, "70513372911"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItem(1, "    "));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItem(1, null));
 		
 		assertEquals("2 - camiseta, tags: [outfit, algodao], quantidade: 5", uc.exibeItem(2, "70513372911"));
-		uc.removeItemParaDoacao(2, "70513372911");
+		uc.removeItem(2, "70513372911");
 		assertThrows(IllegalArgumentException.class, ()-> uc.exibeItem(2, "70513372911"));
-		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(2, "00"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItem(2, "00"));
 	}
 	
 	@Test
@@ -286,14 +286,14 @@ class UsuarioControllerTeste {
 	
 	@Test
 	void testeRemoveItemNecessario() {
-		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(0, "84473712044"));
-		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(-9, "84473712044"));
-		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(1, "    "));
-		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemParaDoacao(1, null));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItem(0, "84473712044"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItem(-9, "84473712044"));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItem(1, "    "));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItem(1, null));
 		assertEquals("4 - cadeira de rodas, tags: [roda grande, 80kg, conforto], quantidade: 7", uc.exibeItem(4, "84473712044"));
-		uc.removeItemNecessario("84473712044", 4);
+		uc.removeItem(4, "84473712044");
 		assertThrows(IllegalArgumentException.class, ()-> uc.exibeItem(4, "84473712044"));
-		assertThrows(IllegalArgumentException.class, ()-> uc.removeItemNecessario("000", 45));
+		assertThrows(IllegalArgumentException.class, ()-> uc.removeItem(45, "000"));
 	}
 	
 }

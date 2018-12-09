@@ -1,8 +1,9 @@
 package models;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ItemAvaliado implements Comparable<ItemAvaliado> {
+public class ItemAvaliado implements Comparable<ItemAvaliado>, Serializable {
 
 	private Item itemAvaliado;
 	private Item itemNecessario;
@@ -12,18 +13,14 @@ public class ItemAvaliado implements Comparable<ItemAvaliado> {
 		this.itemAvaliado = itemAvaliado;
 		this.itemNecessario = itemNecessario;
 		this.pontuacao = this.calculaPontuacao(itemAvaliado.getTags(), this.itemNecessario.getTags());
-
-	}
-
-	public String toString() {
-		return this.itemAvaliado.toString();// + "pontuacao: " + this.pontuacao;
 	}
 
 	private int calculaPontuacao(List<String> tagsItemAvaliado, List<String> tagsItemNecessario) {
 		int pontuacao = 20;
+		
 		for (int i = 0; i < tagsItemAvaliado.size(); i++) {
 			for (int j = 0; j < tagsItemNecessario.size(); j++) {
-				if (tagsItemAvaliado.get(i).toLowerCase().equals(tagsItemNecessario.get(j).toLowerCase())) {
+				if (tagsItemAvaliado.get(i).equalsIgnoreCase(tagsItemNecessario.get(j))) {
 					if (i == j) {
 						pontuacao += 10;
 					} else {
@@ -44,14 +41,17 @@ public class ItemAvaliado implements Comparable<ItemAvaliado> {
 	public int getPontuacao() {
 		return this.pontuacao;
 	}
+	
+	@Override
+	public String toString() {
+		return this.itemAvaliado.toString();
+	}
 
 	@Override
 	public int compareTo(ItemAvaliado o) {
 		if (this.pontuacao - o.getPontuacao() == 0) {
-			return this.itemAvaliado.getId() - o.getId();
-		}else {
-			return o.getPontuacao() - this.pontuacao;
+			return Integer.compare(this.itemAvaliado.getId(), o.getId());
 		}
-		//return this.pontuacao - o.getPontuacao();
+		return Integer.compare(o.getPontuacao(), this.pontuacao);
 	}
 }

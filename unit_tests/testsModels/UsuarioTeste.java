@@ -97,18 +97,18 @@ class UsuarioTeste {
 	
 	@BeforeEach
 	void cadastrandoItens() {
-		us1.adicionaItemParaDoacao("cadeira de rodas", 5, "roda grande,cadeira", 1);
-		us1.adicionaItemParaDoacao("colchao", 5, "colchao kingsize,conforto,dormir", 2);
-		us1.adicionaItemParaDoacao("calca jeans", 3, "", 3);
+		us1.adicionaItem("cadeira de rodas", 5, "roda grande,cadeira", 1);
+		us1.adicionaItem("colchao", 5, "colchao kingsize,conforto,dormir", 2);
+		us1.adicionaItem("calca jeans", 3, "", 3);
 	}
 	
 	@Test
 	void testAdicionaItemParaDoacao() {
 		assertEquals("2 - colchao, tags: [colchao kingsize, conforto, dormir], quantidade: 5", us1.exibeItem(2));
-		us1.adicionaItemParaDoacao("colchao", 10, "colchao kingsize,conforto,dormir", 2);
+		us1.adicionaItem("colchao", 10, "colchao kingsize,conforto,dormir", 2);
 		assertEquals("2 - colchao, tags: [colchao kingsize, conforto, dormir], quantidade: 10", us1.exibeItem(2));
-		us1.adicionaItemParaDoacao("jaqueta de couro", 5, "outfit,couro de jacare", 4);
-		us1.adicionaItemParaDoacao("jaqueta de couro", 5, "outfit,couro de cobra", 5);
+		us1.adicionaItem("jaqueta de couro", 5, "outfit,couro de jacare", 4);
+		us1.adicionaItem("jaqueta de couro", 5, "outfit,couro de cobra", 5);
 		assertEquals("5 - jaqueta de couro, tags: [outfit, couro de cobra], quantidade: 5", us1.exibeItem(5));
 	}
 	

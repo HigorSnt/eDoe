@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,13 +14,12 @@ import util.Validador;
  * @author kyouma
  *
  */
-public class Item {
+public class Item implements Serializable {
 
 	private String descricao;
 	private List<String> tags;
 	private int quantidade;
 	private int id;
-	private String data;
 	private Validador validador = new Validador();
 
 	/**
@@ -38,7 +38,6 @@ public class Item {
 		this.descricao = descricao;
 		this.quantidade = quantidade;
 		this.id = id;
-		//this.data = data;
 		this.tags = new ArrayList<String>();
 		
 		for (String tag : tags) {
