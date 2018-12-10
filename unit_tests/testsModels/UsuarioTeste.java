@@ -20,7 +20,7 @@ class UsuarioTeste {
 	private Usuario us3;
 	
 	@BeforeEach
-	void cadastraUsuario() {
+	public void cadastraUsuario() {
 		us1 = new Usuario ("70513372911", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
 				"(83) 92918-0211", Classe.valueOf("PESSOA_FISICA"), false);
 		us2 = new Usuario ("08704413000240", "Paroquia de Nossa Senhora da Conceicao", 
@@ -30,7 +30,7 @@ class UsuarioTeste {
 	}
 
 	@Test
-	void testConstrutor() {
+	public void testConstrutor() {
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario(null, "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
 				"(83) 92918-0211", Classe.valueOf("PESSOA_FISICA"), false));
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario("      ", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
@@ -47,8 +47,7 @@ class UsuarioTeste {
 				"        ", Classe.valueOf("PESSOA_FISICA"), false));
 		assertThrows(IllegalArgumentException.class, ()-> new Usuario("70513372911", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
 				null, Classe.valueOf("PESSOA_FISICA"), false));
-		assertThrows(IllegalArgumentException.class, ()-> new Usuario("70513372911", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
-				"(83) 92918-0211", Classe.valueOf("PADARIA"), false));
+		assertThrows(IllegalArgumentException.class, ()-> new Usuario("70513372911", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", "(83) 92918-0211", Classe.valueOf("PADARIA"), false));
 		
 		assertFalse(us2.isReceptor());
 		assertEquals("Paroquia de Nossa Senhora da Conceicao", us2.getNome());
@@ -60,7 +59,7 @@ class UsuarioTeste {
 	}
 	
 	@Test
-	void testSetters() {
+	public void testSetters() {
 		assertThrows(IllegalArgumentException.class, ()-> us1.setCelular(null));
 		assertThrows(IllegalArgumentException.class, ()-> us1.setCelular(""));
 		assertThrows(IllegalArgumentException.class, ()-> us1.setNome(null));
@@ -75,7 +74,7 @@ class UsuarioTeste {
 	}
 	
 	@Test
-	void testEquals() {
+	public void testEquals() {
 		assertTrue(us2.equals(us2));
 		assertFalse(us2.equals(null));
 		assertFalse(us2.equals("TESTE"));
@@ -96,14 +95,14 @@ class UsuarioTeste {
 	}
 	
 	@BeforeEach
-	void cadastrandoItens() {
+	public void cadastrandoItens() {
 		us1.adicionaItem("cadeira de rodas", 5, "roda grande,cadeira", 1);
 		us1.adicionaItem("colchao", 5, "colchao kingsize,conforto,dormir", 2);
 		us1.adicionaItem("calca jeans", 3, "", 3);
 	}
 	
 	@Test
-	void testAdicionaItemParaDoacao() {
+	public void testAdicionaItemParaDoacao() {
 		assertEquals("2 - colchao, tags: [colchao kingsize, conforto, dormir], quantidade: 5", us1.exibeItem(2));
 		us1.adicionaItem("colchao", 10, "colchao kingsize,conforto,dormir", 2);
 		assertEquals("2 - colchao, tags: [colchao kingsize, conforto, dormir], quantidade: 10", us1.exibeItem(2));
@@ -113,14 +112,14 @@ class UsuarioTeste {
 	}
 	
 	@Test
-	void testProcuraItensComNome() {
+	public void testProcuraItensComNome() {
 		List<Item> lista = new ArrayList<>();
 		lista = us1.procuraItensComNome("colchao");
 		assertEquals("2 - colchao, tags: [colchao kingsize, conforto, dormir], quantidade: 5", lista.stream().map(i -> i.toString()).collect(Collectors.joining(" | ")));
 	}
 	
 	@Test
-	void testPegaTodosOsItens() {
+	public void testPegaTodosOsItens() {
 		List<Item> itens = new ArrayList<>();
 		itens = us1.pegaTodosOsItens();
 		
@@ -130,13 +129,13 @@ class UsuarioTeste {
 	}
 	
 	@Test
-	void testRepresentacaoParaListagemDeDoacao() {
+	public void testRepresentacaoParaListagemDeDoacao() {
 		assertEquals("doador: Elizabeth Ashe/70513372911", us1.representacaoParaListagemDeDoacao());
 		assertEquals("Receptor: Elizabeth Ashe/70513372911", us3.representacaoParaListagemDeDoacao());
 	}
 	
 	@Test
-	void testAtualizaItem() {
+	public void testAtualizaItem() {
 		assertThrows(IllegalArgumentException.class, ()-> us1.atualizaItem(10, 5, ""));
 		assertEquals("1 - cadeira de rodas, tags: [roda grande, cadeira], quantidade: 5", us1.exibeItem(1));
 		us1.atualizaItem(1, 10, "");
@@ -148,7 +147,7 @@ class UsuarioTeste {
 	}
 	
 	@Test
-	void testRemoveItem() {
+	public void testRemoveItem() {
 		assertThrows(IllegalArgumentException.class, ()-> us1.removeItem(-4));
 		assertThrows(IllegalArgumentException.class, ()-> us2.removeItem(1));
 		assertEquals("1 - cadeira de rodas, tags: [roda grande, cadeira], quantidade: 5", us1.exibeItem(1));
@@ -157,9 +156,29 @@ class UsuarioTeste {
 	}
 	
 	@Test
-	void testGetDescricaoItem() {
+	public void testGetDescricaoItem() {
 		assertThrows(IllegalArgumentException.class, ()-> us1.getDescricaoItem(10));
 		assertEquals("calca jeans", us1.getDescricaoItem(3));
+	}
+	
+	@Test
+	public void testPegaItem() {
+		assertThrows(IllegalArgumentException.class, ()-> us1.pegaItem(10));
+		
+		Item i1 = new Item("colchao", 5, "colchao kingsize,conforto,dormir".split(","), 2);
+		assertEquals(i1, us1.pegaItem(2));
+	}
+	
+	@Test
+	public void testPegaTodosOsItensComDescricao() {
+		us1.adicionaItem("colchao", 7, "dormir,conforto", 4);
+		us1.adicionaItem("colchao", 3, "colchao kingsize,dormir", 5);
+		
+		assertEquals("[2 - colchao, tags: [colchao kingsize, conforto, dormir], quantidade: 5, "
+				+ "4 - colchao, tags: [dormir, conforto], quantidade: 7, "
+				+ "5 - colchao, tags: [colchao kingsize, dormir], quantidade: 3]", 
+				us1.pegaTodosOsItensComDescricao("colchao").toString());
+		assertEquals("[]", us1.pegaTodosOsItensComDescricao("livro").toString());
 	}
 
 }

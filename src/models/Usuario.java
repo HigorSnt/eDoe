@@ -9,8 +9,19 @@ import java.util.Map;
 import enums.Classe;
 import util.Validador;
 
+/**
+ * Classe que representa um Usuario, cada usuario possui um identificador unico, um nome,
+ * um celular, um email e uma classe de atuacao na sociedade, além dos itens.
+ * Um usuario pode ser doador ou receptor, algo que e sinalizado por um booleano.
+ * 
+ * @author GABRIEL DE OLIVEIRA MEIRA NOBREGA - 118110276
+ * @author HIGOR SANTOS DE BRITO DANTAS 	 - 118110808
+ * @author JOAO FELIPE DA SILVA FREITAS		 - 118110774
+ * 
+ */
 public class Usuario implements Serializable {
 
+	//private static final long serialVersionUID = -1325505061908058951L;
 	private String id;
 	private String nome;
 	private String celular;
@@ -44,13 +55,12 @@ public class Usuario implements Serializable {
 	}
 
 	/**
-	 * Retorna o nome do usuario.
 	 * 
 	 * @return nome do usuario.
 	 * 
 	 */
 	public String getNome() {
-		return nome;
+		return this.nome;
 	}
 	
 	/**
@@ -72,10 +82,11 @@ public class Usuario implements Serializable {
 	 * 
 	 */
 	public boolean isReceptor() {
-		return receptor;
+		return this.receptor;
 	}
 	
 	/**
+	 * 
 	 * @return retorna id do usuario.
 	 * 
 	 */
@@ -84,6 +95,7 @@ public class Usuario implements Serializable {
 	}
 
 	/**
+	 * 
 	 * @return retorna o celular do usuario.
 	 * 
 	 */
@@ -103,6 +115,7 @@ public class Usuario implements Serializable {
 	}
 
 	/**
+	 * 
 	 * @return retorna o email do usuario.
 	 * 
 	 */
@@ -153,32 +166,38 @@ public class Usuario implements Serializable {
 	}
 
 	/**
-	 * Procura os itens com determina descricao.
+	 * Procura os itens com determinada descricao.
 	 * 
-	 * @param descricao descricao procurada.
+	 * @param descricaoItem descricao procurada.
 	 * 
 	 * @return retorna todos itens com a descricao procurada.
 	 * 
 	 */
-	//FALTA REFATORAR@!!!!!
-	public List<Item> procuraItensComNome(String descricao) {
+	public List<Item> procuraItensComNome(String descricaoItem) {
 		List<Item> itens = new ArrayList<>();
-
-		for (String desc : this.itens.keySet()) {
-			boolean descricaoPresente = false;
-			String[] palavrasChaves = desc.split(" ");
-			for (String palavra : palavrasChaves) {
-				if (palavra.equals(descricao)) {
-					descricaoPresente = true;
-				}
-			}
-			if (descricaoPresente) {
-				itens.addAll(this.itens.get(desc));
-			}
-
+		for (String descricao : this.itens.keySet()) {
+			if (verificaPresencaDeDescricao(descricaoItem, descricao)) {
+				itens.addAll(this.itens.get(descricao));
+			};
 		}
-
 		return itens;
+	}
+	
+	/**
+	 * Verifica se uma descricao de um item passado e composta por alguma palavra de uma descricao.
+	 * 
+	 * @param descricaoItem e a descricao do item passado.
+	 * @param descricao 	e a descricao que possui as palavras chaves.
+	 * 
+	 */
+	private boolean verificaPresencaDeDescricao(String descricaoItem, String descricao) {
+		String[] palavrasChaves = descricao.split(" ");
+		for (String palavra : palavrasChaves) {
+			if (palavra.equals(descricaoItem)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -323,6 +342,7 @@ public class Usuario implements Serializable {
 	 * @param descricao e a descricao de itens procurada.
 	 * 
 	 * @return uma lista com todos os itens que possui determinada descricao.
+	 * 
 	 */
 	public List<Item> pegaTodosOsItensComDescricao(String descricao) {
 		if (this.itens.containsKey(descricao)) {

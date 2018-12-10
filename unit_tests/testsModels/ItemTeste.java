@@ -12,12 +12,12 @@ class ItemTeste {
 	private Item item1;
 	
 	@BeforeEach
-	void cadastraItem() {
+	public void cadastraItem() {
 		item1 = new Item("camiseta", 8, "camiseta,tamanho G,bonita".split(","), 1);
 	}
 	
 	@Test
-	void testConstrutor() {
+	public void testConstrutor() {
 		assertThrows(IllegalArgumentException.class, ()-> new Item("   ", 4, "".split(""), 1));
 		assertThrows(IllegalArgumentException.class, ()-> new Item(null, 4, "".split(""), 1));
 		assertThrows(IllegalArgumentException.class, ()-> new Item("camiseta", 0, "camiseta".split(","), 1));
@@ -29,22 +29,23 @@ class ItemTeste {
 	}
 	
 	@Test
-	void testSetters() {
+	public void testSetters() {
 		assertThrows(IllegalArgumentException.class, ()-> item1.setQuantidade(0));
 		assertThrows(IllegalArgumentException.class, ()-> item1.setQuantidade(-8));
 		
 		item1.setQuantidade(15);
 		item1.setTags("camiseta,azul,gola polo".split(","));
 		assertEquals("1 - camiseta, tags: [camiseta, azul, gola polo], quantidade: 15", item1.toString());
+		assertEquals("[camiseta, azul, gola polo]", item1.getTags().toString());
 	}
 	
 	@Test
-	void testHashCode() {
+	public void testHashCode() {
 		assertEquals(-458894630, item1.hashCode());
 	}
 	
 	@Test
-	void testEquals() {
+	public void testEquals() {
 		assertTrue(item1.equals(item1));
 		assertFalse(item1.equals(null));
 		assertFalse(item1.equals("Teste"));

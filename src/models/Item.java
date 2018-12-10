@@ -3,19 +3,21 @@ package models;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import util.Validador;
 
 /**
- * Classe que tem como propósito ser uma entidade abstrata que representa um
- * item.
+ * Classe que representa um Item, onde cada um possui uma descricao, um identificador unico,
+ * uma certa quantidade, e tags que o definem.
  * 
- * @author kyouma
+ * @author GABRIEL DE OLIVEIRA MEIRA NOBREGA - 118110276
+ * @author HIGOR SANTOS DE BRITO DANTAS 	 - 118110808
+ * @author JOAO FELIPE DA SILVA FREITAS		 - 118110774
  *
  */
 public class Item implements Serializable {
 
+	//private static final long serialVersionUID = -1866678795534774606L;
 	private String descricao;
 	private List<String> tags;
 	private int quantidade;
@@ -23,13 +25,14 @@ public class Item implements Serializable {
 	private Validador validador = new Validador();
 
 	/**
-	 * Construtor de item, inicializa a lista e adciona todas as tags, bem como
+	 * Construtor de item, inicializa a lista e adiciona todas as tags, bem como
 	 * inicializa os outros atributos.
 	 * 
-	 * @param descricao e a descricao do item
-	 * @param quantidade e a quantidade de itens
-	 * @param tags e um resumo do objeto
-	 * @param id e o id unico do item
+	 * @param descricao 	e a descricao do item.
+	 * @param quantidade 	e a quantidade de itens.
+	 * @param tags 			e um resumo do objeto.
+	 * @param id 			e o identificador unico do item.
+	 * 
 	 */
 	public Item(String descricao, int quantidade, String[] tags, int id) {
 		this.validador.validaDescritor(descricao);
@@ -44,27 +47,11 @@ public class Item implements Serializable {
 			this.tags.add(tag);
 		}
 	}
-
-	/**
-	 * retorna uma representação em String do item que ele representa
-	 */
-	@Override
-	public String toString() {
-		return this.id + " - " + this.descricao + ", tags: " + this.converteTagsEmString() + ", quantidade: " + this.quantidade; 
-	}
-	
-	public int getId() {
-		return id;
-	}
-	
-	public String getDescricao() {
-		return descricao;
-	}
 	
 	/**
 	 * altera a quantidade de itens disponiveis.
 	 * 
-	 * @param novaQuantidade é o novo valor que quantidade assumirá.
+	 * @param novaQuantidade é o novo valor que quantidade assumira.
 	 * 
 	 */
 	public void setQuantidade(int novaQuantidade) {
@@ -77,7 +64,7 @@ public class Item implements Serializable {
 	 * adiciona as tags passadas como parametro na lista de tags que e contida no
 	 * objeto.
 	 * 
-	 * @param tags é um resumo do objeto
+	 * @param tags e um resumo do objeto
 	 */
 	public void setTags(String[] tags) {
 		this.tags = new ArrayList<>();
@@ -86,13 +73,46 @@ public class Item implements Serializable {
 			this.tags.add(tag);
 		}
 	}
-
-	private String converteTagsEmString() {
-		return "[" + this.tags.stream().map(t -> t.toString()).collect(Collectors.joining(", ")) + "]";
+	
+	/**
+	 *
+	 * @return Retorna as tags do item.
+	 * 
+	 */
+	public List<String> getTags() {
+		return this.tags;
 	}
 	
+	/**
+	 * 
+	 * @return Retorna a quantidade do item.
+	 * 
+	 */
 	public int getQuantidade() {
 		return this.quantidade;
+	}
+	
+	/**
+	 * 
+	 * @return Retorna o id do item.
+	 * 
+	 */
+	public int getId() {
+		return id;
+	}
+	
+	/**
+	 * 
+	 * @return Retorna a descricao do item.
+	 * 
+	 */
+	public String getDescricao() {
+		return descricao;
+	}
+	
+	@Override
+	public String toString() {
+		return this.id + " - " + this.descricao + ", tags: " + this.tags.toString() + ", quantidade: " + this.quantidade; 
 	}
 
 	@Override
@@ -119,10 +139,5 @@ public class Item implements Serializable {
 			return false;
 		return true;
 	}
-
-	public List<String> getTags() {
-		return this.tags;
-	}
-
 
 }

@@ -5,11 +5,15 @@ import java.io.Serializable;
 /**
  * Classe que realiza todas as validações de dados passados para o sistema.
  * 
- * @author Higor Santos de Brito Dantas.
+ * @author GABRIEL DE OLIVEIRA MEIRA NOBREGA - 118110276
+ * @author HIGOR SANTOS DE BRITO DANTAS 	 - 118110808
+ * @author JOAO FELIPE DA SILVA FREITAS		 - 118110774
  *
  */
 public class Validador implements Serializable {
 	
+	//private static final long serialVersionUID = 2661688556749260700L;
+
 	/**
 	 * Valida o nome de um usuario.
 	 * 
@@ -122,6 +126,12 @@ public class Validador implements Serializable {
 		}
 	}
 	
+	/**
+	 * Valida uma data passada onde ocorreu uma doacao.
+	 *
+	 * @param data e a data que necessita ser verificada se foi passada como nula ou vazia.
+	 * 
+	 */
 	public void validaData(String data) {
 		if(data == null || data.equals("")) {
 			throw new IllegalArgumentException("Entrada invalida: data nao pode ser vazia ou nula.");

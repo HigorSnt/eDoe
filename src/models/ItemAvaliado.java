@@ -3,8 +3,17 @@ package models;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * 
+ * 
+ * @author GABRIEL DE OLIVEIRA MEIRA NOBREGA - 118110276
+ * @author HIGOR SANTOS DE BRITO DANTAS 	 - 118110808
+ * @author JOAO FELIPE DA SILVA FREITAS		 - 118110774
+ * 
+ */
 public class ItemAvaliado implements Comparable<ItemAvaliado>, Serializable {
 
+	//private static final long serialVersionUID = 4597676319071710958L;
 	private Item itemAvaliado;
 	private Item itemNecessario;
 	private int pontuacao;

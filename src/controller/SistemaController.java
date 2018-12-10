@@ -29,6 +29,14 @@ import models.ItemAvaliado;
 import models.Usuario;
 import util.Validador;
 
+/**
+ * Classe que controla os usuarios e as suas acoes.
+ * 
+ * @author GABRIEL DE OLIVEIRA MEIRA NOBREGA - 118110276
+ * @author HIGOR SANTOS DE BRITO DANTAS 	 - 118110808
+ * @author JOAO FELIPE DA SILVA FREITAS		 - 118110774
+ *
+ */
 public class SistemaController {
 	
 	private Map<String, Usuario> usuarios;
@@ -37,6 +45,11 @@ public class SistemaController {
 	private List<Doacao> doacoes;
 	private int geradorIdItens;
 	
+	/**
+	 * 
+	 * Inicializa todas as variaveis do Controller.
+	 * 
+	 */
 	public SistemaController() {
 		this.usuarios = new LinkedHashMap<String, Usuario>();
 		this.validador = new Validador();
@@ -197,11 +210,11 @@ public class SistemaController {
 				lista.add(u);
 		});
 
-		if (lista.size() > 0) {
-			return lista.stream().map(u -> u.toString()).collect(Collectors.joining(" | "));
+		if (lista.size() <= 0) {
+			throw new IllegalArgumentException("Usuario nao encontrado: " + nome + ".");
 		}
 		
-		throw new IllegalArgumentException("Usuario nao encontrado: " + nome + ".");
+		return lista.stream().map(u -> u.toString()).collect(Collectors.joining(" | "));
 	}
 
 	/**
@@ -335,6 +348,7 @@ public class SistemaController {
 		this.geradorIdItens++;
 		descricaoItem = descricaoItem.toLowerCase();
 		this.descricoes.put(descricaoItem, quantidade);
+		
 		return this.usuarios.get(id).adicionaItem(descricaoItem, quantidade, tags, this.geradorIdItens);
 	}
 
@@ -445,13 +459,19 @@ public class SistemaController {
 			this.descricoes.get(descritor) + " - " + descritor).collect(Collectors.joining(" | "));
 	}
 	
-	private void verificaUsuarioReceptor(String idReceptor) {
-		if (!this.usuarios.containsKey(idReceptor)) {
-			throw new IllegalArgumentException("Usuario nao encontrado: " + idReceptor + ".");
+	/**
+	 * Verifica se o id passado e de um usuario ja cadastrado e se o mesmo e um receptor.
+	 * 
+	 * @param idUsuario e o id do usuario a ser verificado.
+	 * 
+	 */
+	private void verificaUsuarioReceptor(String idUsuario) {
+		if (!this.usuarios.containsKey(idUsuario)) {
+			throw new IllegalArgumentException("Usuario nao encontrado: " + idUsuario + ".");
 		}
 		
-		if (!this.usuarios.get(idReceptor).isReceptor()) {
-			throw new IllegalArgumentException("O Usuario deve ser um receptor: " + idReceptor + ".");
+		if (!this.usuarios.get(idUsuario).isReceptor()) {
+			throw new IllegalArgumentException("O Usuario deve ser um receptor: " + idUsuario + ".");
 		}
 	}
 	
@@ -627,7 +647,7 @@ public class SistemaController {
 	
 	/**
 	 * Apos uma operação de match se torna necessario realizar atualizacoes nos itens, esse
-	 * metodo faz serve para isso.
+	 * metodo serve para isso.
 	 * 
 	 * @param idItemNecessario 	e o identificador de um item necessario.
 	 * @param idItemDoado		e o identificador de um item doado.
@@ -664,13 +684,11 @@ public class SistemaController {
 	 */
 	private Pair<Item, Usuario> pegaItemEUsuarioParaDoacao(int idItem, boolean identificador) {
 		Item itemNecessario;
-		Usuario usuario;
 		
-		for(Usuario user : this.usuarios.values()) {
-			if(identificador ^ user.isReceptor()) {
+		for(Usuario usuario : this.usuarios.values()) {
+			if(identificador ^ usuario.isReceptor()) {
 				try {
-					itemNecessario = user.pegaItem(idItem);
-					usuario = user;
+					itemNecessario = usuario.pegaItem(idItem);
 					return new Pair<>(itemNecessario, usuario);
 				}catch (IllegalArgumentException iae) {
 					continue;
