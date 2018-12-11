@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class Doacao implements Serializable {
 	
-	//private static final long serialVersionUID = -2221771936520558029L;
+	private static final long serialVersionUID = -2221771936520558029L;
 	private String usuarioDoador;
 	private String usuarioReceptor;
 	private String descricaoItemDoado;
