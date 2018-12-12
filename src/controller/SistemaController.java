@@ -727,7 +727,7 @@ public class SistemaController {
 		this.descricoes = (Map<String, Integer>) ois.readObject();
 		this.usuarios = (Map<String, Usuario>) ois.readObject();
 		this.doacoes = (List<Doacao>) ois.readObject();
-		fis.close();
+		ois.close();
 	}
 	
 	/**
@@ -744,7 +744,7 @@ public class SistemaController {
 		oos.writeObject(this.descricoes);
 		oos.writeObject(this.usuarios);
 		oos.writeObject(this.doacoes);
-		fos.close();
+		oos.close();
 	}
 
 }
