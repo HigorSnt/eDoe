@@ -17,7 +17,7 @@ import util.Validador;
  */
 public class Item implements Serializable {
 
-	//private static final long serialVersionUID = -1866678795534774606L;
+	private static final long serialVersionUID = -1866678795534774606L;
 	private String descricao;
 	private List<String> tags;
 	private int quantidade;

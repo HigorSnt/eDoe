@@ -21,7 +21,7 @@ import util.Validador;
  */
 public class Usuario implements Serializable {
 
-	//private static final long serialVersionUID = -1325505061908058951L;
+	private static final long serialVersionUID = -1325505061908058951L;
 	private String id;
 	private String nome;
 	private String celular;

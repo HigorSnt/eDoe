@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 public class Validador implements Serializable {
 	
-	//private static final long serialVersionUID = 2661688556749260700L;
+	private static final long serialVersionUID = 2661688556749260700L;
 
 	/**
 	 * Valida o nome de um usuario.
