@@ -28,7 +28,6 @@ public class Usuario implements Serializable {
 	private String email;
 	private Classe classe;
 	private boolean receptor;
-	private Validador validador = new Validador();
 	private Map<String, List<Item>> itens;
 
 	/**
@@ -43,7 +42,7 @@ public class Usuario implements Serializable {
 	 * 
 	 */
 	public Usuario(String id, String nome, String email, String celular, Classe classe, boolean receptor) {
-		this.validador.validaCadastro(id, nome, email, celular);
+		Validador.validaCadastro(id, nome, email, celular);
 
 		this.itens = new LinkedHashMap<>();
 		this.id = id;
@@ -70,7 +69,7 @@ public class Usuario implements Serializable {
 	 * 
 	 */
 	public void setNome(String novoNome) {
-		this.validador.validaNome(novoNome);
+		Validador.validaNome(novoNome);
 		
 		this.nome = novoNome;
 	}
@@ -110,7 +109,7 @@ public class Usuario implements Serializable {
 	 * 
 	 */
 	public void setCelular(String novoCelular) {
-		this.validador.validaCelular(novoCelular);
+		Validador.validaCelular(novoCelular);
 		this.celular = novoCelular;
 	}
 
@@ -130,7 +129,7 @@ public class Usuario implements Serializable {
 	 * 
 	 */
 	public void setEmail(String novoEmail) {
-		this.validador.validaEmail(novoEmail);
+		Validador.validaEmail(novoEmail);
 		this.email = novoEmail;
 	}
 

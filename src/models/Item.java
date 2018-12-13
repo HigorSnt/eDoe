@@ -22,7 +22,6 @@ public class Item implements Serializable {
 	private List<String> tags;
 	private int quantidade;
 	private int id;
-	private Validador validador = new Validador();
 
 	/**
 	 * Construtor de item, inicializa a lista e adiciona todas as tags, bem como
@@ -35,8 +34,8 @@ public class Item implements Serializable {
 	 * 
 	 */
 	public Item(String descricao, int quantidade, String[] tags, int id) {
-		this.validador.validaDescritor(descricao);
-		this.validador.validaQuantidade(quantidade);
+		Validador.validaDescritor(descricao);
+		Validador.validaQuantidade(quantidade);
 		
 		this.descricao = descricao;
 		this.quantidade = quantidade;
@@ -55,7 +54,7 @@ public class Item implements Serializable {
 	 * 
 	 */
 	public void setQuantidade(int novaQuantidade) {
-		this.validador.validaQuantidade(novaQuantidade);
+		Validador.validaQuantidade(novaQuantidade);
 		
 		this.quantidade = novaQuantidade;
 	}

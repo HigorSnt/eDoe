@@ -1,5 +1,6 @@
 package main;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import controller.SistemaController;
@@ -26,7 +27,7 @@ public class Facade {
 		return this.sisc.adicionaDoador(id, nome, email, celular, classe);
 	}
 	
-	public void lerReceptores (String caminho) {
+	public void lerReceptores (String caminho) throws FileNotFoundException {
 		this.sisc.lerReceptores(caminho);
 	}
 	

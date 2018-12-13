@@ -3,6 +3,8 @@ package models;
 import java.io.Serializable;
 import java.util.List;
 
+import util.Validador;
+
 /**
  * Entidade usada para representar o item avaliado com uma pontuação referente, e com um comparator para ordenar
  * de acordo com a pontuação.
@@ -29,6 +31,9 @@ public class ItemAvaliado implements Comparable<ItemAvaliado>, Serializable {
 	 *  
 	 */
 	public ItemAvaliado(Item itemAvaliado, Item itemNecessario) {
+		Validador.validaItem(itemAvaliado);
+		Validador.validaItem(itemNecessario);
+		
 		this.itemAvaliado = itemAvaliado;
 		this.itemNecessario = itemNecessario;
 		this.pontuacao = this.calculaPontuacao(itemAvaliado.getTags(), this.itemNecessario.getTags());

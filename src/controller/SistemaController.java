@@ -40,7 +40,6 @@ import util.Validador;
 public class SistemaController {
 	
 	private Map<String, Usuario> usuarios;
-	private Validador validador;
 	private Map<String, Integer> descricoes;
 	private List<Doacao> doacoes;
 	private int geradorIdItens;
@@ -52,7 +51,6 @@ public class SistemaController {
 	 */
 	public SistemaController() {
 		this.usuarios = new LinkedHashMap<String, Usuario>();
-		this.validador = new Validador();
 		this.descricoes = new TreeMap<>();
 		this.geradorIdItens = 0;
 		this.doacoes = new ArrayList<>();
@@ -71,7 +69,7 @@ public class SistemaController {
 	 * 
 	 */
 	public String adicionaDoador(String id, String nome, String email, String celular, String classe) {
-		this.validador.validaCadastro(id, nome, email, celular);
+		Validador.validaCadastro(id, nome, email, celular);
 		Classe.verificaClasse(classe);
 
 		Usuario usuario = new Usuario(id, nome, email, celular, Classe.valueOf(classe), false);
@@ -97,7 +95,7 @@ public class SistemaController {
 	 * 
 	 */
 	public String adicionaReceptor(String id, String nome, String email, String celular, String classe) {
-		this.validador.validaCadastro(id, nome, email, celular);
+		Validador.validaCadastro(id, nome, email, celular);
 		Classe.verificaClasse(classe);
 		
 		Usuario usuario = new Usuario(id, nome, email, celular, Classe.valueOf(classe), true);
@@ -114,31 +112,27 @@ public class SistemaController {
 	 * @param caminho caminho do arquivo.
 	 * 
 	 */
-	public void lerReceptores(String caminho) {
-		try {
-			Scanner sc = new Scanner(new FileReader(caminho));
-			sc.nextLine();
-			while (sc.hasNextLine()) {
-				String linha = sc.nextLine();
-				String array[] = new String[4];
-				
-				array = linha.split(",");
-				String id = array[0];
-				String nome = array[1];
-				String email = array[2];
-				String celular = array[3];
-				String classe = array[4];
-				
-				if (this.usuarios.containsKey(id)) {
-					this.alteraDadosReceptor(id, nome, email, celular);
-				} else {
-					this.adicionaReceptor(id, nome, email, celular, classe);
-				}
+	public void lerReceptores(String caminho) throws FileNotFoundException {
+		Scanner sc = new Scanner(new FileReader(caminho));
+		sc.nextLine();
+		while (sc.hasNextLine()) {
+			String linha = sc.nextLine();
+			String array[] = new String[4];
+			
+			array = linha.split(",");
+			String id = array[0];
+			String nome = array[1];
+			String email = array[2];
+			String celular = array[3];
+			String classe = array[4];
+			
+			if (this.usuarios.containsKey(id)) {
+				this.alteraDadosReceptor(id, nome, email, celular);
+			} else {
+				this.adicionaReceptor(id, nome, email, celular, classe);
 			}
-			sc.close();
-		} catch (FileNotFoundException e) {
-			System.err.println("Erro na leitura: caminho (" + caminho + ") não encontrado.");
 		}
+		sc.close();
 	}
 
 	/**
@@ -151,7 +145,7 @@ public class SistemaController {
 	 * 
 	 */
 	public String pesquisaUsuarioPorId(String id) {
-		this.validador.validaId(id);
+		Validador.validaId(id);
 
 		if (this.usuarios.containsKey(id)) {
 			return this.usuarios.get(id).toString();
@@ -173,7 +167,7 @@ public class SistemaController {
 	 * 
 	 */
 	public String alteraDadosReceptor(String id, String nome, String email, String celular) {
-		this.validador.validaId(id);
+		Validador.validaId(id);
 
 		if (!this.usuarios.containsKey(id)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + id + ".");
@@ -201,7 +195,7 @@ public class SistemaController {
 	 * 
 	 */
 	public String pesquisaUsuarioPorNome(String nome) {
-		this.validador.validaNome(nome);
+		Validador.validaNome(nome);
 		
 		List<Usuario> lista = new ArrayList<>();
 		
@@ -230,7 +224,7 @@ public class SistemaController {
 	 * 
 	 */
 	public String alteraDadosDoador(String id, String nome, String email, String celular) {
-		this.validador.validaId(id);
+		Validador.validaId(id);
 
 		if (!this.usuarios.containsKey(id)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + id + ".");
@@ -254,7 +248,7 @@ public class SistemaController {
 	 * @param id identificacao do usuario.
 	 */
 	public void removeUsuario(String id) {
-		this.validador.validaId(id);
+		Validador.validaId(id);
 
 		if (this.usuarios.containsKey(id)) {
 			this.usuarios.remove(id);
@@ -269,7 +263,7 @@ public class SistemaController {
 	 * 
 	 */
 	public void adicionaDescritor(String descricao) {
-		this.validador.validaDescritor(descricao);
+		Validador.validaDescritor(descricao);
 		
 		descricao = descricao.toLowerCase();
 		
@@ -292,7 +286,7 @@ public class SistemaController {
 	 * 
 	 */
 	public int adicionaItemParaDoacao(String idDoador, String descricaoItem, int quantidade, String tags) {
-		this.validador.validaId(idDoador);
+		Validador.validaId(idDoador);
 		
 		if (!this.usuarios.containsKey(idDoador)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idDoador + ".");
@@ -317,7 +311,7 @@ public class SistemaController {
 	 * 
 	 */
 	public int adicionaItemNecessario(String idReceptor, String descricaoItem, int quantidade, String tags) {
-		this.validador.validaId(idReceptor);
+		Validador.validaId(idReceptor);
 		
 		if (!this.usuarios.containsKey(idReceptor)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idReceptor + ".");
@@ -342,8 +336,8 @@ public class SistemaController {
 	 * 
 	 */
 	private int adicionaItem(String id, String descricaoItem, int quantidade, String tags) {
-		this.validador.validaDescritor(descricaoItem);
-		this.validador.validaQuantidade(quantidade);
+		Validador.validaDescritor(descricaoItem);
+		Validador.validaQuantidade(quantidade);
 
 		this.geradorIdItens++;
 		descricaoItem = descricaoItem.toLowerCase();
@@ -412,8 +406,8 @@ public class SistemaController {
 	 * 
 	 */
 	private String atualizaItem(int id, String idUsuario, int quantidade, String tags) {
-		this.validador.validaId(idUsuario);
-		this.validador.validaIdItem(id);
+		Validador.validaId(idUsuario);
+		Validador.validaIdItem(id);
 		
 		if (!this.usuarios.containsKey(idUsuario)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idUsuario + ".");
@@ -435,8 +429,8 @@ public class SistemaController {
 	 * 
 	 */
 	public void removeItem(int id, String idUsuario) {
-		this.validador.validaId(idUsuario);
-		this.validador.validaIdItem(id);
+		Validador.validaId(idUsuario);
+		Validador.validaIdItem(id);
 		
 		if (!this.usuarios.containsKey(idUsuario)) {
 			throw new IllegalArgumentException("Usuario nao encontrado: " + idUsuario + ".");
@@ -486,8 +480,8 @@ public class SistemaController {
 	 * 
 	 */
 	public String match(String idReceptor, int idItemNecessario) {
-		this.validador.validaId(idReceptor);
-		this.validador.validaIdItem(idItemNecessario);
+		Validador.validaId(idReceptor);
+		Validador.validaIdItem(idItemNecessario);
 		
 		Map<Integer, Usuario> itensEUsuarios = new HashMap<>();
 		this.verificaUsuarioReceptor(idReceptor);
@@ -555,7 +549,7 @@ public class SistemaController {
 	 * 
 	 */
 	public String pesquisaItemParaDoacaoPorDescricao(String descricao) {
-		this.validador.validaPesquisa(descricao);
+		Validador.validaPesquisa(descricao);
 		
 		List<Item> itensComDescricao = new ArrayList<>();
 		
@@ -618,9 +612,9 @@ public class SistemaController {
 	 * 
 	 */
 	public String realizaDoacao(int idItemNecessario, int idItemDoado, String data) {
-		this.validador.validaIdItem(idItemNecessario);
-		this.validador.validaIdItem(idItemDoado);
-		this.validador.validaData(data);
+		Validador.validaIdItem(idItemNecessario);
+		Validador.validaIdItem(idItemDoado);
+		Validador.validaData(data);
 		
 		Pair <Item, Usuario> parItemEUsuario;
 		

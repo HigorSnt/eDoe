@@ -1,6 +1,6 @@
 package util;
 
-import java.io.Serializable;
+import models.Item;
 
 /**
  * Classe que realiza todas as validações de dados passados para o sistema.
@@ -10,9 +10,7 @@ import java.io.Serializable;
  * @author JOAO FELIPE DA SILVA FREITAS		 - 118110774
  *
  */
-public class Validador implements Serializable {
-	
-	private static final long serialVersionUID = 2661688556749260700L;
+public class Validador {
 
 	/**
 	 * Valida o nome de um usuario.
@@ -20,7 +18,7 @@ public class Validador implements Serializable {
 	 * @param nome e o nome de um usuario.
 	 * 
 	 */
-	public void validaNome(String nome) {
+	public static void validaNome(String nome) {
 		if (nome == null || nome.trim().equals("")) {
 			throw new IllegalArgumentException("Entrada invalida: nome nao pode ser vazio ou nulo.");
 		}
@@ -32,7 +30,7 @@ public class Validador implements Serializable {
 	 * @param id e o id de um usuario.
 	 * 
 	 */
-	public void validaId (String id) {
+	public static void validaId (String id) {
 		if (id == null || id.trim().equals("")) {
 			throw new IllegalArgumentException("Entrada invalida: id do usuario nao pode ser vazio ou nulo.");
 		}
@@ -44,7 +42,7 @@ public class Validador implements Serializable {
 	 * @param celular e o celular de um usuario.
 	 * 
 	 */
-	public void validaCelular (String celular) {
+	public static void validaCelular (String celular) {
 		if (celular == null || celular.trim().equals("")) {
 			throw new IllegalArgumentException("Entrada invalida: celular nao pode ser vazio ou nulo.");
 		}
@@ -56,7 +54,7 @@ public class Validador implements Serializable {
 	 * @param email e o email de um usuario.
 	 * 
 	 */
-	public void validaEmail(String email) {
+	public static void validaEmail(String email) {
 		if (email == null || email.trim().equals("")) {
 			throw new IllegalArgumentException("Entrada invalida: email nao pode ser vazio ou nulo.");
 		}
@@ -68,7 +66,7 @@ public class Validador implements Serializable {
 	 * @param texto e a descricao passada que interessa na pesquisa.
 	 * 
 	 */
-	public void validaPesquisa (String texto) {
+	public static void validaPesquisa (String texto) {
 		if (texto == null || texto.trim().equals("")) {
 			throw new IllegalArgumentException("Entrada invalida: texto da pesquisa nao pode ser vazio ou nulo.");
 		}
@@ -83,11 +81,11 @@ public class Validador implements Serializable {
 	 * @param celular e o celular de um usario.
 	 * 
 	 */
-	public void validaCadastro(String id, String nome, String email, String celular) {
-		this.validaNome(nome);
-		this.validaId(id);
-		this.validaCelular(celular);
-		this.validaEmail(email);
+	public static void validaCadastro(String id, String nome, String email, String celular) {
+		validaNome(nome);
+		validaId(id);
+		validaCelular(celular);
+		validaEmail(email);
 	}
 	
 	/**
@@ -96,7 +94,7 @@ public class Validador implements Serializable {
 	 * @param descricao e uma descricao de item. 
 	 * 
 	 */
-	public void validaDescritor (String descricao) {
+	public static void validaDescritor (String descricao) {
 		if (descricao == null || descricao.trim().equals("")) {
 			throw new IllegalArgumentException("Entrada invalida: descricao nao pode ser vazia ou nula.");
 		}
@@ -108,7 +106,7 @@ public class Validador implements Serializable {
 	 * @param valor Informacao que necessita de validacao.
 	 * 
 	 */
-	public void validaIdItem (int valor) {
+	public static void validaIdItem (int valor) {
 		if (valor < 0) {
 			throw new IllegalArgumentException("Entrada invalida: id do item nao pode ser negativo.");
 		}
@@ -120,7 +118,7 @@ public class Validador implements Serializable {
 	 * @param quantidade é a quantidade de um item.
 	 * 
 	 */
-	public void validaQuantidade (int quantidade) {
+	public static void validaQuantidade (int quantidade) {
 		if (quantidade <= 0) {
 			throw new IllegalArgumentException("Entrada invalida: quantidade deve ser maior que zero.");
 		}
@@ -132,9 +130,15 @@ public class Validador implements Serializable {
 	 * @param data e a data que necessita ser verificada se foi passada como nula ou vazia.
 	 * 
 	 */
-	public void validaData(String data) {
+	public static void validaData(String data) {
 		if(data == null || data.equals("")) {
 			throw new IllegalArgumentException("Entrada invalida: data nao pode ser vazia ou nula.");
+		}
+	}
+	
+	public static void validaItem(Item item) {
+		if (item == null) {
+			throw new IllegalArgumentException("Entrada invalida: item não pode ser nulo.");
 		}
 	}
 

@@ -24,6 +24,10 @@ class ItemAvaliadoTeste {
 	
 	@Test
 	public void testConstrutor() {
+		Item i1 = new Item("cadeira de rodas", 7, "roda grande,80kg,conforto".split(","), 2);
+		
+		assertThrows(IllegalArgumentException.class, ()-> new ItemAvaliado(null, i1));
+		assertThrows(IllegalArgumentException.class, ()-> new ItemAvaliado(i1, null));
 		assertEquals(1, item1.getId());
 		assertEquals("1 - cadeira de rodas, tags: [roda grande, cadeira], quantidade: 5", item1.toString());
 	}

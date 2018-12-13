@@ -17,7 +17,7 @@ class SistemaControllerTeste {
 	private SistemaController sisc = new SistemaController();
 	
 	@BeforeEach
-	public void cadastrandoUsuarios() {
+	public void cadastrandoUsuarios() throws FileNotFoundException {
 		this.sisc.adicionaDoador("70513372911", "Elizabeth Ashe", "elizabethcalamity@deadlock.com", 
 				"(83) 92918-0211","PESSOA_FISICA");
 		this.sisc.adicionaDoador("08704413000240", "Paroquia de Nossa Senhora da Conceicao", 
@@ -150,7 +150,7 @@ class SistemaControllerTeste {
 	}
 	
 	@Test
-	public void testAlteraDadosReceptor() {
+	public void testAlteraDadosReceptor() throws FileNotFoundException {
 		assertEquals("Murilo Luiz Brito/84473712044, muriloluizbrito-81@ipmmi.org.br, (31) 99776-7434, status: receptor", this.sisc.pesquisaUsuarioPorId("84473712044"));
 		this.sisc.lerReceptores("arquivos_sistema/atualizaReceptores.csv");
 		assertEquals("Murilo Luiz Brito/84473712044, muriloluiz@ipmmi.org.br, (31) 99770-7474, status: receptor", this.sisc.pesquisaUsuarioPorId("84473712044"));
@@ -173,13 +173,9 @@ class SistemaControllerTeste {
 					this.sisc.alteraDadosReceptor("84473712044", "Murilo Luiz Brito", "      ", "(31) 99770-7474"));
 	}
 	
-	@Rule
-	public ExpectedException exceptionRule = ExpectedException.none();
-	
 	@Test
 	public void testLerReceptores() {
-		exceptionRule.expect(FileNotFoundException.class);
-		this.sisc.lerReceptores("arquivos_sistema/atualiza.csv");
+		assertThrows(FileNotFoundException.class, ()-> this.sisc.lerReceptores("arquivos_sistema/atualiza.csv"));
 	}
 	
 	@Test
