@@ -350,10 +350,9 @@ public class Usuario implements Serializable {
 			return new ArrayList<>();
 	}
 	
-	/**
-	 * Retorna um String que corresponde ao usuario.
+	/** Retorna uma string no formato: NOME/ID, EMAIL, CELULAR, STATUS: xxxxxx.
 	 * 
-	 * @return retorna uma string no formato: NOME/ID, EMAIL, CELULAR, STATUS: xxxxxx.
+	 * @return retorna um String que corresponde ao usuario.
 	 * 
 	 */
 	@Override
@@ -362,6 +361,11 @@ public class Usuario implements Serializable {
 				+ (this.receptor ? ", status: receptor" : ", status: doador");
 	}
 
+	/**
+	 * 
+	 * @return uma representacao do Usuario na forma de um inteiro.
+	 * 
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -371,7 +375,13 @@ public class Usuario implements Serializable {
 		result = prime * result + nome.hashCode();
 		return result;
 	}
-
+	
+	/** Compara o Usuario a um outro Objeto qualquer e verifica se sao iguais.
+	 * 
+	 * @param obj - qualquer Objeto.
+	 * 
+	 * @return true caso o Usuario for igual ao Objeto passado ou false caso contrario.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

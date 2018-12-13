@@ -109,11 +109,21 @@ public class Item implements Serializable {
 		return descricao;
 	}
 	
+	/** Uma representacao do Item na formatacao: ID - DESCRICAO - TAGS - QUANTIDADE.
+	 * 
+	 * @return uma represetacao do Item.
+	 *
+	 */
 	@Override
 	public String toString() {
 		return this.id + " - " + this.descricao + ", tags: " + this.tags.toString() + ", quantidade: " + this.quantidade; 
 	}
 
+	/**
+	 * 
+	 * @return uma representacao do Item na forma de um inteiro.
+	 * 
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -123,6 +133,12 @@ public class Item implements Serializable {
 		return result;
 	}
 
+	/** Compara o Item a um outro Objeto qualquer e verifica se sao iguais.
+	 * 
+	 * @param obj - qualquer Objeto.
+	 * 
+	 * @return true caso o Item for igual ao Objeto passado ou false caso contrario.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
