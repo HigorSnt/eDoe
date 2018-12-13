@@ -64,6 +64,11 @@ public class Doacao implements Serializable {
 		return descricaoItemDoado;
 	}
 	
+	/** Uma representacao da Doacao na formatacao: DATA - DOADOR - ITEM - QUANTIDADE - RECEPTOR.
+	 * 
+	 * @return uma representacao da Doacao.
+	 * 
+	 */
 	@Override
 	public String toString() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
