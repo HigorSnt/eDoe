@@ -9,8 +9,8 @@ import models.Item;
  * e feita a comparacao pela descricao.
  * 
  * @author GABRIEL DE OLIVEIRA MEIRA NOBREGA - 118110276
- * @author HIGOR SANTOS DE BRITO DANTAS 	 - 118110808
- * @author JOAO FELIPE DA SILVA FREITAS		 - 118110774
+ * @author HIGOR SANTOS DE BRITO DANTAS      - 118110808
+ * @author JOAO FELIPE DA SILVA FREITAS      - 118110774
  *
  */
 public class QuantidadeComparator implements Comparator<Item> {

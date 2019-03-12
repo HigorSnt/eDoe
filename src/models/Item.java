@@ -11,8 +11,8 @@ import util.Validador;
  * uma certa quantidade, e tags que o definem.
  * 
  * @author GABRIEL DE OLIVEIRA MEIRA NOBREGA - 118110276
- * @author HIGOR SANTOS DE BRITO DANTAS 	 - 118110808
- * @author JOAO FELIPE DA SILVA FREITAS		 - 118110774
+ * @author HIGOR SANTOS DE BRITO DANTAS      - 118110808
+ * @author JOAO FELIPE DA SILVA FREITAS      - 118110774
  *
  */
 public class Item implements Serializable {
@@ -27,10 +27,10 @@ public class Item implements Serializable {
 	 * Construtor de item, inicializa a lista e adiciona todas as tags, bem como
 	 * inicializa os outros atributos.
 	 * 
-	 * @param descricao 	e a descricao do item.
-	 * @param quantidade 	e a quantidade de itens.
-	 * @param tags 			e um resumo do objeto.
-	 * @param id 			e o identificador unico do item.
+	 * @param descricao     e a descricao do item.
+	 * @param quantidade    e a quantidade de itens.
+	 * @param tags          e um resumo do objeto.
+	 * @param id            e o identificador unico do item.
 	 * 
 	 */
 	public Item(String descricao, int quantidade, String[] tags, int id) {

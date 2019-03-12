@@ -33,8 +33,8 @@ import util.Validador;
  * Classe que controla os usuarios e as suas acoes.
  * 
  * @author GABRIEL DE OLIVEIRA MEIRA NOBREGA - 118110276
- * @author HIGOR SANTOS DE BRITO DANTAS 	 - 118110808
- * @author JOAO FELIPE DA SILVA FREITAS		 - 118110774
+ * @author HIGOR SANTOS DE BRITO DANTAS      - 118110808
+ * @author JOAO FELIPE DA SILVA FREITAS      - 118110774
  *
  */
 public class SistemaController {
@@ -246,6 +246,7 @@ public class SistemaController {
 	 * Remove um usuario a partir do seu ID.
 	 * 
 	 * @param id identificacao do usuario.
+	 * 
 	 */
 	public void removeUsuario(String id) {
 		Validador.validaId(id);
@@ -277,10 +278,10 @@ public class SistemaController {
 	/**
 	 * Adiciona novo item para doacao.
 	 * 
-	 * @param idDoador 		id do doador.
+	 * @param idDoador      id do doador.
 	 * @param descricaoItem descricao do item.
-	 * @param quantidade 	quantidade do item.
-	 * @param tags 			tags do item.
+	 * @param quantidade    quantidade do item.
+	 * @param tags          tags do item.
 	 * 
 	 * @return retorna o Id do item.
 	 * 
@@ -302,10 +303,10 @@ public class SistemaController {
 	/**
 	 * Adiciona item necessario.
 	 * 
-	 * @param idReceptor 		id do receptor.
-	 * @param descricaoItem 	descricao do item.
-	 * @param quantidade 		quantidade do item.
-	 * @param tags 				tags do item.
+	 * @param idReceptor    id do receptor.
+	 * @param descricaoItem descricao do item.
+	 * @param quantidade    quantidade do item.
+	 * @param tags          tags do item.
 	 * 
 	 * @return retorna id do item.
 	 * 
@@ -327,10 +328,10 @@ public class SistemaController {
 	/**
 	 * Metodo mais geral que adiciona qualquer item.
 	 * 
-	 * @param id 			id do item.
+	 * @param id            id do item.
 	 * @param descricaoItem descricao do item.
-	 * @param quantidade 	quantidade do item.
-	 * @param tags 			tags do item.
+	 * @param quantidade    quantidade do item.
+	 * @param tags          tags do item.
 	 * 
 	 * @return retorna id do item.
 	 * 
@@ -349,8 +350,8 @@ public class SistemaController {
 	/**
 	 * Exibe item.
 	 * 
-	 * @param id 		id do item.
-	 * @param idDoador 	id do doador.
+	 * @param id       id do item.
+	 * @param idDoador id do doador.
 	 * 
 	 * @return retorna a representacao do item.
 	 * 
@@ -366,10 +367,10 @@ public class SistemaController {
 	/**
 	 * Atualiza item para doacao.
 	 * 
-	 * @param id 			id do item.
-	 * @param idDoador 		id do doador.
-	 * @param quantidade 	quantidade do item.
-	 * @param tags 			tags do item.
+	 * @param id         id do item.
+	 * @param idDoador   id do doador.
+	 * @param quantidade quantidade do item.
+	 * @param tags       tags do item.
 	 * 
 	 * @return retorna a representacao do item.
 	 * 
@@ -381,10 +382,10 @@ public class SistemaController {
 	/**
 	 * Atualiza item necessario.
 	 * 
-	 * @param id 		   id do item.
-	 * @param idReceptor   id do receptor.
-	 * @param quantidade   quantidade do item.
-	 * @param tags 		   tags do item.
+	 * @param id         id do item.
+	 * @param idReceptor id do receptor.
+	 * @param quantidade quantidade do item.
+	 * @param tags 		 tags do item.
 	 * 
 	 * @return retorna a representacao do item.
 	 * 
@@ -397,10 +398,10 @@ public class SistemaController {
 	/**
 	 * Atualiza qualquer item.
 	 * 
-	 * @param id 			id do item.
-	 * @param idUsuario 	id do usuario ligado ao item.
-	 * @param quantidade 	quantidade do item.
-	 * @param tags 			tags do item.
+	 * @param id         id do item.
+	 * @param idUsuario  id do usuario ligado ao item.
+	 * @param quantidade quantidade do item.
+	 * @param tags       tags do item.
 	 * 
 	 * @return retorna a representacao do item.
 	 * 
@@ -424,7 +425,7 @@ public class SistemaController {
 	/**
 	 * Remove um item.
 	 * 
-	 * @param id 		id do item.
+	 * @param id        id do item.
 	 * @param idUsuario id de um usuario.
 	 * 
 	 */
@@ -472,11 +473,11 @@ public class SistemaController {
 	/**
 	 * Encontra matches entre itens a serem doados e itens necessarios.
 	 * 
-	 * @param idReceptor 		e o id do usuario que possui interesse em receber algum item.
-	 * @param idItemNecessario	e o item que se deseja obter match.
+	 * @param idReceptor       e o id do usuario que possui interesse em receber algum item.
+	 * @param idItemNecessario e o item que se deseja obter match.
 	 * 
 	 * @return a representacao de todos os itens candidatos de match, ordenados de maneira 
-	 * 		   crescente em relacao a pontuacao.
+	 *         crescente em relacao a pontuacao.
 	 * 
 	 */
 	public String match(String idReceptor, int idItemNecessario) {
@@ -500,9 +501,9 @@ public class SistemaController {
 	/**
 	 * Metodo que recupera todos os itens com matches possiveis.
 	 * 
-	 * @param itensEUsuarios 	um mapa que liga cada item a um usuario que o possui.
-	 * @param itemNecessario 	o item que desejo obter um match.
-	 * @param itensComMatch 	uma lista com todos os itens que possuem match com o item passado.
+	 * @param itensEUsuarios um mapa que liga cada item a um usuario que o possui.
+	 * @param itemNecessario o item que desejo obter um match.
+	 * @param itensComMatch  uma lista com todos os itens que possuem match com o item passado.
 	 * 
 	 */
 	private void pegaItensParaMatch(Map<Integer, Usuario> itensEUsuarios, Item itemNecessario,
@@ -583,10 +584,10 @@ public class SistemaController {
 	 * Metodo que coloca todos os itens sejam ele para doacao ou necessario dentro 
 	 * de uma lista e de um mapa a fim de facilitar a listagem de todos os itens.
 	 * 
-	 * @param itemEUsuario 		e uma mapa que liga cada item ao usuario que o possui.
-	 * @param itens 			e uma lista com todos os itens que se deseja buscar.
-	 * @param identificador 	auxilia a identificar se deseja obter itens doados ou
-	 * 							necessarios por meio de uma operacao XOR.
+	 * @param itemEUsuario  e uma mapa que liga cada item ao usuario que o possui.
+	 * @param itens 		e uma lista com todos os itens que se deseja buscar.
+	 * @param identificador auxilia a identificar se deseja obter itens doados ou
+	 *                      necessarios por meio de uma operacao XOR.
 	 * 
 	 */
 	private void selecionaItens(Map<Integer, Usuario> itemEUsuario, List<Item> itens, boolean identificador) {
@@ -604,9 +605,9 @@ public class SistemaController {
 	/**
 	 * Realiza uma doacao.
 	 * 
-	 * @param idItemNecessario 		id do item necessario.
-	 * @param idItemDoado 			id do item doado.
-	 * @param data 					data da doacao.
+	 * @param idItemNecessario id do item necessario.
+	 * @param idItemDoado      id do item doado.
+	 * @param data             data da doacao.
 	 * 
 	 * @return retorna uma representacao da doacao no formado: DATA - DOADOR - ITEM - QUANTIDADE - RECEPTOR.
 	 * 
@@ -643,12 +644,12 @@ public class SistemaController {
 	 * Apos uma operação de match se torna necessario realizar atualizacoes nos itens, esse
 	 * metodo serve para isso.
 	 * 
-	 * @param idItemNecessario 	e o identificador de um item necessario.
-	 * @param idItemDoado		e o identificador de um item doado.
-	 * @param itemNecessario 	e um item necessario.
-	 * @param usuarioReceptor 	e um usuario receptor.
-	 * @param itemDoado 		e um item para doacao.
-	 * @param usuarioDoador 	e um usuario doador.
+	 * @param idItemNecessario e o identificador de um item necessario.
+	 * @param idItemDoado      e o identificador de um item doado.
+	 * @param itemNecessario   e um item necessario.
+	 * @param usuarioReceptor  e um usuario receptor.
+	 * @param itemDoado        e um item para doacao.
+	 * @param usuarioDoador    e um usuario doador.
 	 * 
 	 */
 	private void atualizaAposDoacao(int idItemNecessario, int idItemDoado, Item itemNecessario, Usuario usuarioReceptor,
@@ -669,9 +670,9 @@ public class SistemaController {
 	 * Ao se realizar uma doacao e necessario ter o item e o usuario, esse metodo
 	 * auxilia a realizar isso.
 	 * 
-	 * @param idItem 			e o id do item.
-	 * @param identificador 	auxilia a identificar se deseja obter usuario doador ou
-	 * 							receptor por meio de uma operacao XOR.
+	 * @param idItem        e o id do item.
+	 * @param identificador auxilia a identificar se deseja obter usuario doador ou
+	 *                      receptor por meio de uma operacao XOR.
 	 * 
 	 * @return Um par com o item encontrado e o usuario.
 	 * 

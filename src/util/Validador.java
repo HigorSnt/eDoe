@@ -6,8 +6,8 @@ import models.Item;
  * Classe que realiza todas as validações de dados passados para o sistema.
  * 
  * @author GABRIEL DE OLIVEIRA MEIRA NOBREGA - 118110276
- * @author HIGOR SANTOS DE BRITO DANTAS 	 - 118110808
- * @author JOAO FELIPE DA SILVA FREITAS		 - 118110774
+ * @author HIGOR SANTOS DE BRITO DANTAS      - 118110808
+ * @author JOAO FELIPE DA SILVA FREITAS      - 118110774
  *
  */
 public class Validador {
@@ -75,9 +75,9 @@ public class Validador {
 	/**
 	 * Valida o cadastro de um usuario.
 	 * 
-	 * @param id e o id de um usuario.
-	 * @param nome e o nome de um usuario.
-	 * @param email e o email de um usuario.
+	 * @param id      e o id de um usuario.
+	 * @param nome    e o nome de um usuario.
+	 * @param email   e o email de um usuario.
 	 * @param celular e o celular de um usario.
 	 * 
 	 */

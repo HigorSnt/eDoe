@@ -15,8 +15,8 @@ import util.Validador;
  * Um usuario pode ser doador ou receptor, algo que e sinalizado por um booleano.
  * 
  * @author GABRIEL DE OLIVEIRA MEIRA NOBREGA - 118110276
- * @author HIGOR SANTOS DE BRITO DANTAS 	 - 118110808
- * @author JOAO FELIPE DA SILVA FREITAS		 - 118110774
+ * @author HIGOR SANTOS DE BRITO DANTAS      - 118110808
+ * @author JOAO FELIPE DA SILVA FREITAS      - 118110774
  * 
  */
 public class Usuario implements Serializable {
@@ -38,7 +38,7 @@ public class Usuario implements Serializable {
 	 * @param email      email do usuario a ser cadastrado.
 	 * @param celular    celular do usuario a ser cadastrado.
 	 * @param classe     classe do usuario a ser cadastrado.
-	 * @param receptor	 booleano que informa se o usuario e receptor ou doador.
+	 * @param receptor   booleano que informa se o usuario e receptor ou doador.
 	 * 
 	 */
 	public Usuario(String id, String nome, String email, String celular, Classe classe, boolean receptor) {
@@ -139,7 +139,7 @@ public class Usuario implements Serializable {
 	 * @param descricaoItem descricao do item.
 	 * @param quantidade    quantidade do item.
 	 * @param tags          tags do item.
-	 * @param idItem      	id que representa o item.
+	 * @param idItem        id que representa o item.
 	 * 
 	 * @return retorna o id do item.
 	 * 
@@ -186,7 +186,7 @@ public class Usuario implements Serializable {
 	 * Verifica se uma descricao de um item passado e composta por alguma palavra de uma descricao.
 	 * 
 	 * @param descricaoItem e a descricao do item passado.
-	 * @param descricao 	e a descricao que possui as palavras chaves.
+	 * @param descricao     e a descricao que possui as palavras chaves.
 	 * 
 	 */
 	private boolean verificaPresencaDeDescricao(String descricaoItem, String descricao) {

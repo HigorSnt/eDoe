@@ -10,8 +10,8 @@ import util.Validador;
  * de acordo com a pontuação.
  * 
  * @author GABRIEL DE OLIVEIRA MEIRA NOBREGA - 118110276
- * @author HIGOR SANTOS DE BRITO DANTAS 	 - 118110808
- * @author JOAO FELIPE DA SILVA FREITAS		 - 118110774
+ * @author HIGOR SANTOS DE BRITO DANTAS      - 118110808
+ * @author JOAO FELIPE DA SILVA FREITAS      - 118110774
  * 
  */
 public class ItemAvaliado implements Comparable<ItemAvaliado>, Serializable {
@@ -88,6 +88,7 @@ public class ItemAvaliado implements Comparable<ItemAvaliado>, Serializable {
 	
 	/**
 	 * retorna a representação do item avaliado.
+	 * 
 	 */
 	@Override
 	public String toString() {
@@ -96,6 +97,7 @@ public class ItemAvaliado implements Comparable<ItemAvaliado>, Serializable {
 
 	/**
 	 * compareTo, usado para ordenar da maior pontuacao para a menor.
+	 * 
 	 */
 	@Override
 	public int compareTo(ItemAvaliado o) {
